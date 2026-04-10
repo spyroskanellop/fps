@@ -61,7 +61,7 @@
 
         </v-row>
 
-        <div class="table-wrapper pa-1 mt-6">
+        <div class="table-container mt-6">
             <v-data-table class="" :items="items"></v-data-table>
         </div>
 
@@ -203,6 +203,7 @@
         box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         border-radius: 0.75rem;
         background: white;
+        overflow: hidden;
     }
     :deep(.v-table-wrapper){
         border-radius: 0.75rem;
@@ -211,12 +212,24 @@
         background-color: #e2e8f0;
         /* border: 1px solid #e1e9f04d; */
     }
-    .table-wrapper{
+    .table-container{
         background-color: #e2e8f0;
+        padding: 1px;
         border: 1px solid #e1e9f04d;
-        border-radius: 1rem;
+        /* border-radius: 1rem; */
+        border-radius: .75rem;
     }
-    .v-table .v-table-wrapper table tbody tr td{
+    :deep(.v-table.v-data-table .v-table__wrapper table tbody tr td),
+    :deep(.v-table.v-data-table .v-table__wrapper table thead tr th)
+    {
         border-bottom: 0;
+    }
+    :deep(.v-table.v-data-table .v-table__wrapper table thead th span){
+        font-family: Manrope;
+        color: #566167;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 0.675rem;
     }
 </style>
