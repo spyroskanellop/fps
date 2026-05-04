@@ -62,24 +62,134 @@
         </v-row>
 
         <div class="table-container mt-6">
-            <v-data-table class="" :items="items"></v-data-table>
+            <v-data-table class="" :headers="headers" :items="this.items" item-value="Order_Id"
+             show-expand>
+                <template v-slot:[`item.Order_Id`]="{item}">
+                    <div>
+                        <h2 class="order-header">
+                            {{ item.Order_Id }}
+                        </h2>
+                    </div>
+                </template>
+                <template v-slot:[`item.Cust_id`]="{item}">
+                    <div>
+                        <h2 class="cust-header">
+                            {{ item.Cust_id }}
+                        </h2>
+                    </div>
+                </template>
+                <template v-slot:[`item.SKU_CODE`]="{item}">
+                    <div>
+                        <h2 class="sku-header">
+                            {{ item.SKU_CODE }}
+                        </h2>
+                    </div>
+                </template>
+                <template v-slot:[`item.product_name`]="{item}">
+                    <div>
+                        <h2 class="name-header">
+                            {{ item.product_name }}
+                        </h2>
+                    </div>
+                </template>
+                <template v-slot:[`item.qty`]="{item}">
+                    <div>
+                        <h2 class="qty-header">
+                            {{ item.qty }}
+                        </h2>
+                    </div>
+                </template>
+
+                <template v-slot:[`item.current_stage`]="{item}">
+                    <div v-if="item.current_stage.toUpperCase() === 'MANUFACTURING'">
+                        <h2 class="stage-header blue">
+                            {{ item.current_stage }}
+                        </h2>
+                    </div>
+                    
+                    <div v-if="item.current_stage.toUpperCase() === 'SEWING'">
+                        <h2 class="stage-header yellow">
+                            {{ item.current_stage }}
+                        </h2>
+                    </div>
+                </template>
+                <template v-slot:[`item.payment_status`]="{item}">
+                    <div v-if="item.payment_status.toUpperCase() === 'PAID'">
+                        <h2 class="payment-header paid">
+                            <MiMoneyPlus/>
+                            {{ item.payment_status }}
+                        </h2>
+                    </div>
+                    <div v-if="item.payment_status.toUpperCase() === 'PENDING'">
+                        <h2 class="payment-header pending">
+                            <CgSandClock />
+                            {{ item.payment_status }}
+                        </h2>
+                    </div>
+
+                </template>
+
+
+                <template v-slot:expanded-row="{ columns, item }">   
+                    <tr class="expanded-row">
+                        <td :colspan="columns.length" class="px-5 py-6">
+                            <v-row class="justify-space-between">
+                                <v-col cols="3">
+                                    <div class="details">
+                                        <div class="v-row">
+                                            <v-col cols="auto" class="d-flex flex-center"><MiMoneyPlus/></v-col>
+                                            <v-col><h4>Financial Details</h4></v-col>
+                                        </div>
+                                        
+                                        <div class="content mt-2">
+                                            <div class="d-flex justify-space-between">
+                                                <span class="header">Total Amount:</span>
+                                                <span>$123.45</span>
+                                            </div>
+                                            <div class="d-flex justify-space-between">
+                                                <span class="header">Balance:</span>
+                                                <span>$00.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-col>
+                                <v-col>
+                                    <v-btn color="primary" class="float-right">Update Status</v-btn>
+                                </v-col>
+                                
+                            </v-row>
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table>
         </div>
 
     </v-container>
 </template>
 <script>
-    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple } from '@kalimahapps/vue-icons';
-
+    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock } from '@kalimahapps/vue-icons';
+    
     export default {
         name: "Orders",
         components: {
             CaFilterEdit,
             FeTrendingUp,
-            FlClipboardMultiple
+            FlClipboardMultiple,
+            MiMoneyPlus,
+            CgSandClock
         },
         data() {
             return {
                 // Data properties for orders can be added here
+                headers: [
+                    { title: "Order Id", key: "Order_Id", value: "Order_Id", sortable: true},
+                    { title: "Cust Id", key: "Cust_id", value: "Cust_id", sortable: true},
+                    { title: "SKU CODE", key: "SKU_CODE", value: "SKU_CODE", sortable: true},
+                    { title: "Product Name", key: "product_name", value: "product_name", sortable: true},
+                    { title: "Qty", key: "qty", value: "qty", sortable: true},
+                    { title: "Current Stage", key: "current_stage", value: "current_stage", sortable: true},
+                    { title: "Payment Status", key: "payment_status", value: "payment_status", sortable: true},
+                ],
                 items: [
                     {
                         Order_Id: '#ORD-2024-8812',
@@ -87,11 +197,11 @@
                         SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
-                        current_stage: 'Manufacturing',
+                        current_stage: 'Sewing',
                         payment_status: 'Paid'
                     },
                     {
-                        Order_Id: '#ORD-2024-8812',
+                        Order_Id: '#ORD-2024-8813',
                         Cust_id: 'C-88219',
                         SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
@@ -100,7 +210,16 @@
                         payment_status: 'Paid'
                     },
                     {
-                        Order_Id: '#ORD-2024-8812',
+                        Order_Id: '#ORD-2024-8814',
+                        Cust_id: 'C-88219',
+                        SKU_CODE: 'PRC-99-ALPHA',
+                        product_name: 'Titanium Turbine Blade V4',
+                        qty: 45,
+                        current_stage: 'Manufacturing',
+                        payment_status: 'Pending'
+                    },
+                    {
+                        Order_Id: '#ORD-2024-8815',
                         Cust_id: 'C-88219',
                         SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
@@ -109,7 +228,25 @@
                         payment_status: 'Paid'
                     },
                     {
-                        Order_Id: '#ORD-2024-8812',
+                        Order_Id: '#ORD-2024-8816',
+                        Cust_id: 'C-88219',
+                        SKU_CODE: 'PRC-99-ALPHA',
+                        product_name: 'Titanium Turbine Blade V4',
+                        qty: 45,
+                        current_stage: 'Manufacturing',
+                        payment_status: 'Pending'
+                    },
+                    {
+                        Order_Id: '#ORD-2024-8817',
+                        Cust_id: 'C-88219',
+                        SKU_CODE: 'PRC-99-ALPHA',
+                        product_name: 'Titanium Turbine Blade V4',
+                        qty: 45,
+                        current_stage: 'Sewing',
+                        payment_status: 'Paid'
+                    },
+                    {
+                        Order_Id: '#ORD-2024-8818',
                         Cust_id: 'C-88219',
                         SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
@@ -117,10 +254,19 @@
                         current_stage: 'Manufacturing',
                         payment_status: 'Paid'
                     },
-                    
-                ]
+                    {
+                        Order_Id: '#ORD-2024-8819',
+                        Cust_id: 'C-88219',
+                        SKU_CODE: 'PRC-99-ALPHA',
+                        product_name: 'Titanium Turbine Blade V4',
+                        qty: 45,
+                        current_stage: 'Sewing',
+                        payment_status: 'Pending'
+                    },
+                ],
+                expanded: []
             }
-        },
+        }
 
     }
 </script>
@@ -231,5 +377,95 @@
         text-transform: uppercase;
         font-weight: 700;
         font-size: 0.675rem;
+    }
+    :deep(.order-header){
+        color: #006497;
+        font-size: 1rem;
+    }
+    :deep(.cust-header){
+        color: #566167;
+        font-size: 1rem;
+        font-weight: 500;
+        font-family: 'Manrope';
+    }
+    :deep(.sku-header){
+        color: #566167;
+        font-size: .75rem;
+        font-family: 'Manrope';
+        font-weight: 400;
+    }
+    :deep(.name-header){
+        color: #2a343a;
+        font-size: 1rem;
+        font-family: 'Manrope';
+        font-weight: 600;
+    }
+    :deep(.qty-header){
+        font-size: .875rem;
+        font-family: 'Manrope';
+        font-weight: 700;
+    }
+    :deep(.stage-header){
+        font-size: .675rem;
+        font-family: 'Manrope';
+        font-weight: 800;
+        text-transform: uppercase;
+        /* color: #075985; */
+        /* background-color: #e0f2fe; */
+        padding: .25rem .75rem;
+        border-radius: 999px;
+        display: inline;
+    }
+    :deep(.stage-header.blue){
+        color: #075985;
+        background-color: #e0f2fe;
+    }
+    :deep(.stage-header.yellow){
+        color: #92400e;
+        background-color: #fef3c7;
+    }
+    :deep(.payment-header){
+        display: flex;
+        align-items: center;
+        gap: .25rem;
+        font-size: .75rem;
+        text-transform: uppercase;
+        font-family: 'Manrope';
+        font-weight: 700;
+    }
+    :deep(.payment-header.paid){
+        color: #00687b;
+    }
+    :deep(.payment-header.pending){
+        color: #566167;
+    }
+    :deep(.payment-header svg){
+        font-size: 1rem;
+    }
+    .expanded-row{
+        background-color: #eef4fa4d;
+        border: 1px solid #e1e9f04d;
+    }
+    :deep(.expanded-row .details .v-row){
+        color: #006497;
+        font-size: .675rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+    :deep(.expanded-row .details .content .header){
+        color: #566167;
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+    :deep(.expanded-row .details svg){
+        font-size: 1rem;
+    }
+    :deep(.expanded-row .details .content span:not(.header)){
+        font-weight: 700;
+        color: #2a343a;
+    }
+    :deep(.expanded-row .details .content > div:nth-child(1)){
+        border-bottom: 1px solid #e2e8f0;
     }
 </style>
