@@ -18,7 +18,7 @@
             <v-col>
                 <v-card class="mx-auto py-2 px-5">
                     <v-card-item>
-                        <v-card-title>Card title</v-card-title>
+                        <v-card-title>Total Active Orders</v-card-title>
                     </v-card-item>
                     <v-card-text>
                         1,284
@@ -31,31 +31,38 @@
             </v-col>
 
             <v-col>
-                <v-card class="mx-auto py-2 px-5">
+                <v-card class="mx-auto py-2 px-5 blue">
                     <v-card-item>
-                        <v-card-title>Card title</v-card-title>
+                        <v-card-title>In Production</v-card-title>
                     </v-card-item>
                     <v-card-text>
                         1,284
                     </v-card-text>
                     <v-card-actions>
-                        <span><v-icon><FeTrendingUp/></v-icon> +12.5% vs last month </span>
+                        <v-row class="d-flex align-center">
+                            <v-col>
+                                <v-progress-linear buffer-value="65" color="#00687b" height="10" rounded stream></v-progress-linear>
+                            </v-col>
+                            <v-col cols="auto">
+                                <span> 65% capacity </span>
+                            </v-col>
+                        </v-row>
                     </v-card-actions>
                     <v-icon class="background-icon"><FlClipboardMultiple/></v-icon>
                 </v-card>
             </v-col>
             <v-col>
-                <v-card class="mx-auto py-2 px-5">
+                <v-card class="mx-auto py-2 px-5 risk">
                     <v-card-item>
-                        <v-card-title>Card title</v-card-title>
+                        <v-card-title>Revenue At Risk</v-card-title>
                     </v-card-item>
                     <v-card-text>
-                        1,284
+                        $42,900
                     </v-card-text>
                     <v-card-actions>
-                        <span><v-icon><FeTrendingUp/></v-icon> +12.5% vs last month </span>
+                        <span><v-icon><AkTriangleAlert/></v-icon> 12 orders delayed at QC </span>
                     </v-card-actions>
-                    <v-icon class="background-icon"><FlClipboardMultiple/></v-icon>
+                    <v-icon class="background-icon"><AkTriangleAlert/></v-icon>
                 </v-card>
             </v-col>
 
@@ -172,11 +179,8 @@
                                         </div>
                                     </div>
                                 </v-col>
-
-
-
-                                <v-col>
-                                    <v-btn color="primary" class="float-right">Update Status</v-btn>
+                                <v-col cols="3">
+                                    <v-btn color="primary" class="float-right primary-btn">Update Status</v-btn>
                                 </v-col>
                             </v-row>
                         </td>
@@ -188,8 +192,7 @@
     </v-container>
 </template>
 <script>
-    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline } from '@kalimahapps/vue-icons';
-    
+    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert } from '@kalimahapps/vue-icons';
     export default {
         name: "Orders",
         components: {
@@ -198,7 +201,8 @@
             FlClipboardMultiple,
             MiMoneyPlus,
             CgSandClock, 
-            MdTimeline
+            MdTimeline,
+            AkTriangleAlert
         },
         data() {
             return {
@@ -332,6 +336,9 @@
         box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         border-radius: 0.75rem;
     }
+    :deep(.v-card.blue){
+        border-left: 4px solid #0064974d;
+    }
     :deep(.v-card .v-card-title){
         color: #566167;
         font-size: 0.75rem;
@@ -344,8 +351,19 @@
         color: #2a343a;
         font-size: 2.25rem;
         font-weight: 800;
+        letter-spacing: -0.05em;
         font-family: Manrope;
         padding-bottom: 0;
+    }
+    :deep(.risk .v-card-text){
+        color: #a83836;
+    }
+    :deep(.risk .v-card-actions span){
+        color: #566167;
+        font-weight: 500;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        gap: .5rem;
     }
     :deep(.v-card-actions span){
         padding: 1rem;
@@ -513,5 +531,20 @@
     :deep(.v-data-table-footer__items-per-page .v-input .v-field){
         border-radius: .75rem;
         background: white;
+    }
+    .primary-btn{
+        color: white;
+        background-color: #0369a1;
+        border-color: #00649766;
+        width: 100%;
+        padding: .675rem 1.5rem;
+        height: auto;
+        border-radius: .5rem;
+        font-size: 0.875rem;
+        font-weight: 700;
+        text-transform: capitalize;
+        letter-spacing: 0;
+        font-family: Manrope;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     }
 </style>

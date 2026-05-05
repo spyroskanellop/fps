@@ -66,13 +66,47 @@
           <v-col cols="auto" class="d-flex align-center justify-end">  <v-divider class="border-opacity-100" color="#e2e8f0" vertical></v-divider></v-col>
           
           <v-col cols="auto">
-            <v-avatar
-              size="36px">
-              <v-img
-                alt="Avatar"
-                src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-              ></v-img>
-            </v-avatar>
+            <v-menu offset-y transition="slide-x-transition" class="account-menu">
+                <!-- Account button -->
+                <template v-slot:activator="{props}">
+                  <v-avatar
+                    size="36px"
+                    v-bind="props">
+                    <v-img
+                      alt="Avatar"
+                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                    ></v-img>
+                  </v-avatar>
+                </template>
+  
+                <v-card>
+                  <v-list min-width="250" class="overflow-hidden px-0 pb-1 menu-header">
+                    <v-row class="px-4 py-1">
+                      <v-col cols="auto" class="d-flex justify-end">
+                        <v-avatar color="primary" variant="tonal" size="large">
+                          <span class="text-h6 font-weight-bold">S</span>
+                        </v-avatar>
+                      </v-col>
+                      <v-col class="d-flex flex-column justify-center">
+                        <span class="text-h8" style="line-height: 1.5;">Spyros</span>
+                        <p class="text-caption" style="color: #A4AABC; line-height: 1.5;">ADMIN</p>
+                      </v-col>
+                    </v-row>
+    
+                    <v-divider class="mt-2"></v-divider>
+                    <div class="mt-2 px-3">
+                      <v-btn v-for="item in options" :key="item.text" class="icon-text justify-start" color="#A4AABC" :title="item.text" rounded="xs" variant="text" block :prepend-icon="item.icon" style="text-transform: capitalize;">{{ item.text }}</v-btn>
+                    </div>
+                    <v-divider class="mt-2"></v-divider>
+                    <div class="my-2 px-3">
+                        <v-btn rounded="xs" variant="text" color="#ae152d" block prepend-icon="mdi-exit-to-app" class="justify-start" style="text-transform: capitalize;" @click="logOut">Logout</v-btn>
+                    </div>
+                  </v-list>
+                </v-card>
+              </v-menu>
+
+
+
           </v-col>
         </v-row>
       </v-app-bar>
@@ -116,7 +150,13 @@ export default {
     ],
     bottomItems: [
       { icon: MdLogout, title: 'LogOut', value: 'logout' }
-    ]
+    ],
+    options: [
+      {
+        text: "Settings",
+        icon: "mdi-cog"
+      }
+    ],
   }),
   methods: {
     
@@ -247,5 +287,19 @@ footer{
 .v-avatar{
   border: 2px solid white;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+:deep(.menu-header .v-row){
+  background-color: #eef4fa80;
+}
+:deep(.account-menu > .v-card){
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border: 1px solid #e7e8eb;
+  border-radius: 12px;
+}
+:deep(.menu-header span){
+  font-family: Manrope;
+}
+:deep(.menu-header .v-btn){
+  gap: .5rem;
 }
 </style>
