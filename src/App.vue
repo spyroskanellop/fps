@@ -7,12 +7,17 @@
         :rail-width="wider ? 80 : undefined"
         class="nav-drawer"
         permanent
-        @click="rail = false"
       >
         <div class="header">
           <v-list>
             <v-list-item
               title="Fabrik MES">
+              <template v-slot:prepend>
+                <v-avatar rounded="0" size="50" @click="rail = !rail">
+                  <v-img src="/src/assets/fabrik_f_logo.png" />
+                </v-avatar>
+
+              </template>
               <template v-slot:append>
                 <v-btn
                   :inert="rail"
@@ -89,6 +94,7 @@
 <script>
 import Navbar from "./components/Navbar.vue";
 import { FlClipboardTaskListLtr, CaTreeView, FlPeopleChat, BsShield, MdLogout, BsBell } from '@kalimahapps/vue-icons';
+import fabrikLogo from '@/assets/fabrik_f.svg'
 
 export default {
   name: "App",

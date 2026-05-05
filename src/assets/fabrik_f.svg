@@ -1,0 +1,50 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" fill="#202020"/>
+  <defs>
+    <linearGradient id="whiteSheen" x1="210" y1="90" x2="560" y2="780" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.48" stop-color="#F7F7F7"/>
+      <stop offset="1" stop-color="#D9D9D9"/>
+    </linearGradient>
+    <filter id="softGlow" x="120" y="40" width="560" height="980" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 1  0 1 0 0 1  0 0 1 0 1  0 0 0 .28 0"/>
+      <feBlend in="SourceGraphic" mode="normal"/>
+    </filter>
+    <filter id="shadow" x="120" y="50" width="610" height="950" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Subtle construction lines inspired by the original FABRIK mark -->
+  <path d="M214 186V964" stroke="#FFFFFF" stroke-opacity="0.13" stroke-width="2"/>
+  <path d="M214 186H619" stroke="#FFFFFF" stroke-opacity="0.09" stroke-width="2"/>
+  <path d="M214 414H514" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="2"/>
+
+  <!-- Main stylized F -->
+  <g filter="url(#shadow)">
+    <path filter="url(#softGlow)" fill="url(#whiteSheen)" d="
+      M214 112
+      H650
+      V188
+      H308
+      V367
+      H542
+      V441
+      H308
+      V964
+      H214
+      V112Z"/>
+
+    <!-- Sharp bevel cuts for a more premium monogram feel -->
+    <path d="M650 112V188H598L650 112Z" fill="#E8E8E8" opacity="0.95"/>
+    <path d="M542 367V441H489L542 367Z" fill="#E8E8E8" opacity="0.9"/>
+
+    <!-- Thin inner highlight on the long stem -->
+    <path d="M298 150V940" stroke="#FFFFFF" stroke-opacity="0.42" stroke-width="3"/>
+
+    <!-- Small terminal accents -->
+    <rect x="214" y="112" width="94" height="10" fill="#FFFFFF" opacity="0.75"/>
+    <rect x="214" y="954" width="94" height="10" fill="#FFFFFF" opacity="0.34"/>
+  </g>
+</svg>

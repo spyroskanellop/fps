@@ -63,7 +63,10 @@
 
         <div class="table-container mt-6">
             <v-data-table class="" :headers="headers" :items="this.items" item-value="Order_Id"
-             show-expand>
+                sort-asc-icon="mdi-sort-ascending"
+                sort-desc-icon="mdi-sort-descending"
+                sort-icon="mdi-swap-vertical"
+                show-expand>
                 <template v-slot:[`item.Order_Id`]="{item}">
                     <div>
                         <h2 class="order-header">
@@ -153,10 +156,28 @@
                                         </div>
                                     </div>
                                 </v-col>
+
+                                <v-col cols="3" class="ml-8">
+                                    <div class="details">
+                                        <div class="v-row">
+                                            <v-col cols="auto" class="d-flex flex-center"><MdTimeline/></v-col>
+                                            <v-col><h4>Production Timeline</h4></v-col>
+                                        </div>
+                                        
+                                        <div class="content mt-2">
+                                            <div class="d-flex justify-space-between">
+                                                <span class="header">Order Date:</span>
+                                                <span>2024-05-12</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-col>
+
+
+
                                 <v-col>
                                     <v-btn color="primary" class="float-right">Update Status</v-btn>
                                 </v-col>
-                                
                             </v-row>
                         </td>
                     </tr>
@@ -167,7 +188,7 @@
     </v-container>
 </template>
 <script>
-    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock } from '@kalimahapps/vue-icons';
+    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline } from '@kalimahapps/vue-icons';
     
     export default {
         name: "Orders",
@@ -176,7 +197,8 @@
             FeTrendingUp,
             FlClipboardMultiple,
             MiMoneyPlus,
-            CgSandClock
+            CgSandClock, 
+            MdTimeline
         },
         data() {
             return {
@@ -348,8 +370,14 @@
     .v-table{
         box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
         border-radius: 0.75rem;
-        background: white;
+        background: transparent;
         overflow: hidden;
+    }
+    :deep(.v-table tbody){
+        background: white;
+    }
+    :deep(.v-table .v-divider){
+        display: none;
     }
     :deep(.v-table-wrapper){
         border-radius: 0.75rem;
@@ -370,6 +398,10 @@
     {
         border-bottom: 0;
     }
+    :deep(.v-table.v-data-table .v-table__wrapper table tbody tr td){
+        border-bottom: 1px solid #e1e9f04d;
+        padding: .785rem 1.5rem;
+    }
     :deep(.v-table.v-data-table .v-table__wrapper table thead th span){
         font-family: Manrope;
         color: #566167;
@@ -377,6 +409,9 @@
         text-transform: uppercase;
         font-weight: 700;
         font-size: 0.675rem;
+    }
+    :deep(.v-table.v-data-table .v-table__wrapper){
+        border-radius: 0.75rem;
     }
     :deep(.order-header){
         color: #006497;
@@ -467,5 +502,16 @@
     }
     :deep(.expanded-row .details .content > div:nth-child(1)){
         border-bottom: 1px solid #e2e8f0;
+    }
+    :deep(.v-data-table-footer__info > div),
+    :deep(.v-data-table-footer__items-per-page span){
+        color: #566167;
+        font-weight: 700;
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+    :deep(.v-data-table-footer__items-per-page .v-input .v-field){
+        border-radius: .75rem;
+        background: white;
     }
 </style>
