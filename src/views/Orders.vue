@@ -10,7 +10,141 @@
                     <template v-slot:prepend><CaFilterEdit /></template>
                     Advanced Filters
                 </v-btn>
-                <v-btn color="#0369a1" class="new-order-btn">Create New Order</v-btn>
+
+
+                <v-dialog max-width="500" transition="slide-x-reverse-transition" class="new-order-dialog">
+                    <template v-slot:activator="{ props: activatorProps }">
+                        <v-btn color="#0369a1" class="new-order-btn" v-bind="activatorProps">Create New Order</v-btn>
+                    </template>
+
+                    <template v-slot:default="{ isActive }">
+                        <v-card class="new-order-card">
+                            <template v-slot:title>
+                                <v-row>
+                                    <v-col cols="auto">
+                                        <v-avatar color="#0369a1" variant="tonal" size="50" rounded="lg">
+                                            <v-icon size="30"><CaMachineLearningModel/></v-icon>
+                                        </v-avatar>
+                                    </v-col>
+                                    <v-col>
+                                        <h3 class="header-title">Create New Order</h3>
+                                        <p class="header-subtitle">Production Unit Fabrication</p>
+                                    </v-col>
+                                    <v-col>
+                                        <v-btn
+                                        @click="isActive.value = false"
+                                        variant="text"
+                                        class="float-right"
+                                        >
+                                            <v-icon>mdi-close</v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                            </template>
+                            <v-divider></v-divider>
+                        <v-card-text class="mt-4 px-8">
+                            <div>
+                                <v-row class="ga-2 mb-6" no-gutters>
+                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                    <v-col><h3>Primary Identification</h3></v-col>
+                                </v-row>
+
+                                <h4 class="description mb-2">Customer Name</h4>
+                                <v-text-field
+                                    density="compact"
+                                    placeholder="Search or enter customer name..."
+                                    append-inner-icon="mdi-magnify "
+                                    variant="outlined"
+                                    hide-details
+                                ></v-text-field>
+                                <v-row no-gutters class="ga-6 my-4">
+                                    <v-col>
+                                        <h4 class="description mb-2">SKU Reference</h4>
+                                        <v-text-field
+                                            density="compact"
+                                            placeholder="TX-2048-IND"
+                                            variant="outlined"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col>
+                                        <h4 class="description mb-2">Quantity</h4>
+                                        <v-number-input
+                                            density="compact"
+                                            control-variant="stacked"
+                                            placeholder="0"
+                                            variant="outlined"
+                                        ></v-number-input>
+                                    </v-col>
+                                </v-row>
+                            </div>
+
+                            <div>
+                                <v-row class="ga-2 mb-6" no-gutters>
+                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                    <v-col><h3>Product Specifications</h3></v-col>
+                                </v-row>
+
+                                <h4 class="description mb-2">Customer Name</h4>
+                                <v-text-field
+                                    density="compact"
+                                    placeholder="Search specific product..."
+                                    append-inner-icon="mdi-magnify "
+                                    variant="outlined"
+                                    hide-details
+                                ></v-text-field>
+                                <v-row no-gutters class="ga-6 my-4">
+                                    <v-col>
+                                        <h4 class="description mb-2">Product Name</h4>
+                                        <v-text-field
+                                            density="compact"
+                                            placeholder="TX-2048-IND"
+                                            variant="outlined"
+                                            hide-details
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col>
+                                        <h4 class="description mb-2">Size</h4>
+                                        <v-select
+                                            density="compact"
+                                            label="Select"
+                                            :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                            variant="outlined"
+                                            hide-details
+                                        ></v-select>
+                                    </v-col>
+                                    <v-col>
+                                        <h4 class="description mb-2">Color Grade</h4>
+                                        <v-btn color="primary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
+                                        <v-btn color="secondary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
+                                        
+                                    </v-col>
+                                    
+                                </v-row>
+                            </div>
+
+
+
+                        </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-actions class="d-flex justify-space-between">
+                            <v-btn
+                            text="Discard Changes"
+                            ></v-btn>
+
+                            <v-btn
+                            text="Create Order"
+                            :prepend-icon="HiRocketLaunch"
+                            @click="isActive.value = false"
+                            ></v-btn>
+                        </v-card-actions>
+                        </v-card>
+                    </template>
+                    </v-dialog>
+
+
+
+
             </v-col>
         </v-row>
 
@@ -143,13 +277,13 @@
                 <template v-slot:expanded-row="{ columns, item }">   
                     <tr class="expanded-row">
                         <td :colspan="columns.length" class="px-5 py-6">
-                            <v-row class="justify-space-between">
+                            <v-row class="justify-space-between" no-gutters>
                                 <v-col cols="3">
                                     <div class="details">
-                                        <div class="v-row">
+                                        <v-row no-gutters>
                                             <v-col cols="auto" class="d-flex flex-center"><MiMoneyPlus/></v-col>
                                             <v-col><h4>Financial Details</h4></v-col>
-                                        </div>
+                                        </v-row>
                                         
                                         <div class="content mt-2">
                                             <div class="d-flex justify-space-between">
@@ -166,10 +300,10 @@
 
                                 <v-col cols="3" class="ml-8">
                                     <div class="details">
-                                        <div class="v-row">
+                                        <v-row no-gutters>
                                             <v-col cols="auto" class="d-flex flex-center"><MdTimeline/></v-col>
                                             <v-col><h4>Production Timeline</h4></v-col>
-                                        </div>
+                                        </v-row>
                                         
                                         <div class="content mt-2">
                                             <div class="d-flex justify-space-between">
@@ -192,7 +326,8 @@
     </v-container>
 </template>
 <script>
-    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert } from '@kalimahapps/vue-icons';
+    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch } from '@kalimahapps/vue-icons';
+    
     export default {
         name: "Orders",
         components: {
@@ -202,7 +337,9 @@
             MiMoneyPlus,
             CgSandClock, 
             MdTimeline,
-            AkTriangleAlert
+            AkTriangleAlert,
+            CaMachineLearningModel,
+            HiRocketLaunch
         },
         data() {
             return {
@@ -290,6 +427,7 @@
                         payment_status: 'Pending'
                     },
                 ],
+                HiRocketLaunch: HiRocketLaunch,
                 expanded: []
             }
         }
@@ -546,5 +684,67 @@
         letter-spacing: 0;
         font-family: Manrope;
         box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    .new-order-dialog :deep(.v-overlay__content){
+        right: 0;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        max-height: none;
+    }
+    .v-overlay-container .new-order-dialog :deep(div.v-card-item){
+        padding: 1.5rem 2rem;
+    }
+    .new-order-card .header-title {
+        color: #2a343a;
+        text-transform: capitalize;
+        line-height: 1.25;
+        font-weight: 800;
+        font-size: 1.25rem;
+    }
+    .new-order-card .header-subtitle {
+        color: #0369a1;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        margin-top: 0.125rem;
+    }
+    .new-order-card .v-card-text h3{
+        color: #566167;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 900;
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+    .new-order-card .v-card-text .description{
+        color: #566167;
+        letter-spacing: -0.05em;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: .75rem;
+        line-height: 1rem;
+    }
+    .new-order-card .v-card-text :deep(input::placeholder){
+        color: #566167;
+        font-size: .875rem;
+        opacity: 1;
+    }
+    .new-order-card .v-card-text :deep(.v-input .v-field__outline__start),
+    .new-order-card .v-card-text :deep(.v-input .v-field__outline__notch::before),
+    .new-order-card .v-card-text :deep(.v-input .v-field__outline__notch::after),
+    .new-order-card .v-card-text :deep(.v-input .v-field__outline__end){
+        border-color: #e2e8f0;
+        opacity: 1;
+    }
+    .new-order-card .v-card-text :deep(.v-field){
+        border-radius: 0.5rem;
+        padding: .2rem 1rem .2rem 0;
+    }
+    :deep(.v-overlay__scrim){
+        background: #0f172a66;
+        opacity: 1;
+        backdrop-filter: blur(8px);
     }
 </style>
