@@ -12,7 +12,7 @@
                 </v-btn>
 
 
-                <v-dialog max-width="500" transition="slide-x-reverse-transition" class="new-order-dialog">
+                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog">
                     <template v-slot:activator="{ props: activatorProps }">
                         <v-btn color="#0369a1" class="new-order-btn" v-bind="activatorProps">Create New Order</v-btn>
                     </template>
@@ -115,28 +115,81 @@
                                     </v-col>
                                     <v-col>
                                         <h4 class="description mb-2">Color Grade</h4>
-                                        <v-btn color="primary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
-                                        <v-btn color="secondary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
-                                        
+                                        <v-container class="pa-0 d-flex ga-2">
+                                            <v-btn color="primary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
+                                            <v-btn color="secondary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
+                                        </v-container>
+                                        <v-btn color="primary" variant="text" class="save-btn" :prepend-icon="McBookmarkAddLine">Save as template</v-btn>
                                     </v-col>
                                     
                                 </v-row>
                             </div>
 
+                            <div>
+                                <v-row class="ga-2 mb-6" no-gutters>
+                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                    <v-col><h3>Pipeline Status</h3></v-col>
+                                </v-row>
+
+                                <h4 class="description mb-2">Current Stage</h4>
+                                <v-select
+                                    density="compact"
+                                    label="Select"
+                                    :items="['Preparation', 'In Progress', 'Completed']"
+                                    variant="outlined"
+                                    hide-details
+                                ></v-select>
+                                <v-row no-gutters class="ga-6 my-4 mb-1">
+                                    <v-col>
+                                        <h4 class="description mb-2">Delivery Status</h4>
+                                        <v-select
+                                            density="compact"
+                                            label="Select"
+                                            :items="['Pending Logistics', 'Out for Delivery', 'Delivered']"
+                                            variant="outlined"
+                                            hide-details
+                                        ></v-select>
+                                    </v-col>
+                                    <v-col>
+                                        <h4 class="description mb-2">Due Date</h4>
+                                        <v-date-input
+                                            prepend-icon=""
+                                            prepend-inner-icon="$calendar"
+                                            variant="outlined"
+                                            density="compact"
+                                        ></v-date-input>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row no-gutters class="ga-6 mb-4">
+                                    <v-col cols="12">
+                                        <h4 class="description mb-2">Delivery Status</h4>
+                                        <v-select
+                                            density="compact"
+                                            label="Select"
+                                            :items="['Pending Logistics', 'Out for Delivery', 'Delivered']"
+                                            variant="outlined"
+                                            hide-details
+                                        ></v-select>
+                                    </v-col>
+                                </v-row>
+                            </div>
 
 
                         </v-card-text>
                         <v-divider></v-divider>
-                        <v-card-actions class="d-flex justify-space-between">
+                        <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
                             <v-btn
-                            text="Discard Changes"
+                                class="h-auto"
+                                text="Discard Changes"
+                            ></v-btn>
+                            <v-btn
+                                class="h-auto create-order-btn"
+                                text="Create Order"
+                                :prepend-icon="HiRocketLaunch"
+                                @click="isActive.value = false"
                             ></v-btn>
 
-                            <v-btn
-                            text="Create Order"
-                            :prepend-icon="HiRocketLaunch"
-                            @click="isActive.value = false"
-                            ></v-btn>
                         </v-card-actions>
                         </v-card>
                     </template>
@@ -326,7 +379,7 @@
     </v-container>
 </template>
 <script>
-    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch } from '@kalimahapps/vue-icons';
+    import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine } from '@kalimahapps/vue-icons';
     
     export default {
         name: "Orders",
@@ -339,7 +392,8 @@
             MdTimeline,
             AkTriangleAlert,
             CaMachineLearningModel,
-            HiRocketLaunch
+            HiRocketLaunch,
+            McBookmarkAddLine
         },
         data() {
             return {
@@ -428,6 +482,7 @@
                     },
                 ],
                 HiRocketLaunch: HiRocketLaunch,
+                McBookmarkAddLine: McBookmarkAddLine,
                 expanded: []
             }
         }
@@ -509,11 +564,18 @@
     :deep(.v-card-actions span){
         font-family: Manrope;
         color: #00687b;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 0.875rem;
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        text-transform: capitalize;
+    }
+    :deep(.v-card-actions .v-btn:nth-child(1)){
+        flex: 1;
+    }
+    :deep(.v-card-actions .v-btn:nth-child(2)){
+        flex: 2;
     }
     .background-icon{
         position: absolute;
@@ -726,7 +788,9 @@
         font-size: .75rem;
         line-height: 1rem;
     }
-    .new-order-card .v-card-text :deep(input::placeholder){
+    .new-order-card .v-card-text :deep(input::placeholder),
+    .new-order-card .v-card-text :deep(.v-label)
+    {
         color: #566167;
         font-size: .875rem;
         opacity: 1;
@@ -746,5 +810,45 @@
         background: #0f172a66;
         opacity: 1;
         backdrop-filter: blur(8px);
+    }
+    .save-btn{
+        font-size: 0.675rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+    :deep(.v-overlay__content .v-card .v-card-text){
+        overflow-y: auto;
+    }
+    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar) {
+        width: 4px;
+    }
+
+    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-track) {
+        background: transparent;
+    }
+
+    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb) {
+        background-color: #0369a020;
+        border-radius: 999px;
+    }
+
+    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb:hover) {
+        background-color: #0369a040;
+    }
+    :deep(.v-overlay__content .v-card.new-order-card){
+        overflow-y: hidden;
+    }
+    .create-order-btn{
+        background: #0369a1;
+        box-shadow: 0 10px 15px -3px rgb(12 74 110 / 0.2), 0 4px 6px -4px rgb(12 74 110 / 0.2);
+        border-radius: 0.5rem;
+    }
+    .create-order-btn :deep(.v-btn__prepend){
+        padding: 0 0 0 .75rem;
+        color: white;
+    }
+    .create-order-btn :deep(.v-btn__content){
+        color: white;
     }
 </style>
