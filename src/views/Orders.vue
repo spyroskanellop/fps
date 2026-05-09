@@ -163,11 +163,11 @@
 
                                 <v-row no-gutters class="ga-6 mb-4">
                                     <v-col cols="12">
-                                        <h4 class="description mb-2">Delivery Status</h4>
+                                        <h4 class="description mb-2">Priority Level</h4>
                                         <v-select
                                             density="compact"
                                             label="Select"
-                                            :items="['Pending Logistics', 'Out for Delivery', 'Delivered']"
+                                            :items="['Low', 'Medium', 'High']"
                                             variant="outlined"
                                             hide-details
                                         ></v-select>
@@ -175,6 +175,48 @@
                                 </v-row>
                             </div>
 
+                            <div class="mt-9">
+                                <v-row class="ga-2 mb-6" no-gutters>
+                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                    <v-col><h3>Financial Summary</h3></v-col>
+                                </v-row>
+
+                                <div class="financial-container">
+                                    <v-row no-gutters class="ga-6 mb-4">
+                                        <v-col>
+                                            <h4 class="description mb-2">Total Amount</h4>
+                                            <v-text-field
+                                                density="compact"
+                                                placeholder="TX-2048-IND"
+                                                variant="outlined"
+                                                hide-details
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col>
+                                            <h4 class="description mb-2">Paid Amount</h4>
+                                            <v-text-field
+                                                density="compact"
+                                                placeholder="TX-2048-IND"
+                                                variant="outlined"
+                                                hide-details
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+
+                                    <v-row>
+                                        <v-col>
+                                            <h4 class="description mb-2">Current Stage</h4>
+                                            <v-select
+                                                density="compact"
+                                                label="Select"
+                                                :items="['Preparation', 'In Progress', 'Completed']"
+                                                variant="outlined"
+                                                hide-details
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                            </div>
 
                         </v-card-text>
                         <v-divider></v-divider>
@@ -850,5 +892,13 @@
     }
     .create-order-btn :deep(.v-btn__content){
         color: white;
+    }
+    .financial-container{
+        background-color: #eef4fa;
+        border-radius: .75rem;
+        padding: 1.5rem;
+    }
+    .financial-container :deep(.v-field){
+        background: white;
     }
 </style>
