@@ -644,13 +644,11 @@
     }
     :deep(.v-table thead tr){
         background-color: #e2e8f0;
-        /* border: 1px solid #e1e9f04d; */
     }
     .table-container{
         background-color: #e2e8f0;
         padding: 1px;
         border: 1px solid #e1e9f04d;
-        /* border-radius: 1rem; */
         border-radius: .75rem;
     }
     :deep(.v-table.v-data-table .v-table__wrapper table tbody tr td),

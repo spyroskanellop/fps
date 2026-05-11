@@ -6,6 +6,7 @@ html, body {
 }
 body{
   background-color: #f7f9fe;
+  font-family: Manrope;
 }
 #app {
   min-height: 100vh;
@@ -84,11 +85,29 @@ body{
   margin-top: 5px;
 }
 
-.v-overlay--scroll-blocked{
-  backdrop-filter: blur(4px);
-  background: #0f172a80;
-}
 .v-divider{
   color: #f1f5f9;
   opacity: 1;
+}
+.v-overlay__content .v-card .v-card-text{
+  overflow-y: auto;
+}
+.v-overlay__content .v-card .v-card-text::-webkit-scrollbar {
+  width: 4px;
+}
+
+.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb {
+  background-color: #0369a020;
+  border-radius: 999px;
+}
+
+.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb:hover {
+  background-color: #0369a040;
+}
+.v-overlay__content .v-card.new-order-card{
+  overflow-y: hidden;
 }
