@@ -103,10 +103,7 @@
                     </div>
                   </v-list>
                 </v-card>
-              </v-menu>
-
-
-
+            </v-menu>
           </v-col>
         </v-row>
       </v-app-bar>
