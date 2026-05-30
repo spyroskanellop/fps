@@ -1,7 +1,25 @@
 <template>
   <v-app>
+      <div v-if="isMobile">
+        <v-container class="text-center position-relative d-flex flex-column ga-3" style="top: 5rem;">
+        <v-avatar color="primary" variant="tonal" size="80" class="align-self-center">
+          <v-icon size="x-large">mdi-monitor</v-icon>
+        </v-avatar>
+
+        <v-container class="d-flex flex-column ga-4">
+          <h1 class="text-capitalize" style="color: #0A1B39; font-size: 1.5rem;">Best Experienced on Desktop</h1>
+          <p class="align-self-center" style="color: #6C7688;">Our appointment booking system is currently optimized for desktop use. Please visit us on your laptop or desktop computer to continue. A mobile version is coming soon!</p>
+        </v-container>
+        <v-container>
+          <v-btn color="primary" variant="outlined" @click="goHome" class="text-capitalize mt-4">
+            Copy Link
+          </v-btn>
+        </v-container>
+      </v-container>
+    </div>
     <!-- <Navbar /> -->
       <v-navigation-drawer
+        v-if="!isMobile"
         v-model="drawer"
         :rail="rail"
         :rail-width="wider ? 80 : undefined"
@@ -60,7 +78,7 @@
           ></v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-app-bar app height="75" elevation="0" class="mr-2">
+      <v-app-bar v-if="!isMobile" app height="75" elevation="0" class="mr-2">
         <v-row>
           <v-col cols="auto" class="d-flex align-center justify-end"><BsBell /></v-col>
           <v-col cols="auto" class="d-flex align-center justify-end">  <v-divider class="border-opacity-100" color="#e2e8f0" vertical></v-divider></v-col>
@@ -108,7 +126,7 @@
         </v-row>
       </v-app-bar>
 
-      <v-main>
+      <v-main v-if="!isMobile">
         <div class="blur-box"></div>
         <router-view></router-view>
         <!-- <div class="blur-box bottom"></div> -->
@@ -157,6 +175,11 @@ export default {
   }),
   methods: {
     
+  },
+  computed: {
+    isMobile() {
+      return this.$vuetify.display.mobile
+    }
   },
 };
 </script>
