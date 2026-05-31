@@ -2,19 +2,19 @@
     <v-container>
         <v-row class="header">
             <v-col>
-                <span class="text-uppercase">Relationship Management</span>
-                <h1>Customer Ecosystem</h1>
+                <span class="text-uppercase">Διαχείριση Οντοτήτων</span>
+                <h1>Πελάτες</h1>
             </v-col>
             <v-col class="d-flex ga-5 justify-end align-center">
                 <v-btn variant="outlined" color="#0369a1">
                     <template v-slot:prepend><CaFilterEdit /></template>
-                    Advanced Filters
+                    Σύνθετα Φίλτρα
                 </v-btn>
 
 
                 <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-customer-dialog">
                     <template v-slot:activator="{ props: activatorProps }">
-                        <v-btn color="#0369a1" class="new-customer-btn" v-bind="activatorProps">Add New Customer</v-btn>
+                        <v-btn color="#0369a1" class="new-customer-btn" v-bind="activatorProps">Δημιουργία Νέου Πελάτη</v-btn>
                     </template>
 
                     <template v-slot:default="{ isActive }">
@@ -27,8 +27,8 @@
                                         </v-avatar>
                                     </v-col>
                                     <v-col>
-                                        <h3 class="header-title">New Client Enrollment</h3>
-                                        <p class="header-subtitle">Precision Curator Industrial Record</p>
+                                        <h3 class="header-title">Εγγραφή Νέου Πελάτη</h3>
+                                        <p class="header-subtitle">Αναλυση αρχειου πελατη</p>
                                     </v-col>
                                     <v-col>
                                         <v-btn
@@ -46,24 +46,25 @@
                             <div>
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Primary Identification</h3></v-col>
+                                    <v-col><h3>Κυριως Στοιχεια</h3></v-col>
                                 </v-row>
 
                                 <v-row no-gutters class="ga-6 my-4">
                                     <v-col>
-                                        <h4 class="description mb-2">Client ID</h4>
+                                        <h4 class="description mb-2">Αναγνωριστικο Πελατη</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="CLI-2024-TEMP"
                                             variant="outlined"
+                                            disabled
                                             hide-details
                                         ></v-text-field>
                                     </v-col>
                                     <v-col>
-                                        <h4 class="description mb-2">Industry</h4>
+                                        <h4 class="description mb-2">Βιομηχανια</h4>
                                         <v-select
                                             density="compact"
-                                            label="Select Industry"
+                                            label="Επιλογή Βιομηχανίας"
                                             :items="['Manufacturing', 'Streetwear', 'Corporate', 'Non-Profit']"
                                             variant="outlined"
                                             hide-details
@@ -72,10 +73,10 @@
                                 </v-row>
                                 <v-row no-gutters class="mb-6">
                                     <v-col>
-                                        <h4 class="description mb-2">Company Name</h4>
+                                        <h4 class="description mb-2">Ονομα Εταιρειας</h4>
                                         <v-text-field
                                             density="compact"
-                                            placeholder="Search or enter company name..."
+                                            placeholder="Πληκτρολογήστε το όνομα της εταιρείας..."
                                             variant="outlined"
                                             hide-details
                                         ></v-text-field>
@@ -86,15 +87,15 @@
                             <div>
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Contact Info</h3></v-col>
+                                    <v-col><h3>Πληροφορίες Επικοινωνίας</h3></v-col>
                                 </v-row>
 
                                 <v-row no-gutters class="ga-6 my-4">
                                     <v-col>
-                                        <h4 class="description mb-2">Contact Person</h4>
+                                        <h4 class="description mb-2">Πρόσωπο Επικοινωνίας</h4>
                                         <v-text-field
                                             density="compact"
-                                            placeholder="Full Name of Representative"
+                                            placeholder="Πληκτρολογήστε το όνομα του εκπροσώπου..."
                                             variant="outlined"
                                             hide-details
                                         ></v-text-field>
@@ -103,7 +104,7 @@
 
                                 <v-row no-gutters class="ga-6 my-4">
                                     <v-col>
-                                        <h4 class="description mb-2">Phone Number</h4>
+                                        <h4 class="description mb-2">Αριθμός Τηλεφώνου</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="+1 555 123 4567"
@@ -112,7 +113,7 @@
                                         ></v-text-field>
                                     </v-col>
                                     <v-col>
-                                        <h4 class="description mb-2">Email Address</h4>
+                                        <h4 class="description mb-2">Διευθυνση Email</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="example@email.com"
@@ -126,12 +127,12 @@
                             <div>
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Location Details</h3></v-col>
+                                    <v-col><h3>Στοιχεια Τοποθεσιας</h3></v-col>
                                 </v-row>
 
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col>
-                                        <h4 class="description mb-2">Street Address</h4>
+                                        <h4 class="description mb-2">Διευθυνση Οδου</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="123 Main Street"
@@ -143,7 +144,7 @@
 
                                 <v-row no-gutters class="ga-6 my-4 mb-1">
                                     <v-col>
-                                        <h4 class="description mb-2">City</h4>
+                                        <h4 class="description mb-2">Πόλη</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="New York"
@@ -152,7 +153,7 @@
                                         ></v-text-field>
                                     </v-col>
                                     <v-col>
-                                        <h4 class="description mb-2">Postal Code</h4>
+                                        <h4 class="description mb-2">Ταχυδρομικός Κώδικας</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="10001"
@@ -166,7 +167,7 @@
                             <div class="mt-9">
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Status and operational Notes</h3></v-col>
+                                    <v-col><h3>Κατάσταση και Λεπτομέρειες Λειτουργίας</h3></v-col>
                                 </v-row>
 
                                 <div class="status-container">
@@ -185,19 +186,19 @@
 
                                 <v-row no-gutters class="ga-6 my-6 d-flex align-center justify-space-between">
                                     <v-col>
-                                        <h4 class="description mb-2">Internal Notes</h4>
-                                        <v-text-field variant="outlined" placeholder="Mention specific manufacturing requirements" hide-details></v-text-field>
+                                        <h4 class="description mb-2">Σημειωσεις</h4>
+                                        <v-text-field variant="outlined" placeholder="Προσθέστε σημειώσεις εδώ..." hide-details></v-text-field>
                                     </v-col>
                                 </v-row>
 
                                 <v-row no-gutters class="ga-6 my-6 d-flex align-center justify-space-between">
                                     <v-col class="timestamp-modal">
-                                        <h4>Created At</h4>
+                                        <h4>Δημιουργηθηκε Στις</h4>
                                         <span>2026-05-24 14:22</span>
                                     </v-col>
 
                                     <v-col class="timestamp-modal">
-                                        <h4>Updated At</h4>
+                                        <h4>Ενημερωθηκε Στις</h4>
                                         <span>2026-05-24 14:22</span>
                                     </v-col>
 
@@ -210,11 +211,11 @@
                         <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
                             <v-btn
                                 class="h-auto"
-                                text="Discard Changes"
+                                text="Απόρριψη Αλλαγών"
                             ></v-btn>
                             <v-btn
                                 class="h-auto create-user-btn"
-                                text="Create User"
+                                text="Δημιουργία Χρήστη"
                                 :prepend-icon="BxUserPlus"
                                 @click="isActive.value = false"
                             ></v-btn>

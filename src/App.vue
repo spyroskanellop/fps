@@ -32,7 +32,7 @@
               title="Fabrik MES">
               <template v-slot:prepend>
                 <v-avatar rounded="0" size="50" @click="rail = !rail">
-                  <v-img src="/src/assets/fabrik_f_logo.png" />
+                  <v-img :src="fabrikLogo" />
                 </v-avatar>
 
               </template>
@@ -51,7 +51,7 @@
         <v-divider></v-divider>
 
         <v-container v-if="!rail">
-          <h2 class="title-list">Operations</h2>
+          <h2 class="title-list">Λειτουργίες</h2>
         </v-container>
         <v-list density="compact" nav>
           <v-list-item
@@ -143,7 +143,7 @@
 <script>
 import Navbar from "./components/Navbar.vue";
 import { FlClipboardTaskListLtr, CaTreeView, FlPeopleChat, BsShield, MdLogout, BsBell } from '@kalimahapps/vue-icons';
-import fabrikLogo from '@/assets/fabrik_f.svg'
+import fabrikLogo from '@/assets/fabrik_f_logo.png'
 
 export default {
   name: "App",
@@ -157,18 +157,19 @@ export default {
     drawer: true,
     rail: true,
     wider: true,
+    fabrikLogo,
     items: [
-      { icon: FlClipboardTaskListLtr, title: 'Orders', value: 'orders', route: "/orders" },
-      { icon: CaTreeView, title: 'Workflow', value: 'workflow', route: "/workflow" },
-      { icon: FlPeopleChat, title: 'Customers', value: 'customers', route: "/customers" },
-      { icon: BsShield, title: 'Users', value: 'users', route: "/users" },
+      { icon: FlClipboardTaskListLtr, title: 'Παραγγελίες', value: 'orders', route: "/orders" },
+      { icon: CaTreeView, title: 'Ροές', value: 'workflow', route: "/workflow" },
+      { icon: FlPeopleChat, title: 'Πελάτες', value: 'customers', route: "/customers" },
+      { icon: BsShield, title: 'Χρήστες', value: 'users', route: "/users" },
     ],
     bottomItems: [
-      { icon: MdLogout, title: 'LogOut', value: 'logout' }
+      { icon: MdLogout, title: 'Αποσύνδεση', value: 'logout' }
     ],
     options: [
       {
-        text: "Settings",
+        text: "Ρυθμίσεις",
         icon: "mdi-cog"
       }
     ],

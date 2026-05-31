@@ -2,8 +2,8 @@
     <v-container>
         <v-row class="header">
             <v-col>
-                <span class="text-uppercase">Production Pipeline</span>
-                <h1>Workflow Control</h1>
+                <span class="text-uppercase">Γραμμη Παραγωγης</span>
+                <h1>Έλεγχος Ροών</h1>
             </v-col>
             <v-col class="d-flex align-center justify-end kanban-col">
                 <v-card class="pa-1">
@@ -19,7 +19,7 @@
                     <v-col>
                         <div class="d-flex ga-2 align-center">
                             <v-icon size="8" color="#cbd5e1">mdi-circle</v-icon>
-                            <h3>Preparation</h3>
+                            <h3>Προετοιμασία</h3>
                         </div>
                     </v-col>
                     <v-col class="d-flex justify-end">
@@ -102,7 +102,7 @@
                     <v-col>
                         <div class="d-flex ga-2 align-center">
                             <v-icon size="8" color="#0ea5e9">mdi-circle</v-icon>
-                            <h3>Cutting</h3>
+                            <h3>Κοπή</h3>
                         </div>
                     </v-col>
                     <v-col class="d-flex justify-end">
@@ -185,7 +185,7 @@
                     <v-col>
                         <div class="d-flex ga-2 align-center">
                             <v-icon size="8" color="#0369a1">mdi-circle</v-icon>
-                            <h3>Sewing</h3>
+                            <h3>Ράψιμο</h3>
                         </div>
                     </v-col>
                     <v-col class="d-flex justify-end">
@@ -268,7 +268,7 @@
                     <v-col>
                         <div class="d-flex ga-2 align-center">
                             <v-icon size="8" color="#00687b">mdi-circle</v-icon>
-                            <h3>Quality Check</h3>
+                            <h3>Έλεγχος Ποιότητας</h3>
                         </div>
                     </v-col>
                     <v-col class="d-flex justify-end">
@@ -288,7 +288,7 @@
                     <v-col>
                         <div class="d-flex ga-2 align-center">
                             <v-icon size="8" color="#00687b">mdi-circle</v-icon>
-                            <h3>Delivery</h3>
+                            <h3>Αποστολή</h3>
                         </div>
                     </v-col>
                     <v-col class="d-flex justify-end">

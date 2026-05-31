@@ -2,21 +2,20 @@
     <v-container>
         <v-row class="header">
             <v-col>
-                <span class="text-uppercase">Factory Overview</span>
-                <h1>Live Orders</h1>
+                <span class="text-uppercase">Επισκοπηση εργαστηριου</span>
+                <h1>Παραγγελίες</h1>
             </v-col>
             <v-col class="d-flex ga-5 justify-end align-center">
                 <v-btn variant="outlined" color="#0369a1">
                     <template v-slot:prepend><CaFilterEdit /></template>
-                    Advanced Filters
+                    Σύνθετα Φίλτρα
                 </v-btn>
 
 
                 <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog">
                     <template v-slot:activator="{ props: activatorProps }">
-                        <v-btn color="#0369a1" class="new-order-btn" v-bind="activatorProps">Create New Order</v-btn>
+                        <v-btn color="#0369a1" class="new-order-btn" v-bind="activatorProps">Δημιουργία Νέας Παραγγελίας</v-btn>
                     </template>
-
                     <template v-slot:default="{ isActive }">
                         <v-card class="new-order-card">
                             <template v-slot:title>
@@ -27,8 +26,8 @@
                                         </v-avatar>
                                     </v-col>
                                     <v-col>
-                                        <h3 class="header-title">Create New Order</h3>
-                                        <p class="header-subtitle">Production Unit Fabrication</p>
+                                        <h3 class="header-title">Δημιουργία Νέας Παραγγελίας</h3>
+                                        <p class="header-subtitle">Μοναδα Παραγωγης</p>
                                     </v-col>
                                     <v-col>
                                         <v-btn
@@ -236,10 +235,6 @@
                         </v-card>
                     </template>
                     </v-dialog>
-
-
-
-
             </v-col>
         </v-row>
 
@@ -247,13 +242,13 @@
             <v-col>
                 <v-card class="mx-auto py-2 px-5">
                     <v-card-item>
-                        <v-card-title>Total Active Orders</v-card-title>
+                        <v-card-title>Συνολικές Ενεργές Παραγγελίες</v-card-title>
                     </v-card-item>
                     <v-card-text>
                         1,284
                     </v-card-text>
                     <v-card-actions>
-                        <span><v-icon><FeTrendingUp/></v-icon> +12.5% vs last month </span>
+                        <span><v-icon><FeTrendingUp/></v-icon> +12.5% vs προηγούμενου μήνα </span>
                     </v-card-actions>
                     <v-icon class="background-icon"><FlClipboardMultiple/></v-icon>
                 </v-card>
@@ -262,7 +257,7 @@
             <v-col>
                 <v-card class="mx-auto py-2 px-5 blue">
                     <v-card-item>
-                        <v-card-title>In Production</v-card-title>
+                        <v-card-title>Σε Παραγωγή</v-card-title>
                     </v-card-item>
                     <v-card-text>
                         1,284
@@ -273,7 +268,7 @@
                                 <v-progress-linear buffer-value="65" color="#00687b" height="10" rounded stream></v-progress-linear>
                             </v-col>
                             <v-col cols="auto">
-                                <span> 65% capacity </span>
+                                <span> 65% χωρητικότητα </span>
                             </v-col>
                         </v-row>
                     </v-card-actions>
@@ -283,13 +278,13 @@
             <v-col>
                 <v-card class="mx-auto py-2 px-5 risk">
                     <v-card-item>
-                        <v-card-title>Revenue At Risk</v-card-title>
+                        <v-card-title>Έσοδα Σε Κινδυνό</v-card-title>
                     </v-card-item>
                     <v-card-text>
                         $42,900
                     </v-card-text>
                     <v-card-actions>
-                        <span><v-icon><AkTriangleAlert/></v-icon> 12 orders delayed at QC </span>
+                        <span><v-icon><AkTriangleAlert/></v-icon> 12 παραγγελίες καθυστερημένες </span>
                     </v-card-actions>
                     <v-icon class="background-icon"><AkTriangleAlert/></v-icon>
                 </v-card>
@@ -314,13 +309,6 @@
                     <div>
                         <h2 class="cust-header">
                             {{ item.Cust_id }}
-                        </h2>
-                    </div>
-                </template>
-                <template v-slot:[`item.SKU_CODE`]="{item}">
-                    <div>
-                        <h2 class="sku-header">
-                            {{ item.SKU_CODE }}
                         </h2>
                     </div>
                 </template>
@@ -441,19 +429,18 @@
             return {
                 // Data properties for orders can be added here
                 headers: [
-                    { title: "Order Id", key: "Order_Id", value: "Order_Id", sortable: true},
-                    { title: "Cust Id", key: "Cust_id", value: "Cust_id", sortable: true},
-                    { title: "SKU CODE", key: "SKU_CODE", value: "SKU_CODE", sortable: true},
-                    { title: "Product Name", key: "product_name", value: "product_name", sortable: true},
-                    { title: "Qty", key: "qty", value: "qty", sortable: true},
-                    { title: "Current Stage", key: "current_stage", value: "current_stage", sortable: true},
+                    { title: "Αναγνωριστικό Παραγγελίας", key: "Order_Id", value: "Order_Id", sortable: true},
+                    { title: "Τίτλος Παραγγελίας", key: "Order_Title", value: "Order_Title", sortable: true},
+                    { title: "Αναγνωριστικό Πελάτη", key: "Cust_id", value: "Cust_id", sortable: true},
+                    { title: "Όνομα Προϊόντος", key: "product_name", value: "product_name", sortable: true},
+                    { title: "Ποσότητα", key: "qty", value: "qty", sortable: true},
+                    { title: "Τρέχουσα Φάση", key: "current_stage", value: "current_stage", sortable: true},
                     { title: "Payment Status", key: "payment_status", value: "payment_status", sortable: true},
                 ],
                 items: [
                     {
                         Order_Id: '#ORD-2024-8812',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Sewing',
@@ -462,7 +449,6 @@
                     {
                         Order_Id: '#ORD-2024-8813',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Manufacturing',
@@ -471,7 +457,6 @@
                     {
                         Order_Id: '#ORD-2024-8814',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Manufacturing',
@@ -480,7 +465,6 @@
                     {
                         Order_Id: '#ORD-2024-8815',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Manufacturing',
@@ -489,7 +473,6 @@
                     {
                         Order_Id: '#ORD-2024-8816',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Manufacturing',
@@ -498,7 +481,6 @@
                     {
                         Order_Id: '#ORD-2024-8817',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Sewing',
@@ -507,7 +489,6 @@
                     {
                         Order_Id: '#ORD-2024-8818',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Manufacturing',
@@ -516,7 +497,6 @@
                     {
                         Order_Id: '#ORD-2024-8819',
                         Cust_id: 'C-88219',
-                        SKU_CODE: 'PRC-99-ALPHA',
                         product_name: 'Titanium Turbine Blade V4',
                         qty: 45,
                         current_stage: 'Sewing',

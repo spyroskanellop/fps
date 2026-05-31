@@ -2,14 +2,14 @@
     <v-container>
         <v-row class="header">
             <v-col>
-                <span class="text-uppercase">Manage your team & permissions.</span>
-                <h1>Active Personnel</h1>
+                <span class="text-uppercase">Διαχειριση Προσωπικου & Ρολων</span>
+                <h1>Ενεργό Προσωπικό</h1>
             </v-col>
             <v-col class="d-flex ga-5 justify-end align-center">
 
                 <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-user-dialog">
                     <template v-slot:activator="{ props: activatorProps }">
-                        <v-btn color="#0369a1" class="new-user-btn" v-bind="activatorProps">Create New User</v-btn>
+                        <v-btn color="#0369a1" class="new-user-btn" v-bind="activatorProps">Δημιουργία Νέου Χρήστη</v-btn>
                     </template>
 
                     <template v-slot:default="{ isActive }">
@@ -22,8 +22,8 @@
                                         </v-avatar>
                                     </v-col>
                                     <v-col>
-                                        <h3 class="header-title">Create New User</h3>
-                                        <p class="header-subtitle">Configure profiles and assignments</p>
+                                        <h3 class="header-title">Δημιουργία Νέου Χρήστη</h3>
+                                        <p class="header-subtitle">Ρύθμιση προφιλ και αναθεσεων</p>
                                     </v-col>
                                     <v-col>
                                         <v-btn
@@ -46,8 +46,8 @@
                                         </div>
                                     </v-col>
                                     <v-col class="d-flex flex-column justify-center">
-                                        <span>Identification</span>
-                                        <p>Upload worker ID photo (optional)</p>
+                                        <span>Προφιλ</span>
+                                        <p>Επιλογή φωτογραφίας προφίλ (optional)</p>
                                     </v-col>
                                 </v-row>
                             </div>
@@ -55,7 +55,7 @@
                             <div class="my-8">
                                 <v-row no-gutters class="ga-6">
                                     <v-col cols="5">
-                                        <h4 class="description mb-2">First Name</h4>
+                                        <h4 class="description mb-2">Ονομα</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="John"
@@ -65,7 +65,7 @@
                                     </v-col>
 
                                     <v-col class="7">
-                                        <h4 class="description mb-2">Last Name</h4>
+                                        <h4 class="description mb-2">Επωνυμο</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="Doe"
@@ -78,7 +78,7 @@
 
                                 <v-row>
                                     <v-col>
-                                        <h4 class="description mb-2">Email Address</h4>
+                                        <h4 class="description mb-2">Διευθυνση Email</h4>
                                         <v-text-field
                                             density="compact"
                                             placeholder="john.doe@example.com"
@@ -90,12 +90,13 @@
                                 <v-row>
                                     <v-col>
                                         <v-row no-gutters>
-                                            <h4 class="description mb-2">Employee Id</h4>
+                                            <h4 class="description mb-2">Αναγνωριστικο χρηστη</h4>
                                         </v-row>
                                         <v-text-field
                                             density="compact"
                                             placeholder="FM-12345"
                                             variant="outlined"
+                                            disabled
                                             hide-details
                                         ></v-text-field>
                                         <v-btn
@@ -105,18 +106,17 @@
                                             <template v-slot:prepend>
                                                 <v-icon><ReAiGenerate/></v-icon>
                                             </template> 
-                                            Generate UUID
+                                            Δημιουργια UUID
                                         </v-btn>
                                     </v-col>
                                     <v-col>
-                                        <h4 class="description mb-2">Industrial Role</h4>
+                                        <h4 class="description mb-2">Επιλογη Ρολου</h4>
                                         <v-select
                                             density="compact"
                                             placeholder="Select Role"
                                             variant="outlined"
                                             hide-details
-                                            :items="['Press Operator', 'Batch Specialist', 'Maintenance Technician',
-                                             'Quality Inspector', 'Warehouse Manager']"
+                                            :items="['Admin']"
                                         ></v-select>
                                     </v-col>
                                 </v-row>
@@ -127,11 +127,11 @@
                         <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
                             <v-btn
                                 class="h-auto"
-                                text="Discard Changes"
+                                text="Απόρριψη Αλλαγών"
                             ></v-btn>
                             <v-btn
                                 class="h-auto create-user-btn"
-                                text="Create User"
+                                text="Δημιουργία Χρήστη"
                                 :prepend-icon="userAddIcon"
                                 @click="isActive.value = false"
                             ></v-btn>
@@ -198,18 +198,20 @@
 
 <script>
     import { ClUsers, ReAiGenerate, AnOutlinedUserAdd } from '@kalimahapps/vue-icons';
+    import tengen_avatar from '@/assets/tengen_avatar.png';
+    import user_1 from '@/assets/user_1.jpg';
 
     export default {
         name: 'Users',
         data() {
             return {
                 users: [
-                    {avatar_img: 'src/assets/tengen_avatar.png', name: 'John Doe', email: 'john.doe@example.com', role: 'Admin', id: '12345'},
-                    {avatar_img: 'src/assets/user_1.jpg', name: 'Jane Smith', email: 'jane.smith@example.com', role: 'User', id: '67890'},
-                    {avatar_img: 'src/assets/user_1.jpg', name: 'Alice Johnson', email: 'alice.johnson@example.com', role: 'User', id: '11111'},
-                    {avatar_img: 'src/assets/user_1.jpg', name: 'Bob Brown', email: 'bob.brown@example.com', role: 'User', id: '22222'},
-                    {avatar_img: 'src/assets/user_1.jpg', name: 'Charlie Davis', email: 'charlie.davis@example.com', role: 'User', id: '33333'},
-                    {avatar_img: 'src/assets/user_1.jpg', name: 'Diana Wilson', email: 'diana.wilson@example.com', role: 'User', id: '44444'},
+                    {avatar_img: tengen_avatar, name: 'John Doe', email: 'john.doe@example.com', role: 'Admin', id: '12345'},
+                    {avatar_img: user_1, name: 'Jane Smith', email: 'jane.smith@example.com', role: 'User', id: '67890'},
+                    {avatar_img: user_1, name: 'Alice Johnson', email: 'alice.johnson@example.com', role: 'User', id: '11111'},
+                    {avatar_img: user_1, name: 'Bob Brown', email: 'bob.brown@example.com', role: 'User', id: '22222'},
+                    {avatar_img: user_1, name: 'Charlie Davis', email: 'charlie.davis@example.com', role: 'User', id: '33333'},
+                    {avatar_img: user_1, name: 'Diana Wilson', email: 'diana.wilson@example.com', role: 'User', id: '44444'},
                 ],
                 userAddIcon: AnOutlinedUserAdd,
             }
