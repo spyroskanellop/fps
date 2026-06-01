@@ -410,7 +410,8 @@
 </template>
 <script>
     import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine } from '@kalimahapps/vue-icons';
-    
+    import axios from "../axios";
+
     export default {
         name: "Orders",
         components: {

@@ -32,9 +32,9 @@ const instance = axios.create({
 // )
 
 // Initialize the mock adapter using the instance from created axios
-if(import.meta.env.NODE_ENV !== "production"){
-  initializeMockAdapter(instance);
-}
+// if(import.meta.env.NODE_ENV !== "production"){
+//   initializeMockAdapter(instance);
+// }
 
 
 export default instance;

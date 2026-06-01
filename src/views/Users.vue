@@ -153,7 +153,7 @@
                             <v-col cols="auto">
                                 <v-badge color="#00687b" location="bottom end" floating dot>
                                     <v-avatar size="x-large" rounded="lg">
-                                        <v-img :src="user.avatar_img || 'src/assets/user_1.jpg'" alt="Avatar" />
+                                        <v-img :src="user.avatar_img || user.user_1" alt="Avatar" />
                                     </v-avatar>
                                 </v-badge>
                             </v-col>
@@ -167,7 +167,7 @@
 
                         <v-row class="mt-1">
                             <v-col>
-                                <h3>{{ user.name }}</h3>
+                                <h3>{{ user.username }}</h3>
                                 <p>{{ user.email }}</p>
                             </v-col>
                         </v-row>
@@ -200,20 +200,39 @@
     import { ClUsers, ReAiGenerate, AnOutlinedUserAdd } from '@kalimahapps/vue-icons';
     import tengen_avatar from '@/assets/tengen_avatar.png';
     import user_1 from '@/assets/user_1.jpg';
+    import { getUsers } from "../api/usersService";
+
 
     export default {
         name: 'Users',
         data() {
             return {
                 users: [
-                    {avatar_img: tengen_avatar, name: 'John Doe', email: 'john.doe@example.com', role: 'Admin', id: '12345'},
-                    {avatar_img: user_1, name: 'Jane Smith', email: 'jane.smith@example.com', role: 'User', id: '67890'},
-                    {avatar_img: user_1, name: 'Alice Johnson', email: 'alice.johnson@example.com', role: 'User', id: '11111'},
-                    {avatar_img: user_1, name: 'Bob Brown', email: 'bob.brown@example.com', role: 'User', id: '22222'},
-                    {avatar_img: user_1, name: 'Charlie Davis', email: 'charlie.davis@example.com', role: 'User', id: '33333'},
-                    {avatar_img: user_1, name: 'Diana Wilson', email: 'diana.wilson@example.com', role: 'User', id: '44444'},
+                    {avatar_img: tengen_avatar, username: 'John Doe', email: 'john.doe@example.com', role: 'Admin', id: '12345'},
+                    {avatar_img: user_1, username: 'Jane Smith', email: 'jane.smith@example.com', role: 'User', id: '67890'},
+                    {avatar_img: user_1, username: 'Alice Johnson', email: 'alice.johnson@example.com', role: 'User', id: '11111'},
+                    {avatar_img: user_1, username: 'Bob Brown', email: 'bob.brown@example.com', role: 'User', id: '22222'},
+                    {avatar_img: user_1, username: 'Charlie Davis', email: 'charlie.davis@example.com', role: 'User', id: '33333'},
+                    {avatar_img: user_1, username: 'Diana Wilson', email: 'diana.wilson@example.com', role: 'User', id: '44444'},
                 ],
+                tengen_avatar: tengen_avatar,
+                User_1: user_1,
                 userAddIcon: AnOutlinedUserAdd,
+            }
+        },
+        created() {
+            this.fetchUsers();
+        },
+        methods: {
+            fetchUsers() {
+                getUsers()
+                    .then(response => {
+                        this.users = response.data.usersList;
+                        console.log("Fetched users:", this.users);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching users:", error);
+                    });
             }
         },
         components: {
