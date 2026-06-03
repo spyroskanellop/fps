@@ -414,7 +414,6 @@
                     { title: "Status", key: "status", value: "status", sortable: true},
                     { title: "Notes", key: "notes", value: "notes", sortable: true},
                     { title: "Timestamps", key: "timestamps", value: "timestamps", sortable: true},
-                
                 ],
                 items: [
                     {

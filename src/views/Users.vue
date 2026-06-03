@@ -42,7 +42,13 @@
                                 <v-row no-gutters class="ga-6">
                                     <v-col cols="auto">
                                         <div class="photo-wrapper d-flex align-center justify-center">
-                                            <v-icon icon="mdi-camera" color="#727c83"></v-icon>
+                                            <v-file-input
+                                                accept="image/*"
+                                                variant="plain"
+                                                prepend-icon="mdi-camera"
+                                                hide-details
+                                                class="photo-input">
+                                            </v-file-input>
                                         </div>
                                     </v-col>
                                     <v-col class="d-flex flex-column justify-center">
@@ -430,6 +436,16 @@
         background-color: #d9e4ec;
         border: 1px dashed #a9b3bb;
         border-radius: .75rem;
+     }
+     .photo-wrapper :deep(.v-input__prepend){
+        padding: 0;
+        margin: 0;
+     }
+    .photo-wrapper :deep(.v-input){
+        flex: unset;
+    }
+     .photo-wrapper :deep(.v-input__control){
+        display: none;
      }
      .generate-link{
         color: #0369a1;

@@ -241,6 +241,172 @@ export default function initializeMockAdapter(instance) {
         }]
     })
 
+    mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/orders`).reply(config => {
+        if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
+            return [200,
+                {
+                    ordersList: [
+                        {
+                            id: "12345",
+                            cust_name: "Λαμπρόπουλος",
+                            product_name: "Γούνες",
+                            color: "Μαύρο",
+                            qty: "12",
+                            current_stage: "SEWING",
+                            payment_status: "PAID",
+                            final_amount: "1033.45",
+                            balance: "00.00",
+                            createdAt: "2026-11-25T00:33:48.000Z",
+                            updatedAt: "2026-11-25T00:33:48.000Z",
+                            deliveredAt: "2026-12-01",
+                            createdBy: "aloubardis",
+                            updatedBy: "aloubardis",
+                            deletedAt: null
+                        },
+                        {
+                            id: "67890",
+                            cust_name: "Κωστόπουλος",
+                            product_name: "Φόρμες",
+                            color: "Μαύρο",
+                            qty: "11",
+                            current_stage: "PREPARING",
+                            payment_status: "PENDING",
+                            final_amount: "1233.45",
+                            balance: "123.45",
+                            createdAt: "2026-11-25T00:33:48.000Z",
+                            updatedAt: "2026-11-25T00:33:48.000Z",
+                            deliveredAt: "2026-12-01",
+                            createdBy: "aloubardis",
+                            updatedBy: "aloubardis",
+                            deletedAt: null
+                        },
+                        {
+                            id: "14578",
+                            cust_name: "Λαμπρόπουλος",
+                            product_name: "Γούνες",
+                            color: "Μαύρο",
+                            qty: "12",
+                            current_stage: "SEWING",
+                            payment_status: "PAID",
+                            final_amount: "12.45",
+                            balance: "00.00",
+                            createdAt: "2026-11-25T00:33:48.000Z",
+                            updatedAt: "2026-11-25T00:33:48.000Z",
+                            deliveredAt: "2026-12-01",
+                            createdBy: "aloubardis",
+                            updatedBy: "aloubardis",
+                            deletedAt: null
+                        },
+                        {
+                            id: "67890",
+                            cust_name: "Κωστόπουλος",
+                            product_name: "Φόρμες",
+                            color: "Μαύρο",
+                            qty: "11",
+                            current_stage: "CUTTING",
+                            payment_status: "PENDING",
+                            final_amount: "145.90",
+                            balance: "123.45",
+                            createdAt: "2026-11-25T00:33:48.000Z",
+                            updatedAt: "2026-11-25T00:33:48.000Z",
+                            deliveredAt: "2026-12-01",
+                            createdBy: "aloubardis",
+                            updatedBy: "aloubardis",
+                            deletedAt: null
+                        },
+                        {
+                            id: "67890",
+                            cust_name: "Κωστόπουλος",
+                            product_name: "Φόρμες",
+                            color: "Μαύρο",
+                            qty: "11",
+                            current_stage: "DELIVERING",
+                            payment_status: "PENDING",
+                            final_amount: "12.45",
+                            balance: "00.00",
+                            createdAt: "2026-11-25T00:33:48.000Z",
+                            updatedAt: "2026-11-25T00:33:48.000Z",
+                            deliveredAt: "2026-12-01",
+                            createdBy: "aloubardis",
+                            updatedBy: "aloubardis",
+                            deletedAt: null
+                        },
+                    ]
+                }];
+        }
+        return [401, {
+            message: "Unauthenticated"
+        }]
+    })
+
+    mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/customers`).reply(config => {
+        if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
+            return [200,
+                {
+                    customersList: [
+                        {
+                            id: "1",
+                            name: "Λαμπρόπουλος",
+                            contact_name: "Λαμπρόπουλος",
+                            email: "slabro@gmail.com",
+                            phone: "+30 698 123 4567",
+                            street: "Akadimias 10",
+                            city: "Athens",
+                            TK: "12345",
+                            notes: null,
+                            createdAt: "2023-11-25T00:33:48.000Z",
+                            updatedAt: "2023-11-25T00:33:48.000Z",
+                            deletedAt: null
+                        },
+                        {
+                            id: "2",
+                            name: "Κωστόπουλος",
+                            contact_name: "Κωστόπουλος",
+                            email: "costopoulos@gmail.com",
+                            phone: "+30 698 123 4567",
+                            street: "Labrinis 40",
+                            city: "Athens",
+                            TK: "12345",
+                            notes: null,
+                            createdAt: "2023-11-25T00:33:48.000Z",
+                            updatedAt: "2023-11-25T00:33:48.000Z",
+                            deletedAt: null
+                        },
+
+                    ]
+                }];
+        }
+        return [401, {
+            message: "Unauthenticated"
+        }]
+    })
+
+
+    mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/customers/1`).reply(config => {
+        if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
+            return [200,
+                {
+                    id: "1",
+                    name: "Λαμπρόπουλος",
+                    contact_name: "Λαμπρόπουλος",
+                    email: "slabro@gmail.com",
+                    phone: "+30 698 123 4567",
+                    street: "Akadimias 10",
+                    city: "Athens",
+                    TK: "12345",
+                    notes: null,
+                    createdAt: "2023-11-25T00:33:48.000Z",
+                    updatedAt: "2023-11-25T00:33:48.000Z",
+                    deletedAt: null
+                }
+            ];
+        }
+        return [401, {
+            message: "Unauthenticated"
+        }]
+    })
+
+
     // ================================================================================================================================================== //
 
     mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/patients`).reply(config => {

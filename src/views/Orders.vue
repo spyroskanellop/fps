@@ -45,13 +45,15 @@
                             <div>
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Primary Identification</h3></v-col>
+                                    <v-col><h3>Κυριως Στοιχεια
+                                        
+                                    </h3></v-col>
                                 </v-row>
 
-                                <h4 class="description mb-2">Customer Name</h4>
+                                <h4 class="description mb-2">Ονομα Πελατη</h4>
                                 <v-text-field
                                     density="compact"
-                                    placeholder="Search or enter customer name..."
+                                    placeholder="Αναζήτηση Πελάτη..."
                                     append-inner-icon="mdi-magnify "
                                     variant="outlined"
                                     hide-details
@@ -67,7 +69,7 @@
                                         ></v-text-field>
                                     </v-col>
                                     <v-col>
-                                        <h4 class="description mb-2">Quantity</h4>
+                                        <h4 class="description mb-2">Τεμάχια</h4>
                                         <v-number-input
                                             density="compact"
                                             control-variant="stacked"
@@ -81,38 +83,45 @@
                             <div>
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Product Specifications</h3></v-col>
+                                    <v-col><h3>Χαρακτηριστικα Προϊοντος</h3></v-col>
                                 </v-row>
 
-                                <h4 class="description mb-2">Customer Name</h4>
+                                <h4 class="description mb-2">Όνομα Προϊόντος</h4>
                                 <v-text-field
                                     density="compact"
-                                    placeholder="Search specific product..."
+                                    placeholder="Αναζήτηση συγκεκριμένου προϊόντος..."
                                     append-inner-icon="mdi-magnify "
                                     variant="outlined"
                                     hide-details
                                 ></v-text-field>
                                 <v-row no-gutters class="ga-6 my-4">
                                     <v-col>
-                                        <h4 class="description mb-2">Product Name</h4>
+                                        <h4 class="description mb-2">Χρώμα</h4>
                                         <v-text-field
                                             density="compact"
-                                            placeholder="TX-2048-IND"
+                                            placeholder="Μαύρο"
                                             variant="outlined"
                                             hide-details
                                         ></v-text-field>
                                     </v-col>
                                     <v-col>
-                                        <h4 class="description mb-2">Size</h4>
-                                        <v-select
+                                        <h4 class="description mb-2">Μεγεθος</h4>
+                                        <!-- <v-select
                                             density="compact"
-                                            label="Select"
-                                            :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                                            label="Επιλέξτε μέγεθος"
+                                            :items="['x-small', 'small', 'medium', 'large', 'x-large', '2x-large', '3x-large']"
                                             variant="outlined"
                                             hide-details
-                                        ></v-select>
+                                            multiple
+                                        ></v-select> -->
+                                        <v-text-field
+                                            density="compact"
+                                            placeholder="Επιλέξτε μέγεθος"
+                                            variant="outlined"
+                                            hide-details
+                                            ></v-text-field>
                                     </v-col>
-                                    <v-col>
+                                    <!-- <v-col>
                                         <h4 class="description mb-2">Color Grade</h4>
                                         <v-container class="pa-0 d-flex ga-2">
                                             <v-btn color="primary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
@@ -120,38 +129,39 @@
                                         </v-container>
                                         <v-btn color="primary" variant="text" class="save-btn" :prepend-icon="McBookmarkAddLine">Save as template</v-btn>
                                     </v-col>
-                                    
+                                     -->
                                 </v-row>
                             </div>
 
                             <div>
-                                <v-row class="ga-2 mb-6" no-gutters>
+                                <v-row class="ga-2 my-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Pipeline Status</h3></v-col>
+                                    <v-col><h3>Δρομολογηση Παραγγελιας</h3></v-col>
                                 </v-row>
 
-                                <h4 class="description mb-2">Current Stage</h4>
+                                <h4 class="description mb-2">Σταδιο Παραγγελιας</h4>
                                 <v-select
                                     density="compact"
-                                    label="Select"
-                                    :items="['Preparation', 'In Progress', 'Completed']"
+                                    label="Επιλέξτε στάδιο"
+                                    :items="['Προετοιμασία', 'Κοπή', 'Ράψιμο', 'Έλεγχος Ποιότητας', 'Παράδοση']"
                                     variant="outlined"
                                     hide-details
                                 ></v-select>
                                 <v-row no-gutters class="ga-6 my-4 mb-1">
                                     <v-col>
-                                        <h4 class="description mb-2">Delivery Status</h4>
+                                        <h4 class="description mb-2">Παραλαβη</h4>
                                         <v-select
                                             density="compact"
-                                            label="Select"
-                                            :items="['Pending Logistics', 'Out for Delivery', 'Delivered']"
+                                            label="Επιλέξτε"
+                                            :items="['Κατάστημα', 'Παράδοση']"
                                             variant="outlined"
                                             hide-details
                                         ></v-select>
                                     </v-col>
                                     <v-col>
-                                        <h4 class="description mb-2">Due Date</h4>
+                                        <h4 class="description mb-2">Προθεσμια</h4>
                                         <v-date-input
+                                            class="date-input"
                                             prepend-icon=""
                                             prepend-inner-icon="$calendar"
                                             variant="outlined"
@@ -162,11 +172,11 @@
 
                                 <v-row no-gutters class="ga-6 mb-4">
                                     <v-col cols="12">
-                                        <h4 class="description mb-2">Priority Level</h4>
+                                        <h4 class="description mb-2">Επιπεδο Προτεραιοτητας</h4>
                                         <v-select
                                             density="compact"
-                                            label="Select"
-                                            :items="['Low', 'Medium', 'High']"
+                                            label="Επιλέξτε προτεραιότητα"
+                                            :items="['Χαμηλή', 'Μεσαία', 'Υψηλή']"
                                             variant="outlined"
                                             hide-details
                                         ></v-select>
@@ -177,25 +187,25 @@
                             <div class="mt-9">
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Financial Summary</h3></v-col>
+                                    <v-col><h3>Οικονομικο Συνολο</h3></v-col>
                                 </v-row>
 
                                 <div class="financial-container">
                                     <v-row no-gutters class="ga-6 mb-4">
                                         <v-col>
-                                            <h4 class="description mb-2">Total Amount</h4>
+                                            <h4 class="description mb-2">Συνολικο Ποσο</h4>
                                             <v-text-field
                                                 density="compact"
-                                                placeholder="TX-2048-IND"
+                                                placeholder="€0.00"
                                                 variant="outlined"
                                                 hide-details
                                             ></v-text-field>
                                         </v-col>
                                         <v-col>
-                                            <h4 class="description mb-2">Paid Amount</h4>
+                                            <h4 class="description mb-2">Υπολοιπο</h4>
                                             <v-text-field
                                                 density="compact"
-                                                placeholder="TX-2048-IND"
+                                                placeholder="€0.00"
                                                 variant="outlined"
                                                 hide-details
                                             ></v-text-field>
@@ -204,11 +214,11 @@
 
                                     <v-row>
                                         <v-col>
-                                            <h4 class="description mb-2">Current Stage</h4>
+                                            <h4 class="description mb-2">Κατασταση Παραγγελιας</h4>
                                             <v-select
                                                 density="compact"
-                                                label="Select"
-                                                :items="['Preparation', 'In Progress', 'Completed']"
+                                                label="Επιλέξτε φάση"
+                                                :items="['Πληρωμένη', 'Εκκρεμεί', 'Προκαταβολή']"
                                                 variant="outlined"
                                                 hide-details
                                             ></v-select>
@@ -222,11 +232,11 @@
                         <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
                             <v-btn
                                 class="h-auto"
-                                text="Discard Changes"
+                                text="Απόρριψη Αλλαγών"
                             ></v-btn>
                             <v-btn
                                 class="h-auto create-order-btn"
-                                text="Create Order"
+                                text="Δημιουργία Παραγγελίας"
                                 :prepend-icon="HiRocketLaunch"
                                 @click="isActive.value = false"
                             ></v-btn>
@@ -293,22 +303,29 @@
         </v-row>
 
         <div class="table-container mt-6">
-            <v-data-table class="" :headers="headers" :items="this.items" item-value="Order_Id"
+            <v-data-table class="" :headers="headers" :items="this.items" item-value="id"
                 sort-asc-icon="mdi-sort-ascending"
                 sort-desc-icon="mdi-sort-descending"
                 sort-icon="mdi-swap-vertical"
                 show-expand>
-                <template v-slot:[`item.Order_Id`]="{item}">
+                <template v-slot:[`item.id`]="{item}">
                     <div>
                         <h2 class="order-header">
-                            {{ item.Order_Id }}
+                            #ORD-{{ item.id }}
+                        </h2>
+                    </div>
+                </template>
+                <template v-slot:[`item.Order_Title`]="{item}">
+                    <div>
+                        <h2 class="cust-header">
+                            {{ item.cust_name }} {{ new Date(item.createdAt).toLocaleDateString() }}
                         </h2>
                     </div>
                 </template>
                 <template v-slot:[`item.Cust_id`]="{item}">
                     <div>
                         <h2 class="cust-header">
-                            {{ item.Cust_id }}
+                            {{ item.cust_name }}
                         </h2>
                     </div>
                 </template>
@@ -328,32 +345,69 @@
                 </template>
 
                 <template v-slot:[`item.current_stage`]="{item}">
-                    <div v-if="item.current_stage.toUpperCase() === 'MANUFACTURING'">
-                        <h2 class="stage-header blue">
-                            {{ item.current_stage }}
+                    <div v-if="item.current_stage.toUpperCase() === 'PREPARING'">
+                        <h2 class="stage-header gray">
+                            προετοιμασια
+                        </h2>
+                    </div>
+                    <div v-if="item.current_stage.toUpperCase() === 'CUTTING'">
+                        <h2 class="stage-header lightblue">
+                            κοπη
                         </h2>
                     </div>
                     
                     <div v-if="item.current_stage.toUpperCase() === 'SEWING'">
-                        <h2 class="stage-header yellow">
-                            {{ item.current_stage }}
+                        <h2 class="stage-header blue">
+                            ραψιμο
                         </h2>
                     </div>
+                    
+                    <div v-if="item.current_stage.toUpperCase() === 'QA'">
+                        <h2 class="stage-header yellow">
+                            ελεγχος ποιοτητας
+                        </h2>
+                    </div>
+                    <div v-if="item.current_stage.toUpperCase() === 'DELIVERING'">
+                        <h2 class="stage-header green">
+                            παραδοση
+                        </h2>
+                    </div>
+
                 </template>
                 <template v-slot:[`item.payment_status`]="{item}">
                     <div v-if="item.payment_status.toUpperCase() === 'PAID'">
                         <h2 class="payment-header paid">
                             <MiMoneyPlus/>
-                            {{ item.payment_status }}
+                            Πληρωμενη
                         </h2>
                     </div>
                     <div v-if="item.payment_status.toUpperCase() === 'PENDING'">
                         <h2 class="payment-header pending">
                             <CgSandClock />
-                            {{ item.payment_status }}
+                            εκκρεμει
                         </h2>
                     </div>
 
+                </template>
+                <template v-slot:[`item.timestamps`]="{item}">
+                    <div class="timestamps d-flex flex-column">
+                        <v-tooltip>
+                            <template v-slot:activator="{ props }">
+                                <p v-bind="props">C: <span>{{ formatTimestamp(item.createdAt) }}</span></p>
+                            </template>
+                            <div class="">
+                                <p>Created By: aloubardis</p>
+                            </div>
+                        </v-tooltip>
+                        <v-tooltip text="Tooltip">
+                            <template v-slot:activator="{ props }">
+                                <p v-bind="props">U: <span>{{ formatTimestamp(item.updatedAt) }}</span></p>
+                            </template>
+                            <div class="">
+                                <p>Updated By: aloubardis</p>
+                            </div>
+                        </v-tooltip>
+                    </div>
                 </template>
 
 
@@ -364,18 +418,18 @@
                                 <v-col cols="3">
                                     <div class="details">
                                         <v-row no-gutters>
-                                            <v-col cols="auto" class="d-flex flex-center"><MiMoneyPlus/></v-col>
-                                            <v-col><h4>Financial Details</h4></v-col>
+                                            <v-col cols="auto" class="d-flex flex-center mr-1"><MiMoneyPlus/></v-col>
+                                            <v-col><h4>Οικονομικα στοιχεια</h4></v-col>
                                         </v-row>
                                         
                                         <div class="content mt-2">
                                             <div class="d-flex justify-space-between">
-                                                <span class="header">Total Amount:</span>
-                                                <span>$123.45</span>
+                                                <span class="header">Συνολικό Ποσό:</span>
+                                                <span>€{{ item.final_amount }}</span>
                                             </div>
                                             <div class="d-flex justify-space-between">
-                                                <span class="header">Balance:</span>
-                                                <span>$00.00</span>
+                                                <span class="header">Υπόλοιπο:</span>
+                                                <span>€{{ item.balance }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -384,14 +438,14 @@
                                 <v-col cols="3" class="ml-8">
                                     <div class="details">
                                         <v-row no-gutters>
-                                            <v-col cols="auto" class="d-flex flex-center"><MdTimeline/></v-col>
-                                            <v-col><h4>Production Timeline</h4></v-col>
+                                            <v-col cols="auto" class="d-flex flex-center mr-1"><MdTimeline/></v-col>
+                                            <v-col><h4>Χρονοδιαγραμμα παραγωγης</h4></v-col>
                                         </v-row>
                                         
                                         <div class="content mt-2">
                                             <div class="d-flex justify-space-between">
-                                                <span class="header">Order Date:</span>
-                                                <span>2024-05-12</span>
+                                                <span class="header">Παράδοση Μέχρι:</span>
+                                                <span>{{ item.deliveredAt }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -410,7 +464,7 @@
 </template>
 <script>
     import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine } from '@kalimahapps/vue-icons';
-    import axios from "../axios";
+    import {getOrders} from "../api/ordersService";
 
     export default {
         name: "Orders",
@@ -430,83 +484,40 @@
             return {
                 // Data properties for orders can be added here
                 headers: [
-                    { title: "Αναγνωριστικό Παραγγελίας", key: "Order_Id", value: "Order_Id", sortable: true},
+                    { title: "Αναγνωριστικό Παραγγελίας", key: "id", value: "id", sortable: true, width: "10rem" },
                     { title: "Τίτλος Παραγγελίας", key: "Order_Title", value: "Order_Title", sortable: true},
                     { title: "Αναγνωριστικό Πελάτη", key: "Cust_id", value: "Cust_id", sortable: true},
                     { title: "Όνομα Προϊόντος", key: "product_name", value: "product_name", sortable: true},
                     { title: "Ποσότητα", key: "qty", value: "qty", sortable: true},
+                    { title: "Χρώμα", key: "color", value: "color", sortable: true},
                     { title: "Τρέχουσα Φάση", key: "current_stage", value: "current_stage", sortable: true},
                     { title: "Payment Status", key: "payment_status", value: "payment_status", sortable: true},
+                    { title: "Στιγμιότυπα", key: "timestamps", value: "timestamps", sortable: true},
+                    
                 ],
-                items: [
-                    {
-                        Order_Id: '#ORD-2024-8812',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Sewing',
-                        payment_status: 'Paid'
-                    },
-                    {
-                        Order_Id: '#ORD-2024-8813',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Manufacturing',
-                        payment_status: 'Paid'
-                    },
-                    {
-                        Order_Id: '#ORD-2024-8814',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Manufacturing',
-                        payment_status: 'Pending'
-                    },
-                    {
-                        Order_Id: '#ORD-2024-8815',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Manufacturing',
-                        payment_status: 'Paid'
-                    },
-                    {
-                        Order_Id: '#ORD-2024-8816',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Manufacturing',
-                        payment_status: 'Pending'
-                    },
-                    {
-                        Order_Id: '#ORD-2024-8817',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Sewing',
-                        payment_status: 'Paid'
-                    },
-                    {
-                        Order_Id: '#ORD-2024-8818',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Manufacturing',
-                        payment_status: 'Paid'
-                    },
-                    {
-                        Order_Id: '#ORD-2024-8819',
-                        Cust_id: 'C-88219',
-                        product_name: 'Titanium Turbine Blade V4',
-                        qty: 45,
-                        current_stage: 'Sewing',
-                        payment_status: 'Pending'
-                    },
-                ],
+                items: [],
+                clientsName: "",
                 HiRocketLaunch: HiRocketLaunch,
                 McBookmarkAddLine: McBookmarkAddLine,
                 expanded: []
+            }
+        },
+        created(){
+            this.fetchOrders();
+        },
+        methods: {
+            fetchOrders() {
+                getOrders()
+                    .then(response => {
+                        this.items = response.data.ordersList;
+                        console.log("Orders fetched successfully:", this.items);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching orders:", error);
+                    });
+            },
+            formatTimestamp(timestamp){
+                return new Date(timestamp).toLocaleString();
             }
         }
 
@@ -690,13 +701,25 @@
         border-radius: 999px;
         display: inline;
     }
-    :deep(.stage-header.blue){
+    :deep(.stage-header.gray){
+        color: #64748b;
+        background-color: #64748b1f;
+    }
+    :deep(.stage-header.lightblue){
         color: #075985;
         background-color: #e0f2fe;
+    }
+    :deep(.stage-header.blue){
+        color: #0369a1;
+        background-color: #036aa11f;
     }
     :deep(.stage-header.yellow){
         color: #92400e;
         background-color: #fef3c7;
+    }
+    :deep(.stage-header.green){
+        color: #3e9789;
+        background-color: #f0fdfa;
     }
     :deep(.payment-header){
         display: flex;
@@ -879,5 +902,16 @@
     }
     .financial-container :deep(.v-field){
         background: white;
+    }
+    .timestamps{
+        color: #566167;
+        font-size: 0.70rem;
+    }
+    .timestamps span{
+        text-decoration: underline dashed;
+    }
+    .date-input :deep(.v-field__prepend-inner){
+        padding-left: .5rem;
+        font-size: .875rem;
     }
 </style>
