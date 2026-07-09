@@ -244,7 +244,7 @@
                         </v-card-actions>
                         </v-card>
                     </template>
-                    </v-dialog>
+                </v-dialog>
             </v-col>
         </v-row>
 
