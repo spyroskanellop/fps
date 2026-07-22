@@ -211,11 +211,7 @@
 
     <!--  -->
     <v-row no-gutters class="ga-8 work-container mt-8">
-      <v-col
-        v-for="item in workflowItemsByStage"
-        :key="item"
-        class="work-column"
-      >
+      <v-col v-for="item in workflowItemsByStage" :key="item" class="work-column">
         <v-row>
           <v-col>
             <div class="d-flex ga-2 align-center">
@@ -243,8 +239,7 @@
             ghost-class="ghost"
             @change="onChange">
             <div v-for="card in item.items" :key="card">
-                <!-- {{ card }} -->
-                <div class="workflow-item my-4">
+                <div class="workflow-item my-4" :class="item.column.toLowerCase() === 'cutting' ? 'cutting-column' : ''">
                     <v-row>
                         <v-col class="">
                         <v-row class="d-flex justify-space-between">
@@ -579,8 +574,12 @@ export default {
   padding: 1rem;
   border-radius: 0.75rem;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition-duration: 150ms;
 }
-.cutting-column .workflow-item {
+.workflow-item:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.cutting-column.workflow-item {
   border-left: 4px solid #0ea5e9;
 }
 .work-container {
