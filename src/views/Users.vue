@@ -13,137 +13,129 @@
                     </template>
 
                     <template v-slot:default="{ isActive }">
-                        <v-card class="new-user-card">
-                            <template v-slot:title>
-                                <v-row>
-                                    <v-col cols="auto">
-                                        <v-avatar color="#0369a1" variant="tonal" size="50" rounded="lg">
-                                            <v-icon size="30"><ClUsers/></v-icon>
-                                        </v-avatar>
-                                    </v-col>
-                                    <v-col>
-                                        <h3 class="header-title">Δημιουργία Νέου Χρήστη</h3>
-                                        <p class="header-subtitle">Ρύθμιση προφιλ και αναθεσεων</p>
-                                    </v-col>
-                                    <v-col>
-                                        <v-btn
-                                        @click="isActive.value = false"
-                                        variant="text"
-                                        class="float-right"
-                                        >
-                                            <v-icon>mdi-close</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                            <v-divider></v-divider>
-                        <v-card-text class="mt-4 px-8">
-                            <div class="photo-container">                                
-                                <v-row no-gutters class="ga-6">
-                                    <v-col cols="auto">
-                                        <div class="photo-wrapper d-flex align-center justify-center">
-                                            <v-file-input
-                                                accept="image/*"
-                                                variant="plain"
-                                                prepend-icon="mdi-camera"
+                        <v-form fast-fail @submit.prevent class="h-100">
+                            <v-card class="new-user-card">
+                                <template v-slot:title>
+                                    <v-row>
+                                        <v-col cols="auto">
+                                            <v-avatar color="#0369a1" variant="tonal" size="50" rounded="lg">
+                                                <v-icon size="30"><ClUsers/></v-icon>
+                                            </v-avatar>
+                                        </v-col>
+                                        <v-col>
+                                            <h3 class="header-title">Δημιουργία Νέου Χρήστη</h3>
+                                            <p class="header-subtitle">Ρύθμιση προφιλ και αναθεσεων</p>
+                                        </v-col>
+                                        <v-col>
+                                            <v-btn @click="isActive.value = false" variant="text" class="float-right">
+                                                <v-icon>mdi-close</v-icon>
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </template>
+                                <v-divider></v-divider>
+                            <v-card-text class="mt-4 px-8">
+                                <div class="photo-container">                                
+                                    <v-row no-gutters class="ga-6">
+                                        <v-col cols="auto">
+                                            <div class="photo-wrapper d-flex align-center justify-center">
+                                                <v-file-input accept="image/*" variant="plain" prepend-icon="mdi-camera" hide-details class="photo-input" v-model="form.avatar_img"></v-file-input>
+                                            </div>
+                                        </v-col>
+                                        <v-col class="d-flex flex-column justify-center">
+                                            <span>Προφιλ</span>
+                                            <p>Επιλογή φωτογραφίας προφίλ (optional)</p>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+
+                                <div class="my-8">
+                                    <v-row no-gutters class="ga-6">
+                                        <v-col cols="5">
+                                            <h4 class="description mb-2">Ονομα</h4>
+                                            <v-text-field v-model="form.firstName" density="compact" placeholder="John" variant="outlined" :rules="rules.firstNameRules" required hide-details></v-text-field>
+                                        </v-col>
+
+                                        <v-col class="7">
+                                            <h4 class="description mb-2">Επωνυμο</h4>
+                                            <v-text-field
+                                                v-model="form.lastName"
+                                                density="compact"
+                                                placeholder="Doe"
+                                                variant="outlined"
+                                                :rules="lastNameRules"
+                                                required
                                                 hide-details
-                                                class="photo-input">
-                                            </v-file-input>
-                                        </div>
-                                    </v-col>
-                                    <v-col class="d-flex flex-column justify-center">
-                                        <span>Προφιλ</span>
-                                        <p>Επιλογή φωτογραφίας προφίλ (optional)</p>
-                                    </v-col>
-                                </v-row>
-                            </div>
+                                            ></v-text-field>
+                                        </v-col>
 
-                            <div class="my-8">
-                                <v-row no-gutters class="ga-6">
-                                    <v-col cols="5">
-                                        <h4 class="description mb-2">Ονομα</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="John"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
+                                    </v-row>
 
-                                    <v-col class="7">
-                                        <h4 class="description mb-2">Επωνυμο</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="Doe"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
+                                    <v-row>
+                                        <v-col>
+                                            <h4 class="description mb-2">Διευθυνση Email</h4>
+                                            <v-text-field
+                                                v-model="form.email"
+                                                density="compact"
+                                                placeholder="john.doe@example.com"
+                                                variant="outlined"
+                                                hide-details
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col>
+                                            <v-row no-gutters>
+                                                <h4 class="description mb-2">Αναγνωριστικο χρηστη</h4>
+                                            </v-row>
+                                            <v-text-field
+                                                v-model="form.uid"
+                                                density="compact"
+                                                placeholder="FM-12345"
+                                                variant="outlined"
+                                                disabled
+                                                hide-details
+                                            ></v-text-field>
+                                            <v-btn variant="text" class="float-left generate-link" size="small" @click="generateUid">
+                                                <template v-slot:prepend>
+                                                    <v-icon><ReAiGenerate/></v-icon>
+                                                </template> 
+                                                Δημιουργια UUID
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col>
+                                            <h4 class="description mb-2">Επιλογη Ρολου</h4>
+                                            <v-select
+                                                v-model="form.role"
+                                                density="compact"
+                                                placeholder="Select Role"
+                                                variant="outlined"
+                                                hide-details
+                                                :items="roles"
+                                                item-title="label"
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                </div>
 
-                                </v-row>
+                            </v-card-text>
+                            <v-divider></v-divider>
+                            <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
+                                <v-btn
+                                    class="h-auto"
+                                    text="Απόρριψη Αλλαγών"
+                                ></v-btn>
+                                <v-btn
+                                    class="h-auto create-user-btn"
+                                    text="Δημιουργία Χρήστη"
+                                    :prepend-icon="userAddIcon"
+                                    @click="addUser"
+                                    type="submit"
+                                ></v-btn>
 
-                                <v-row>
-                                    <v-col>
-                                        <h4 class="description mb-2">Διευθυνση Email</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="john.doe@example.com"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col>
-                                        <v-row no-gutters>
-                                            <h4 class="description mb-2">Αναγνωριστικο χρηστη</h4>
-                                        </v-row>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="FM-12345"
-                                            variant="outlined"
-                                            disabled
-                                            hide-details
-                                        ></v-text-field>
-                                        <v-btn
-                                            variant="text"
-                                            class="float-left generate-link"
-                                            size="small">
-                                            <template v-slot:prepend>
-                                                <v-icon><ReAiGenerate/></v-icon>
-                                            </template> 
-                                            Δημιουργια UUID
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col>
-                                        <h4 class="description mb-2">Επιλογη Ρολου</h4>
-                                        <v-select
-                                            density="compact"
-                                            placeholder="Select Role"
-                                            variant="outlined"
-                                            hide-details
-                                            :items="['Admin']"
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                            </div>
-
-                        </v-card-text>
-                        <v-divider></v-divider>
-                        <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
-                            <v-btn
-                                class="h-auto"
-                                text="Απόρριψη Αλλαγών"
-                            ></v-btn>
-                            <v-btn
-                                class="h-auto create-user-btn"
-                                text="Δημιουργία Χρήστη"
-                                :prepend-icon="userAddIcon"
-                                @click="isActive.value = false"
-                            ></v-btn>
-
-                        </v-card-actions>
-                        </v-card>
+                            </v-card-actions>
+                            </v-card>
+                        </v-form>
                     </template>
                 </v-dialog>
 
@@ -213,17 +205,29 @@
         name: 'Users',
         data() {
             return {
-                users: [
-                    {avatar_img: tengen_avatar, username: 'John Doe', email: 'john.doe@example.com', role: 'Admin', id: '12345'},
-                    {avatar_img: user_1, username: 'Jane Smith', email: 'jane.smith@example.com', role: 'User', id: '67890'},
-                    {avatar_img: user_1, username: 'Alice Johnson', email: 'alice.johnson@example.com', role: 'User', id: '11111'},
-                    {avatar_img: user_1, username: 'Bob Brown', email: 'bob.brown@example.com', role: 'User', id: '22222'},
-                    {avatar_img: user_1, username: 'Charlie Davis', email: 'charlie.davis@example.com', role: 'User', id: '33333'},
-                    {avatar_img: user_1, username: 'Diana Wilson', email: 'diana.wilson@example.com', role: 'User', id: '44444'},
-                ],
+                users: [],
                 tengen_avatar: tengen_avatar,
                 User_1: user_1,
                 userAddIcon: AnOutlinedUserAdd,
+                form: {
+                    avatar_img: "",
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    uid: "",
+                    role: ""
+                },
+                roles: [
+                    {name: "ADMIN", label: "ΔΙΑΧΕΙΡΙΣΤΗΣ"}
+                ],
+                rules: {
+                    firstNameRules: [
+                        value => {
+                            if(value?.length >= 3) return true
+                            return 'First name must be at least 3 characters.'
+                        }
+                    ]
+                }
             }
         },
         created() {
@@ -234,11 +238,27 @@
                 getUsers()
                     .then(response => {
                         this.users = response.data.usersList;
-                        console.log("Fetched users:", this.users);
+                        console.log("Fetched users:", this.users);                        
                     })
                     .catch(error => {
                         console.error("Error fetching users:", error);
                     });
+            },
+            generateUid(){
+                let result = '';
+                const characters = 'abcdefghijklmnopqrstuvwxyz';
+                for (let i = 0; i < 6; i++) {
+                    const randomInd = Math.floor(Math.random() * characters.length);
+                    result += characters.charAt(randomInd);
+                }
+                return result;
+            },
+            addUser(){
+                // if(!this.validateFields) return
+                // console.log("test")
+            },
+            validateFields(){
+                return false
             }
         },
         components: {
@@ -407,18 +427,6 @@
         opacity: 1;
         backdrop-filter: blur(8px);
     }
-    /* .create-order-btn{
-        background: #0369a1;
-        box-shadow: 0 10px 15px -3px rgb(12 74 110 / 0.2), 0 4px 6px -4px rgb(12 74 110 / 0.2);
-        border-radius: 0.5rem;
-    }
-    .create-order-btn :deep(.v-btn__prepend){
-        padding: 0 0 0 .75rem;
-        color: white;
-    }
-    .create-order-btn :deep(.v-btn__content){
-        color: white;
-    } */
      .photo-container .v-col span:nth-child(1){
         color: #727c83;
         letter-spacing: 0.1em;
