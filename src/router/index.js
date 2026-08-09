@@ -3,6 +3,7 @@ import Orders from '../views/Orders.vue'
 import Workflow from '../views/Workflow.vue'
 import Customers from '../views/Customers.vue'
 import Users from '../views/Users.vue'
+import Login from '../views/Login.vue'
 
 
 const router = createRouter({
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/users',
       name: 'users',
       component: Users,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
     },
   ],
 })

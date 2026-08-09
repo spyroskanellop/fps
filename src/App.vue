@@ -1,6 +1,6 @@
 <template>
   <v-app>
-      <div v-if="isMobile">
+    <div v-if="isMobile">
         <v-container class="text-center position-relative d-flex flex-column ga-3" style="top: 5rem;">
         <v-avatar color="primary" variant="tonal" size="80" class="align-self-center">
           <v-icon size="x-large">mdi-monitor</v-icon>

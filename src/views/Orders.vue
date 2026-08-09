@@ -3,21 +3,20 @@
         <v-row class="header">
             <v-col>
                 <span class="text-uppercase">Επισκοπηση εργαστηριου</span>
-                <h1>Παραγγελίες</h1>
+                <h1>Παραγγελίες</h1> {{ this.items.length }}
             </v-col>
             <v-col class="d-flex ga-5 justify-end align-center">
                 <v-btn variant="outlined" color="#0369a1">
                     <template v-slot:prepend><CaFilterEdit /></template>
                     Σύνθετα Φίλτρα
                 </v-btn>
-
-
-                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog">
-                    <template v-slot:activator="{ props: activatorProps }">
-                        <v-btn color="#0369a1" class="new-order-btn" v-bind="activatorProps">Δημιουργία Νέας Παραγγελίας</v-btn>
+                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog" v-model="dialogStatus">
+                    <template v-slot:activator="{ props }">
+                        <v-btn color="#0369a1" class="new-order-btn" v-bind="props">Δημιουργία Νέας Παραγγελίας</v-btn>
                     </template>
-                    <template v-slot:default="{ isActive }">
-                        <v-card class="new-order-card">
+                        <!-- Add validation here -->
+                    <v-form @submit.prevent class="h-100" ref="form">
+                            <v-card class="new-order-card">
                             <template v-slot:title>
                                 <v-row>
                                     <v-col cols="auto">
@@ -30,11 +29,7 @@
                                         <p class="header-subtitle">Μοναδα Παραγωγης</p>
                                     </v-col>
                                     <v-col>
-                                        <v-btn
-                                        @click="isActive.value = false"
-                                        variant="text"
-                                        class="float-right"
-                                        >
+                                        <v-btn @click="dialogStatus = false" variant="text" class="float-right">
                                             <v-icon>mdi-close</v-icon>
                                         </v-btn>
                                     </v-col>
@@ -45,21 +40,23 @@
                             <div>
                                 <v-row class="ga-2 mb-6" no-gutters>
                                     <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Κυριως Στοιχεια
-                                        
-                                    </h3></v-col>
+                                    <v-col>
+                                        <h3>Κυριως Στοιχεια</h3>
+                                    </v-col>
                                 </v-row>
 
                                 <h4 class="description mb-2">Ονομα Πελατη</h4>
                                 <v-text-field
+                                    v-model="form.cust_name"
                                     density="compact"
                                     placeholder="Αναζήτηση Πελάτη..."
-                                    append-inner-icon="mdi-magnify "
+                                    append-inner-icon="mdi-magnify"
+                                    :rules="[rules.required]"
                                     variant="outlined"
                                     hide-details
                                 ></v-text-field>
                                 <v-row no-gutters class="ga-6 my-4">
-                                    <v-col>
+                                    <!-- <v-col>
                                         <h4 class="description mb-2">SKU Reference</h4>
                                         <v-text-field
                                             density="compact"
@@ -67,14 +64,18 @@
                                             variant="outlined"
                                             hide-details
                                         ></v-text-field>
-                                    </v-col>
+                                    </v-col> -->
                                     <v-col>
                                         <h4 class="description mb-2">Τεμάχια</h4>
                                         <v-number-input
+                                            v-model="form.qty"
                                             density="compact"
                                             control-variant="stacked"
                                             placeholder="0"
                                             variant="outlined"
+                                            :rules="[rules.required, rules.positive]"
+                                            :min="0"
+                                            inset
                                         ></v-number-input>
                                     </v-col>
                                 </v-row>
@@ -88,6 +89,7 @@
 
                                 <h4 class="description mb-2">Όνομα Προϊόντος</h4>
                                 <v-text-field
+                                    v-model="form.product.name"
                                     density="compact"
                                     placeholder="Αναζήτηση συγκεκριμένου προϊόντος..."
                                     append-inner-icon="mdi-magnify "
@@ -97,39 +99,30 @@
                                 <v-row no-gutters class="ga-6 my-4">
                                     <v-col>
                                         <h4 class="description mb-2">Χρώμα</h4>
-                                        <v-text-field
+                                        <v-select
+                                            v-model="form.product.color"
                                             density="compact"
-                                            placeholder="Μαύρο"
+                                            placeholder="Επιλέξτε χρώμα"
+                                            :items="colorItems"
+                                            item-title="label"
+                                            item-value="value"
+                                            :rules="[rules.required]"
                                             variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
+                                        ></v-select>
                                     </v-col>
                                     <v-col>
                                         <h4 class="description mb-2">Μεγεθος</h4>
-                                        <!-- <v-select
-                                            density="compact"
-                                            label="Επιλέξτε μέγεθος"
-                                            :items="['x-small', 'small', 'medium', 'large', 'x-large', '2x-large', '3x-large']"
-                                            variant="outlined"
-                                            hide-details
-                                            multiple
-                                        ></v-select> -->
-                                        <v-text-field
+                                        <v-select
+                                            v-model="form.product.size"
                                             density="compact"
                                             placeholder="Επιλέξτε μέγεθος"
+                                            :items="sizeItems"
+                                            item-title="label"
+                                            item-value="value"
+                                            :rules="[rules.required]"
                                             variant="outlined"
-                                            hide-details
-                                            ></v-text-field>
+                                        ></v-select>
                                     </v-col>
-                                    <!-- <v-col>
-                                        <h4 class="description mb-2">Color Grade</h4>
-                                        <v-container class="pa-0 d-flex ga-2">
-                                            <v-btn color="primary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
-                                            <v-btn color="secondary" rounded="xl" icon="" size="small" elevation="0"></v-btn>
-                                        </v-container>
-                                        <v-btn color="primary" variant="text" class="save-btn" :prepend-icon="McBookmarkAddLine">Save as template</v-btn>
-                                    </v-col>
-                                     -->
                                 </v-row>
                             </div>
 
@@ -141,29 +134,37 @@
 
                                 <h4 class="description mb-2">Σταδιο Παραγγελιας</h4>
                                 <v-select
+                                    v-model="form.stage"
                                     density="compact"
                                     label="Επιλέξτε στάδιο"
-                                    :items="['Προετοιμασία', 'Κοπή', 'Ράψιμο', 'Έλεγχος Ποιότητας', 'Παράδοση']"
+                                    :items="stageItems"
+                                    item-title="label"
+                                    item-value="value"
+                                    :rules="[rules.required]"
                                     variant="outlined"
-                                    hide-details
                                 ></v-select>
                                 <v-row no-gutters class="ga-6 my-4 mb-1">
                                     <v-col>
                                         <h4 class="description mb-2">Παραλαβη</h4>
                                         <v-select
+                                            v-model="form.pickupLocation"
                                             density="compact"
                                             label="Επιλέξτε"
-                                            :items="['Κατάστημα', 'Παράδοση']"
+                                            :items="pickupLocationItems"
+                                            item-title="label"
+                                            item-value="value"
+                                            :rules="[rules.required]"
                                             variant="outlined"
-                                            hide-details
                                         ></v-select>
                                     </v-col>
                                     <v-col>
                                         <h4 class="description mb-2">Προθεσμια</h4>
                                         <v-date-input
+                                            v-model="form.dueDate"
                                             class="date-input"
                                             prepend-icon=""
                                             prepend-inner-icon="$calendar"
+                                            :rules="[rules.required]"
                                             variant="outlined"
                                             density="compact"
                                         ></v-date-input>
@@ -174,11 +175,14 @@
                                     <v-col cols="12">
                                         <h4 class="description mb-2">Επιπεδο Προτεραιοτητας</h4>
                                         <v-select
+                                            v-model="form.priority"
                                             density="compact"
                                             label="Επιλέξτε προτεραιότητα"
-                                            :items="['Χαμηλή', 'Μεσαία', 'Υψηλή']"
+                                            :items="priorityItems"
+                                            item-title="label"
+                                            item-value="value"
+                                            :rules="[rules.required]"
                                             variant="outlined"
-                                            hide-details
                                         ></v-select>
                                     </v-col>
                                 </v-row>
@@ -195,19 +199,19 @@
                                         <v-col>
                                             <h4 class="description mb-2">Συνολικο Ποσο</h4>
                                             <v-text-field
+                                                v-model="form.final_amount"
                                                 density="compact"
                                                 placeholder="€0.00"
                                                 variant="outlined"
-                                                hide-details
                                             ></v-text-field>
                                         </v-col>
                                         <v-col>
                                             <h4 class="description mb-2">Υπολοιπο</h4>
                                             <v-text-field
+                                                v-model="form.balance"
                                                 density="compact"
                                                 placeholder="€0.00"
                                                 variant="outlined"
-                                                hide-details
                                             ></v-text-field>
                                         </v-col>
                                     </v-row>
@@ -216,11 +220,13 @@
                                         <v-col>
                                             <h4 class="description mb-2">Κατασταση Παραγγελιας</h4>
                                             <v-select
+                                                v-model="form.paymentStatus"
                                                 density="compact"
                                                 label="Επιλέξτε φάση"
-                                                :items="['Πληρωμένη', 'Εκκρεμεί', 'Προκαταβολή']"
+                                                :items="paymentStatusItems"
+                                                item-title="label"
+                                                item-value="value"
                                                 variant="outlined"
-                                                hide-details
                                             ></v-select>
                                         </v-col>
                                     </v-row>
@@ -236,14 +242,15 @@
                             ></v-btn>
                             <v-btn
                                 class="h-auto create-order-btn"
+                                type="submit"
                                 text="Δημιουργία Παραγγελίας"
                                 :prepend-icon="HiRocketLaunch"
-                                @click="isActive.value = false"
+                                @click="createOrder"
                             ></v-btn>
 
                         </v-card-actions>
                         </v-card>
-                    </template>
+                    </v-form>                        
                 </v-dialog>
             </v-col>
         </v-row>
@@ -255,7 +262,7 @@
                         <v-card-title>Συνολικές Ενεργές Παραγγελίες</v-card-title>
                     </v-card-item>
                     <v-card-text>
-                        1,284
+                        12
                     </v-card-text>
                     <v-card-actions>
                         <span><v-icon><FeTrendingUp/></v-icon> +12.5% vs προηγούμενου μήνα </span>
@@ -270,7 +277,7 @@
                         <v-card-title>Σε Παραγωγή</v-card-title>
                     </v-card-item>
                     <v-card-text>
-                        1,284
+                        {{ getActiveOrders }}
                     </v-card-text>
                     <v-card-actions>
                         <v-row class="d-flex align-center">
@@ -291,10 +298,10 @@
                         <v-card-title>Έσοδα Σε Κινδυνό</v-card-title>
                     </v-card-item>
                     <v-card-text>
-                        $42,900
+                        {{ getOrdersBalance }}
                     </v-card-text>
                     <v-card-actions>
-                        <span><v-icon><AkTriangleAlert/></v-icon> 12 παραγγελίες καθυστερημένες </span>
+                        <span><v-icon><AkTriangleAlert/></v-icon> {{ getOverdueOrders }} παραγγελίες καθυστερημένες </span>
                     </v-card-actions>
                     <v-icon class="background-icon"><AkTriangleAlert/></v-icon>
                 </v-card>
@@ -303,7 +310,7 @@
         </v-row>
 
         <div class="table-container mt-6">
-            <v-data-table class="" :headers="headers" :items="this.items" item-value="id"
+            <v-data-table :headers="headers" :items="this.items" item-value="id"
                 sort-asc-icon="mdi-sort-ascending"
                 sort-desc-icon="mdi-sort-descending"
                 sort-icon="mdi-swap-vertical"
@@ -343,7 +350,6 @@
                         </h2>
                     </div>
                 </template>
-
                 <template v-slot:[`item.current_stage`]="{item}">
                     <div v-if="item.current_stage.toUpperCase() === 'PREPARING'">
                         <h2 class="stage-header gray">
@@ -425,11 +431,11 @@
                                         <div class="content mt-2">
                                             <div class="d-flex justify-space-between">
                                                 <span class="header">Συνολικό Ποσό:</span>
-                                                <span>€{{ item.final_amount }}</span>
+                                                <span>€{{ parseFloat(item.final_amount/100).toFixed(2) }}</span>  <!-- NEED TO PARSE THAT-->
                                             </div>
                                             <div class="d-flex justify-space-between">
                                                 <span class="header">Υπόλοιπο:</span>
-                                                <span>€{{ item.balance }}</span>
+                                                <span>€{{ parseFloat(item.balance/100).toFixed(2) }}</span> <!-- NEED TO PARSE THAT-->
                                             </div>
                                         </div>
                                     </div>
@@ -493,13 +499,71 @@
                     { title: "Τρέχουσα Φάση", key: "current_stage", value: "current_stage", sortable: true},
                     { title: "Payment Status", key: "payment_status", value: "payment_status", sortable: true},
                     { title: "Στιγμιότυπα", key: "timestamps", value: "timestamps", sortable: true},
-                    
+                ],
+                dialogStatus: false,
+                paymentStatusItems: [
+                    {label: 'Πληρωμένη', value: 'Paid'},
+                    {label: 'Εκκρεμεί', value: 'Pending'},
+                    {label: 'Προκαταβολή', value: 'Deposit'},
+                ],
+                priorityItems: [
+                    {label: 'Χαμηλή', value: 'Low'},
+                    {label: 'Μεσαία', value: 'Medium'},
+                    {label: 'Υψηλή', value: 'High'},
+                ],
+                pickupLocationItems: [
+                    {label: 'Κατάστημα', value: 'Shop'},
+                    {label: 'Παράδοση', value: 'Delivery'},
+                ],     
+                stageItems: [
+                    {label: 'Προετοιμασία', value: 'Preparing'},
+                    {label: 'Κοπή', value: 'Cutting'},
+                    {label: 'Ράψιμο', value: 'Sewing'},
+                    {label: 'Έλεγχος Ποιότητας', value: 'Quality_control'},
+                    {label: 'Παράδοση', value: 'Delivering'},
+                ],
+                sizeItems: [
+                    {label: 'X-SM', value: 'x_small'},
+                    {label: 'SM', value: 'small'},
+                    {label: 'M', value: 'medium'},
+                    {label: 'L', value: 'large'},
+                    {label: 'XL', value: 'x_large'},
+                    {label: '2XL', value: 'xx_large'},
+                    {label: '3XL', value: 'xxx_large'},
+                ],
+                colorItems: [
+                    {label: 'Black', value: 'BLACK'},
+                    {label: 'White', value: 'WHITE'},
                 ],
                 items: [],
+                sumBulance: 0,
+                overdueOrders: 0,
+                todayDate: new Date().toLocaleDateString(),
                 clientsName: "",
                 HiRocketLaunch: HiRocketLaunch,
                 McBookmarkAddLine: McBookmarkAddLine,
-                expanded: []
+                expanded: [],
+                rules: {
+                    required: value => !!value || 'Το πεδίο είναι υποχρεωτικό.',
+                    positive: value => value > 0 || 'Η τιμή πρέπει να είναι μεγαλύτερη από 0.' 
+                },
+                valid: false,
+                form: {
+                    cust_name: "",
+                    qty: null,
+                    product: {
+                        name: "",
+                        color: null,
+                        size: null,
+                    },
+                    stage: null,
+                    pickupLocation: null,
+                    dueDate: "",
+                    priority: null,
+                    final_amount: "",
+                    balance: "",
+                    paymentStatus: null,
+                }
             }
         },
         created(){
@@ -518,6 +582,70 @@
             },
             formatTimestamp(timestamp){
                 return new Date(timestamp).toLocaleString();
+            },
+            async createOrder(){
+                const {valid} = await this.$refs.form.validate();
+
+                if(valid){
+                    alert("not valid");
+                    return
+                } else {
+                    // TODO need to format values
+                    console.log("Pass")
+                    console.log(this.form);
+
+                    this.items.unshift({
+                            id: "11111",
+                            cust_name: this.form.cust_name,
+                            product_name: this.form.product.name,
+                            color: this.form.product.color,
+                            qty: this.form.qty,
+                            current_stage: this.form.stage,
+                            payment_status: this.form.paymentStatus,
+                            final_amount: this.form.final_amount,
+                            balance: this.form.balance,
+                            priority: this.form.priority,
+                            dueDate: this.form.dueDate, // Need to format me!
+                            createdAt: new Date().toLocaleString(),
+                            updatedAt: new Date().toLocaleString(),
+                            deliveredAt: new Date().toLocaleString(),
+                            createdBy: "aloubardis",
+                            updatedBy: "aloubardis",
+                            deletedAt: null
+                        })
+                    console.log(this.items);
+                    this.dialogStatus = false;
+                }
+            },
+            isOverdue(itemDuedate){
+                const [year, month, day] = itemDuedate.split("-");
+                if(new Date(year, month - 1, day) < new Date(this.todayDate)){
+                    // console.log("true");
+                    return true;
+                    // this.overdueOrders += 1;
+                }
+            }
+            
+        },
+        computed: {
+            getActiveOrders(){
+                return this.items.length || 'Not Available'
+            },
+            getOrdersBalance(){
+                this.items.forEach((item) => {
+                    this.sumBulance += parseFloat(item.balance)
+                })
+                return '€'+ (this.sumBulance/100).toFixed(2) || 'Not Available'
+            },
+            getOverdueOrders(){
+                this.items.forEach((item) => {
+                    if(this.isOverdue(item.dueDate)){
+                        this.overdueOrders += 1;
+                    }
+                })
+                console.log(this.items.length)
+                return this.overdueOrders;
+                // return 5;
             }
         }
 
@@ -844,6 +972,13 @@
     .new-order-card .v-card-text :deep(.v-input .v-field__outline__notch::after),
     .new-order-card .v-card-text :deep(.v-input .v-field__outline__end){
         border-color: #e2e8f0;
+        opacity: 1;
+    }
+    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__start),
+    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::before),
+    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::after),
+    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__end){
+        border-color: #b00020;
         opacity: 1;
     }
     .new-order-card .v-card-text :deep(.v-field){

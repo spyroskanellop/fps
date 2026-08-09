@@ -18,216 +18,220 @@
                     </template>
 
                     <template v-slot:default="{ isActive }">
-                        <v-card class="new-customer-card">
-                            <template v-slot:title>
-                                <v-row>
-                                    <v-col cols="auto">
-                                        <v-avatar color="#0369a1" variant="tonal" size="50" rounded="lg">
-                                            <v-icon size="30"><AkPerson/></v-icon>
-                                        </v-avatar>
-                                    </v-col>
-                                    <v-col>
-                                        <h3 class="header-title">Εγγραφή Νέου Πελάτη</h3>
-                                        <p class="header-subtitle">Αναλυση αρχειου πελατη</p>
-                                    </v-col>
-                                    <v-col>
-                                        <v-btn
-                                        @click="isActive.value = false"
-                                        variant="text"
-                                        class="float-right"
-                                        >
-                                            <v-icon>mdi-close</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                            <v-divider></v-divider>
-                        <v-card-text class="mt-4 px-8">
-                            <div>
-                                <v-row class="ga-2 mb-6" no-gutters>
-                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Κυριως Στοιχεια</h3></v-col>
-                                </v-row>
-
-                                <v-row no-gutters class="ga-6 my-4">
-                                    <v-col>
-                                        <h4 class="description mb-2">Αναγνωριστικο Πελατη</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="CLI-2024-TEMP"
-                                            variant="outlined"
-                                            disabled
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col>
-                                        <h4 class="description mb-2">Βιομηχανια</h4>
-                                        <v-select
-                                            density="compact"
-                                            label="Επιλογή Βιομηχανίας"
-                                            :items="['Manufacturing', 'Streetwear', 'Corporate', 'Non-Profit']"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-select>
-                                    </v-col>
-                                </v-row>
-                                <v-row no-gutters class="mb-6">
-                                    <v-col>
-                                        <h4 class="description mb-2">Ονομα Εταιρειας</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="Πληκτρολογήστε το όνομα της εταιρείας..."
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </div>
-
-                            <div>
-                                <v-row class="ga-2 mb-6" no-gutters>
-                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Πληροφορίες Επικοινωνίας</h3></v-col>
-                                </v-row>
-
-                                <v-row no-gutters class="ga-6 my-4">
-                                    <v-col>
-                                        <h4 class="description mb-2">Πρόσωπο Επικοινωνίας</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="Πληκτρολογήστε το όνομα του εκπροσώπου..."
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>    
-
-                                <v-row no-gutters class="ga-6 my-4">
-                                    <v-col>
-                                        <h4 class="description mb-2">Αριθμός Τηλεφώνου</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="+1 555 123 4567"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col>
-                                        <h4 class="description mb-2">Διευθυνση Email</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="example@email.com"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>                           
-                                </v-row>
-                            </div>
-
-                            <div>
-                                <v-row class="ga-2 mb-6" no-gutters>
-                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Στοιχεια Τοποθεσιας</h3></v-col>
-                                </v-row>
-
-                                <v-row class="ga-2 mb-6" no-gutters>
-                                    <v-col>
-                                        <h4 class="description mb-2">Διευθυνση Οδου</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="123 Main Street"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-
-                                <v-row no-gutters class="ga-6 my-4 mb-1">
-                                    <v-col>
-                                        <h4 class="description mb-2">Πόλη</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="New York"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                    <v-col>
-                                        <h4 class="description mb-2">Ταχυδρομικός Κώδικας</h4>
-                                        <v-text-field
-                                            density="compact"
-                                            placeholder="10001"
-                                            variant="outlined"
-                                            hide-details
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </div>
-
-                            <div class="mt-9">
-                                <v-row class="ga-2 mb-6" no-gutters>
-                                    <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                    <v-col><h3>Κατάσταση και Λεπτομέρειες Λειτουργίας</h3></v-col>
-                                </v-row>
-
-                                <div class="status-container">
-                                    <v-row no-gutters class="ga-6 d-flex align-center justify-space-between">
+                        <v-form @prevent-default="addCustomer" ref="form">
+                            <v-card class="new-customer-card">
+                                <template v-slot:title>
+                                    <v-row>
+                                        <v-col cols="auto">
+                                            <v-avatar color="#0369a1" variant="tonal" size="50" rounded="lg">
+                                                <v-icon size="30"><AkPerson/></v-icon>
+                                            </v-avatar>
+                                        </v-col>
                                         <v-col>
-                                            <v-btn class="btn" variant="text" disabled>
-                                                <v-icon><ClShieldCheck/></v-icon>
-                                                is active
+                                            <h3 class="header-title">Εγγραφή Νέου Πελάτη</h3>
+                                            <p class="header-subtitle">Αναλυση αρχειου πελατη</p>
+                                        </v-col>
+                                        <v-col>
+                                            <v-btn @click="isActive.value = false" variant="text" class="float-right">
+                                                <v-icon>mdi-close</v-icon>
                                             </v-btn>
                                         </v-col>
-                                        <v-col class="d-flex align-center justify-end pr-4">
-                                            <v-switch class="switch" color="primary" v-model="this.isActive" inset :model-value="true" hide-details></v-switch>
+                                    </v-row>
+                                </template>
+                                <v-divider></v-divider>
+                            <v-card-text class="mt-4 px-8">
+                                <div>
+                                    <v-row class="ga-2 mb-6" no-gutters>
+                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                        <v-col><h3>Κυριως Στοιχεια</h3></v-col>
+                                    </v-row>
+
+                                    <v-row no-gutters class="ga-6">
+                                        <v-col>
+                                            <h4 class="description mb-2">Αναγνωριστικο Πελατη</h4>
+                                            <v-text-field
+                                                v-model="form.id"
+                                                density="compact"
+                                                placeholder="CUST-12345"
+                                                variant="outlined"
+                                                disabled
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col>
+                                            <h4 class="description mb-2">Βιομηχανια</h4>
+                                            <v-select
+                                                v-model="form.industry"
+                                                density="compact"
+                                                label="Επιλογή Βιομηχανίας"
+                                                :items="industryItems"
+                                                item-title="label"
+                                                item-value="value"
+                                                variant="outlined"
+                                                :rules="[rules.required]"
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row no-gutters class="mb-6">
+                                        <v-col>
+                                            <h4 class="description mb-2">Ονομα Εταιρειας</h4>
+                                            <v-text-field
+                                                v-model="form.name"
+                                                density="compact"
+                                                placeholder="Πληκτρολογήστε το όνομα της εταιρείας..."
+                                                variant="outlined"
+                                                :rules="[rules.required]"
+                                            ></v-text-field>
                                         </v-col>
                                     </v-row>
                                 </div>
 
-                                <v-row no-gutters class="ga-6 my-6 d-flex align-center justify-space-between">
-                                    <v-col>
-                                        <h4 class="description mb-2">Σημειωσεις</h4>
-                                        <v-text-field variant="outlined" placeholder="Προσθέστε σημειώσεις εδώ..." hide-details></v-text-field>
-                                    </v-col>
-                                </v-row>
+                                <div>
+                                    <v-row class="ga-2 mb-6" no-gutters>
+                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                        <v-col><h3>Πληροφορίες Επικοινωνίας</h3></v-col>
+                                    </v-row>
 
-                                <v-row no-gutters class="ga-6 my-6 d-flex align-center justify-space-between">
-                                    <v-col class="timestamp-modal">
-                                        <h4>Δημιουργηθηκε Στις</h4>
-                                        <span>2026-05-24 14:22</span>
-                                    </v-col>
+                                    <v-row no-gutters class="ga-6">
+                                        <v-col>
+                                            <h4 class="description mb-2">Πρόσωπο Επικοινωνίας</h4>
+                                            <v-text-field
+                                                v-model="form.contact_person"
+                                                density="compact"
+                                                placeholder="Πληκτρολογήστε το όνομα του εκπροσώπου..."
+                                                variant="outlined"
+                                                :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>    
 
-                                    <v-col class="timestamp-modal">
-                                        <h4>Ενημερωθηκε Στις</h4>
-                                        <span>2026-05-24 14:22</span>
-                                    </v-col>
+                                    <v-row no-gutters class="ga-6 mb-6">
+                                        <v-col>
+                                            <h4 class="description mb-2">Αριθμός Τηλεφώνου</h4>
+                                            <v-text-field
+                                                v-model="form.phone"
+                                                density="compact"
+                                                placeholder="+1 555 123 4567"
+                                                variant="outlined"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col>
+                                            <h4 class="description mb-2">Διευθυνση Email</h4>
+                                            <v-text-field
+                                                v-model="form.email"
+                                                density="compact"
+                                                placeholder="example@email.com"
+                                                variant="outlined"
+                                                :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>                           
+                                    </v-row>
+                                </div>
 
-                                </v-row>
+                                <div>
+                                    <v-row class="ga-2 mb-6" no-gutters>
+                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                        <v-col><h3>Στοιχεια Τοποθεσιας</h3></v-col>
+                                    </v-row>
 
-                            </div>
+                                    <v-row class="ga-2" no-gutters>
+                                        <v-col>
+                                            <h4 class="description mb-2">Διευθυνση Οδου</h4>
+                                            <v-text-field
+                                                v-model="form.address"
+                                                density="compact"
+                                                placeholder="123 Main Street"
+                                                variant="outlined"
+                                                :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
 
-                        </v-card-text>
-                        <v-divider></v-divider>
-                        <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
-                            <v-btn
-                                class="h-auto"
-                                text="Απόρριψη Αλλαγών"
-                            ></v-btn>
-                            <v-btn
-                                class="h-auto create-user-btn"
-                                text="Δημιουργία Χρήστη"
-                                :prepend-icon="BxUserPlus"
-                                @click="isActive.value = false"
-                            ></v-btn>
+                                    <v-row no-gutters class="ga-6 mb-1">
+                                        <v-col>
+                                            <h4 class="description mb-2">Πόλη</h4>
+                                            <v-text-field
+                                                v-model="form.city"
+                                                density="compact"
+                                                placeholder="Αττική"
+                                                variant="outlined"
+                                                :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col>
+                                            <h4 class="description mb-2">Ταχυδρομικός Κώδικας</h4>
+                                            <v-text-field
+                                                v-model="form.postal_code"
+                                                density="compact"
+                                                placeholder="10001"
+                                                variant="outlined"
+                                                :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </div>
 
-                        </v-card-actions>
-                        </v-card>
+                                <div class="mt-9">
+                                    <v-row class="ga-2 mb-6" no-gutters>
+                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider color="#0369a1" class="border-opacity-100"></v-divider></v-col>
+                                        <v-col><h3>Κατάσταση και Λεπτομέρειες Λειτουργίας</h3></v-col>
+                                    </v-row>
+
+                                    <div class="status-container">
+                                        <v-row no-gutters class="ga-6 d-flex align-center justify-space-between">
+                                            <v-col>
+                                                <v-btn class="btn" variant="text" disabled>
+                                                    <v-icon><ClShieldCheck/></v-icon>
+                                                    is active
+                                                </v-btn>
+                                            </v-col>
+                                            <v-col class="d-flex align-center justify-end pr-4">
+                                                <v-switch class="switch" color="primary" v-model="this.isActive" inset :model-value="true" hide-details></v-switch>
+                                            </v-col>
+                                        </v-row>
+                                    </div>
+
+                                    <v-row no-gutters class="ga-6 my-6 d-flex align-center justify-space-between">
+                                        <v-col>
+                                            <h4 class="description mb-2">Σημειωσεις</h4>
+                                            <v-textarea v-model="form.notes" variant="outlined" placeholder="Προσθέστε σημειώσεις εδώ..." hide-details></v-textarea>
+                                        </v-col>
+                                    </v-row>
+
+                                    <v-row no-gutters class="ga-6 my-6 d-flex align-center justify-space-between">
+                                        <v-col class="timestamp-modal">
+                                            <h4>Δημιουργηθηκε Στις</h4>
+                                            <span>{{ new Date().toLocaleDateString() }}</span>
+                                        </v-col>
+
+                                        <v-col class="timestamp-modal">
+                                            <h4>Ενημερωθηκε Στις</h4>
+                                            <span>{{ new Date().toLocaleDateString() }}</span>
+                                        </v-col>
+
+                                    </v-row>
+
+                                </div>
+
+                            </v-card-text>
+                            <v-divider></v-divider>
+                            <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
+                                <v-btn
+                                    class="h-auto"
+                                    text="Απόρριψη Αλλαγών"
+                                ></v-btn>
+                                <v-btn
+                                    class="h-auto create-user-btn"
+                                    text="Δημιουργία Χρήστη"
+                                    :prepend-icon="BxUserPlus"
+                                    type="submit"
+                                ></v-btn>
+
+                            </v-card-actions>
+                            </v-card>
+                            
+                        </v-form>
                     </template>
                     </v-dialog>
-
-
-
-
             </v-col>
         </v-row>
 
@@ -235,10 +239,10 @@
             <v-col>
                 <v-card class="mx-auto py-2 px-5">
                     <v-card-item>
-                        <v-card-title>Total Customers</v-card-title>
+                        <v-card-title>Συνολικοι Πελατες</v-card-title>
                     </v-card-item>
                     <v-card-text>
-                        1,284
+                        {{ getTotalCustomers }}
                     </v-card-text>
                     <v-card-actions>
                         <span><v-icon><FeTrendingUp/></v-icon> +12.5% vs last month </span>
@@ -268,10 +272,10 @@
             <v-col>
                 <v-card class="mx-auto py-2 px-5 risk">
                     <v-card-item>
-                        <v-card-title>Revenue At Risk</v-card-title>
+                        <v-card-title>Ανενεργα συμβολαια</v-card-title>
                     </v-card-item>
                     <v-card-text>
-                        $42,900
+                        11
                     </v-card-text>
                     <v-card-actions>
                         <span><v-icon><AkTriangleAlert/></v-icon> 12 orders delayed at QC </span>
@@ -283,22 +287,22 @@
         </v-row>
 
         <div class="table-container mt-6">
-            <v-data-table class="" :headers="headers" :items="this.items" item-value="id"
+            <v-data-table :headers="headers" :items="this.items" item-value="id"
                 sort-asc-icon="mdi-sort-ascending"
                 sort-desc-icon="mdi-sort-descending"
-                sort-icon="mdi-swap-vertical"
-                show-expand>
+                sort-icon="mdi-swap-vertical">
+                <!-- Id Will be hidden probably -->
                 <template v-slot:[`item.id`]="{item}">
                     <div>
                         <h2 class="client-header">
-                            {{ item.id }}
+                            #CUST-{{ item.id }}
                         </h2>
                     </div>
                 </template>
-                <template v-slot:[`item.client_name`]="{item}">
+                <template v-slot:[`item.name`]="{item}">
                     <div>
                         <h2 class="cust-header">
-                            {{ item.client_name }}
+                            {{ item.name }}
                         </h2>
                     </div>
                 </template>
@@ -324,7 +328,6 @@
                         </h2>
                     </div>
                 </template>
-
                 <template v-slot:[`item.industry`]="{item}">
                     <div>
                         <h2 class="stage-header blue">
@@ -337,13 +340,13 @@
                     <div v-if="item.status.toLowerCase() === 'active'">
                         <h2 class="active status">
                             <v-icon>mdi-circle-medium</v-icon>
-                            {{ item.status }}
+                            Ενεργος 
                         </h2>
                     </div>
-                    <div v-else-if="item.status.toLowerCase() === 'contract pending'">
+                    <div v-else-if="item.status.toLowerCase() === 'contract_pending'">
                         <h2 class="pending status">
                             <v-icon>mdi-circle-medium</v-icon>
-                            {{ item.status }}
+                            Σε εκκρεμοτητα
                         </h2>
                     </div>                 
                     <div v-else>
@@ -355,14 +358,17 @@
                        
                 </template>
                 <template v-slot:[`item.notes`]="{item}">
-                    <div class="truncate notes">
+                    <div v-if="item.notes" class="truncate notes">
                         {{ item.notes }}
+                    </div>
+                    <div v-else>
+                        -
                     </div>
                 </template>
                 <template v-slot:[`item.timestamps`]="{item}">
                     <div class="timestamps d-flex flex-column">
-                        <span>C: {{ item.created_at }}</span>
-                        <span>U: {{ item.updated_at }}</span>
+                        <span>C: {{ item.createdAt }}</span>
+                        <span>U: {{ item.updatedAt }}</span>
                     </div>
                 </template>
 
@@ -376,6 +382,7 @@
                         </td>
                     </tr>
                 </template>
+                
             </v-data-table>
         </div>
 
@@ -383,7 +390,8 @@
 </template>
 <script>
     import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine, AkPerson, ClShieldCheck, BxUserPlus } from '@kalimahapps/vue-icons';
-    
+    import { getCustomers, createCustomer } from "../api/customersService";
+
     export default {
         name: "Orders",
         components: {
@@ -405,20 +413,20 @@
             return {
                 // Data properties for orders can be added here
                 headers: [
-                    { title: "Id", key: "id", value: "id", sortable: true},
-                    { title: "Cust Name", key: "client_name", value: "client_name", sortable: true},
-                    { title: "Contact Person", key: "contact_person", value: "contact_person", sortable: true},
-                    { title: "Communication", key: "communication", value: "communication", sortable: true},
-                    { title: "Location", key: "location", value: "location", sortable: true},
-                    { title: "Industry", key: "industry", value: "industry", sortable: true},
-                    { title: "Status", key: "status", value: "status", sortable: true},
-                    { title: "Notes", key: "notes", value: "notes", sortable: true},
-                    { title: "Timestamps", key: "timestamps", value: "timestamps", sortable: true},
+                    { title: "Αναγνωριστικο", key: "id", value: "id", sortable: true},
+                    { title: "Επωνυμια", key: "name", value: "name", sortable: true},
+                    { title: "Προσωπο επικοινωνιας", key: "contact_person", value: "contact_person", sortable: true},
+                    { title: "Επικοινωνια", key: "communication", value: "communication", sortable: true},
+                    { title: "Τοποθεσια", key: "location", value: "location", sortable: true},
+                    { title: "Βιομηχανια", key: "industry", value: "industry", sortable: true},
+                    { title: "Κατασταση", key: "status", value: "status", sortable: true},
+                    { title: "Σημειωσεις", key: "notes", value: "notes", sortable: true},
+                    { title: "Στιγμιοτυπα", key: "timestamps", value: "timestamps", sortable: true},
                 ],
                 items: [
                     {
                         id: '#CUST-1024',
-                        client_name: 'Vanguard Neon',
+                        name: 'Vanguard Neon',
                         contact_person: 'Sarah Jenkins',
                         phone: '+1 (555) 123-4567',
                         email: 's.jenkins@vanguard.io',
@@ -428,12 +436,12 @@
                         industry: 'Streetwear',
                         status: 'Active',
                         notes: 'Looking to expand into new markets in Q3.',
-                        created_at: '2026-05-01T10:15:30Z',
-                        updated_at: '2026-05-10T14:45:00Z'
+                        createdAt: '2026-05-01T10:15:30Z',
+                        updatedAt: '2026-05-10T14:45:00Z'
                     },
                     {
                         id: '#CUST-1025',
-                        client_name: 'Aether Systems',
+                        name: 'Aether Systems',
                         contact_person: 'Marcus Thorne',
                         phone: '+1 (555) 123-4567',
                         email: 'prc-99-alpha@vanguard.io',
@@ -443,12 +451,12 @@
                         industry: 'Manufacturing',
                         status: 'Inactive',
                         notes: 'Recently completed a successful production run with Vanguard.',
-                        created_at: '2026-04-15T09:00:00Z',
-                        updated_at: '2026-05-05T16:30:00Z'
+                        createdAt: '2026-04-15T09:00:00Z',
+                        updatedAt: '2026-05-05T16:30:00Z'
                     },
                     {
                         id: '#CUST-1026 ',
-                        client_name: 'Green Future Organics',
+                        name: 'Green Future Organics',
                         contact_person: 'Elena Rodriguez',
                         phone: '+1 (555) 123-4567',
                         email: 'e.rod@greenfuture.org',
@@ -456,14 +464,14 @@
                         city: 'Boulder',
                         zipCode: '97201',
                         industry: 'Non-Profit',
-                        status: 'Contract Pending',
+                        status: 'contract_pending',
                         notes: 'In discussions for a potential partnership on sustainable packaging.',
-                        created_at: '2026-05-05T11:30:00Z',
-                        updated_at: '2026-05-12T13:45:00Z'
+                        createdAt: '2026-05-05T11:30:00Z',
+                        updatedAt: '2026-05-12T13:45:00Z'
                     },
                     {
                         id: '#CUST-1027',
-                        client_name: 'C-88219',
+                        name: 'C-88219',
                         contact_person: 'PRC-99-ALPHA',
                         phone: '+1 (555) 123-4567',
                         email: 'prc-99-alpha@vanguard.io',
@@ -473,12 +481,12 @@
                         industry: 'Manufacturing',
                         status: 'Active',
                         notes: 'Looking to expand into new markets in Q3.',
-                        created_at: '2026-05-01T10:15:30Z',
-                        updated_at: '2026-05-10T14:45:00Z'
+                        createdAt: '2026-05-01T10:15:30Z',
+                        updatedAt: '2026-05-10T14:45:00Z'
                     },
                     {
                         id: '#CUST-1028',
-                        client_name: 'C-88219',
+                        name: 'C-88219',
                         contact_person: 'PRC-99-ALPHA',
                         phone: '+1 (555) 123-4567',
                         email: 'prc-99-alpha@vanguard.io',
@@ -488,12 +496,12 @@
                         industry: 'Corporate',
                         status: 'Active',
                         notes: 'Looking to expand into new markets in Q3.',
-                        created_at: '2026-05-01T10:15:30Z',
-                        updated_at: '2026-05-10T14:45:00Z'
+                        createdAt: '2026-05-01T10:15:30Z',
+                        updatedAt: '2026-05-10T14:45:00Z'
                     },
                     {
                         id: '#CUST-1029',
-                        client_name: 'C-88219',
+                        name: 'C-88219',
                         contact_person: 'PRC-99-ALPHA',
                         phone: '+1 (555) 123-4567',
                         email: 'prc-99-alpha@vanguard.io',
@@ -503,12 +511,12 @@
                         industry: 'Corporate',
                         status: 'Inactive',
                         notes: 'Recently completed a successful production run with Vanguard.',
-                        created_at: '2026-04-15T09:00:00Z',
-                        updated_at: '2026-05-05T16:30:00Z'
+                        createdAt: '2026-04-15T09:00:00Z',
+                        updatedAt: '2026-05-05T16:30:00Z'
                     },
                     {
                         id: '#CUST-1030',
-                        client_name: 'C-88219',
+                        name: 'C-88219',
                         contact_person: 'PRC-99-ALPHA',
                         phone: '+1 (555) 123-4567',
                         email: 'prc-99-alpha@vanguard.io',
@@ -518,12 +526,12 @@
                         industry: 'Streetwear',
                         status: 'Inactive',
                         notes: 'Recently completed a successful production run with Vanguard.',
-                        created_at: '2026-04-15T09:00:00Z',
-                        updated_at: '2026-05-05T16:30:00Z'
+                        createdAt: '2026-04-15T09:00:00Z',
+                        updatedAt: '2026-05-05T16:30:00Z'
                     },
                     {
                         id: '#CUST-1031',
-                        client_name: 'C-88219',
+                        name: 'C-88219',
                         contact_person: 'PRC-99-ALPHA',
                         phone: '+1 (555) 123-4567',
                         email: 'prc-99-alpha@vanguard.io',
@@ -533,15 +541,111 @@
                         industry: 'Streetwear',
                         status: 'Active',
                         notes: 'Looking to expand into new markets in Q3.',
-                        created_at: '2026-05-01T10:15:30Z',
-                        updated_at: '2026-05-10T14:45:00Z'
+                        createdAt: '2026-05-01T10:15:30Z',
+                        updatedAt: '2026-05-10T14:45:00Z'
                     },
+                ],
+                form: {
+                    id: "",
+                    name: "",
+                    contact_person: "",
+                    phone: "",
+                    email: "",
+                    address: "",
+                    city: "",
+                    industry: null,
+                    status: "",
+                    notes: "",
+                },
+                industryItems: [
+                    { label: 'Κατασκευές', value: 'manufacturing'},
+                    { label: 'Ένδυση', value: 'streetwear'},
+                    { label: 'Αλυσίδα', value: 'Corporate'},
                 ],
                 isActive: true,
                 HiRocketLaunch: HiRocketLaunch,
                 McBookmarkAddLine: McBookmarkAddLine,
                 BxUserPlus: BxUserPlus,
-                expanded: []
+                expanded: [],
+                rules: {
+                    email: [
+                        value => {
+                            if (regex.test(value)) {
+                                console.log("Valid Email address");
+                                return true;
+                            } else {
+                                console.log("Email not valid")
+                                return 'Το email δεν είναι έγκυρο';
+                            }
+                        }
+                    ],
+                    required: value => !!value || 'Το πεδίο είναι υποχρεωτικό.',
+                }
+            }
+        },
+        methods:{
+            fetchCustomers(){
+                getCustomers()
+                    .then((res) => {
+                        console.log(res.data.customersList);
+                        this.items = res.data.customersList;
+                    })
+                    .catch((err) => {
+
+                    })
+                    .finally()
+            },
+            addCustomer(){
+                console.log("Add customer");
+                this.$refs.form.validate()
+                .then((res) => {
+                    console.log(res);
+                    if(res.valid){
+                        createCustomer(this.form)
+                        .then((res) => {
+                            console.log(res)
+                                this.users.unshift({
+                                    id: this.form.id,
+                                    name: this.form.name,
+                                    contact_person: this.form.contact_person,
+                                    email: this.form.email,
+                                    phone: this.form.phone,
+                                    industry: this.form.industry,
+                                    status: this.form.status,
+                                    notes: this.form.notes,
+                                    createdAt: new Date().toLocaleString(),
+                                    updatedAt: new Date().toLocaleString(),
+                                    deliveredAt: new Date().toLocaleString(),
+                                    createdBy: "aloubardis",
+                                    updatedBy: "aloubardis",
+                                    deletedAt: null
+                                })
+                            console.log(this.users);    
+                            this.dialogStatus = false;
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                        .finally(() => {
+
+                        })
+                    }
+                    else {
+                        alert("Not valid");
+                    }
+                })
+                .catch((err) => {
+
+                })
+                .finally();
+            }
+        },
+        created(){
+            this.fetchCustomers();
+        },
+        computed:{
+            getTotalCustomers(){
+                return this.items.length;
             }
         }
 
@@ -868,6 +972,13 @@
     .new-customer-card .v-card-text :deep(.v-field){
         border-radius: 0.5rem;
         padding: .2rem 1rem .2rem 0;
+    }
+    .new-customer-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__start),
+    .new-customer-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::before),
+    .new-customer-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::after),
+    .new-customer-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__end){
+        border-color: #b00020;
+        opacity: 1;
     }
     :deep(.v-overlay__scrim){
         background: #0f172a66;
