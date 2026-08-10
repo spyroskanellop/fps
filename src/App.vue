@@ -17,123 +17,115 @@
         </v-container>
       </v-container>
     </div>
-    <!-- <Navbar /> -->
-      <v-navigation-drawer
-        v-if="!isMobile"
-        v-model="drawer"
-        :rail="rail"
-        :rail-width="wider ? 80 : undefined"
-        class="nav-drawer"
-        permanent
-      >
-        <div class="header">
-          <v-list>
-            <v-list-item
-              title="Fabrik MES">
-              <template v-slot:prepend>
-                <v-avatar rounded="0" size="50" @click="rail = !rail">
-                  <v-img :src="fabrikLogo" />
-                </v-avatar>
+    <v-navigation-drawer
+      v-if="!isMobile && this.isLoggedIn" v-model="drawer" :rail="rail" :rail-width="wider ? 80 : undefined"
+      class="nav-drawer" permanent>
+      <div class="header">
+        <v-list>
+          <v-list-item
+            title="Fabrik MES">
+            <template v-slot:prepend>
+              <v-avatar rounded="0" size="50" @click="rail = !rail">
+                <v-img :src="fabrikLogo" />
+              </v-avatar>
 
-              </template>
-              <template v-slot:append>
-                <v-btn
-                  :inert="rail"
-                  icon="mdi-chevron-left"
-                  variant="text"
-                  @click.stop="rail = !rail"
-                ></v-btn>
-              </template>
-            </v-list-item>
-          </v-list>
-        </div>
+            </template>
+            <template v-slot:append>
+              <v-btn
+                :inert="rail"
+                icon="mdi-chevron-left"
+                variant="text"
+                @click.stop="rail = !rail"
+              ></v-btn>
+            </template>
+          </v-list-item>
+        </v-list>
+      </div>
+      
+      <v-divider></v-divider>
+
+      <v-container v-if="!rail">
+        <h2 class="title-list">Λειτουργίες</h2>
+      </v-container>
+      <v-list density="compact" nav>
+        <v-list-item
+          v-for="item in items"
+          :key="item.value"
+          router
+          :to="item.route"
+          :class="{ 'pl-3': wider }"
+          :prepend-icon="item.icon"
+          :title="item.title"
+          :value="item.value"
+        ></v-list-item>
+      </v-list>
+
+      <v-list density="compact" nav class="bottom-list">
+      <v-divider></v-divider>
+        <v-list-item
+          v-for="item in bottomItems"
+          :key="item.value"
+          :class="{ 'pl-3': wider }"
+          :prepend-icon="item.icon"
+          :title="item.title"
+          :value="item.value"
+        ></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar v-if="!isMobile && this.isLoggedIn" app height="75" elevation="0" class="mr-2">
+      <v-row>
+        <v-col cols="auto" class="d-flex align-center justify-end"><BsBell /></v-col>
+        <v-col cols="auto" class="d-flex align-center justify-end">  <v-divider class="border-opacity-100" color="#e2e8f0" vertical></v-divider></v-col>
         
-        <v-divider></v-divider>
+        <v-col cols="auto">
+          <v-menu offset-y transition="slide-x-transition" class="account-menu">
+              <!-- Account button -->
+              <template v-slot:activator="{props}">
+                <v-avatar
+                  size="36px"
+                  v-bind="props">
+                  <v-img
+                    alt="Avatar"
+                    src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                  ></v-img>
+                </v-avatar>
+              </template>
 
-        <v-container v-if="!rail">
-          <h2 class="title-list">Λειτουργίες</h2>
-        </v-container>
-        <v-list density="compact" nav>
-          <v-list-item
-            v-for="item in items"
-            :key="item.value"
-            router
-            :to="item.route"
-            :class="{ 'pl-3': wider }"
-            :prepend-icon="item.icon"
-            :title="item.title"
-            :value="item.value"
-          ></v-list-item>
-        </v-list>
-
-        <v-list density="compact" nav class="bottom-list">
-        <v-divider></v-divider>
-          <v-list-item
-            v-for="item in bottomItems"
-            :key="item.value"
-            :class="{ 'pl-3': wider }"
-            :prepend-icon="item.icon"
-            :title="item.title"
-            :value="item.value"
-          ></v-list-item>
-        </v-list>
-      </v-navigation-drawer>
-      <v-app-bar v-if="!isMobile" app height="75" elevation="0" class="mr-2">
-        <v-row>
-          <v-col cols="auto" class="d-flex align-center justify-end"><BsBell /></v-col>
-          <v-col cols="auto" class="d-flex align-center justify-end">  <v-divider class="border-opacity-100" color="#e2e8f0" vertical></v-divider></v-col>
-          
-          <v-col cols="auto">
-            <v-menu offset-y transition="slide-x-transition" class="account-menu">
-                <!-- Account button -->
-                <template v-slot:activator="{props}">
-                  <v-avatar
-                    size="36px"
-                    v-bind="props">
-                    <v-img
-                      alt="Avatar"
-                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-                    ></v-img>
-                  </v-avatar>
-                </template>
+              <v-card>
+                <v-list min-width="250" class="overflow-hidden px-0 pb-1 menu-header">
+                  <v-row class="px-4 py-1">
+                    <v-col cols="auto" class="d-flex justify-end">
+                      <v-avatar color="primary" variant="tonal" size="large">
+                        <span class="text-h6 font-weight-bold">S</span>
+                      </v-avatar>
+                    </v-col>
+                    <v-col class="d-flex flex-column justify-center">
+                      <span class="text-h8" style="line-height: 1.5;">Spyros</span>
+                      <p class="text-caption" style="color: #A4AABC; line-height: 1.5;">ADMIN</p>
+                    </v-col>
+                  </v-row>
   
-                <v-card>
-                  <v-list min-width="250" class="overflow-hidden px-0 pb-1 menu-header">
-                    <v-row class="px-4 py-1">
-                      <v-col cols="auto" class="d-flex justify-end">
-                        <v-avatar color="primary" variant="tonal" size="large">
-                          <span class="text-h6 font-weight-bold">S</span>
-                        </v-avatar>
-                      </v-col>
-                      <v-col class="d-flex flex-column justify-center">
-                        <span class="text-h8" style="line-height: 1.5;">Spyros</span>
-                        <p class="text-caption" style="color: #A4AABC; line-height: 1.5;">ADMIN</p>
-                      </v-col>
-                    </v-row>
-    
-                    <v-divider class="mt-2"></v-divider>
-                    <div class="mt-2 px-3">
-                      <v-btn v-for="item in options" :key="item.text" class="icon-text justify-start" color="#A4AABC" :title="item.text" rounded="xs" variant="text" block :prepend-icon="item.icon" style="text-transform: capitalize;">{{ item.text }}</v-btn>
-                    </div>
-                    <v-divider class="mt-2"></v-divider>
-                    <div class="my-2 px-3">
-                        <v-btn rounded="xs" variant="text" color="#ae152d" block prepend-icon="mdi-exit-to-app" class="justify-start" style="text-transform: capitalize;" @click="logOut">Logout</v-btn>
-                    </div>
-                  </v-list>
-                </v-card>
-            </v-menu>
-          </v-col>
-        </v-row>
-      </v-app-bar>
+                  <v-divider class="mt-2"></v-divider>
+                  <div class="mt-2 px-3">
+                    <v-btn v-for="item in options" :key="item.text" class="icon-text justify-start" color="#A4AABC" :title="item.text" rounded="xs" variant="text" block :prepend-icon="item.icon" style="text-transform: capitalize;">{{ item.text }}</v-btn>
+                  </div>
+                  <v-divider class="mt-2"></v-divider>
+                  <div class="my-2 px-3">
+                      <v-btn rounded="xs" variant="text" color="#ae152d" block prepend-icon="mdi-exit-to-app" class="justify-start" style="text-transform: capitalize;" @click="logOut">Logout</v-btn>
+                  </div>
+                </v-list>
+              </v-card>
+          </v-menu>
+        </v-col>
+      </v-row>
+    </v-app-bar>
 
-      <v-main v-if="!isMobile">
-        <div class="blur-box"></div>
-        <router-view></router-view>
-        <!-- <div class="blur-box bottom"></div> -->
-      </v-main>
+    <v-main v-if="!isMobile">
+      <div class="blur-box"></div>
+      <router-view></router-view>
+    </v-main>
 
-
-    <v-footer app absolute border height="40" class="d-flex justify-center align-center white--text mt-4">
+    <v-footer v-if="isLoggedIn" app absolute border height="40" class="d-flex justify-center align-center white--text mt-4">
       <p style="color: #64748b;">&copy; 2026 © <span style="color: #0369a1">Fabrik</span>, All Rights Reserved</p>
     </v-footer>
   
@@ -142,6 +134,8 @@
 
 <script>
 import Navbar from "./components/Navbar.vue";
+import { useAuthStore } from "./stores/auth";
+import { useUserPreferencesStore } from "./stores/userPreferences";
 import { FlClipboardTaskListLtr, CaTreeView, FlPeopleChat, BsShield, MdLogout, BsBell } from '@kalimahapps/vue-icons';
 import fabrikLogo from '@/assets/fabrik_f_logo.png'
 
@@ -157,6 +151,9 @@ export default {
     drawer: true,
     rail: true,
     wider: true,
+    authStore: useAuthStore(),
+    userPreferencesStore: useUserPreferencesStore(),
+    showMain: false,
     fabrikLogo,
     items: [
       { icon: FlClipboardTaskListLtr, title: 'Παραγγελίες', value: 'orders', route: "/orders" },
@@ -175,13 +172,68 @@ export default {
     ],
   }),
   methods: {
-    
-  },
-  computed: {
-    isMobile() {
-      return this.$vuetify.display.mobile
+    updateLoggedInStatus(){
+      this.isLoggedIn = ! this.isLoggedIn;
+    },
+    handleLogout() {
+      console.log("Logging out");
+      this.authStore.logout(); // Call logout from the store
+      // this.$router.push("/login"); // Redirect to login page
+    },
+    getInitialLetters(s){
+      const strings = s.split(" ");
+      return strings[0][0] + strings[1][0];
+    },
+    changeTheme(mode){
+      const modes = {
+        light: () => this.setTheme('light'),
+        dark: () => this.setTheme('dark'),
+        midnight: () => this.setTheme('midnight'), 
+      }
+      modes[mode]?.()
+    },
+    setTheme(theme){
+      this.them.global.name = theme;
     }
   },
+  computed: {
+    isLoggedIn() {
+      console.log("Checking if user is logged in:", this.authStore.isLoggedIn);
+      return this.authStore.isLoggedIn;
+    },
+    isMobile() {
+      return this.$vuetify.display.mobile
+    },
+    calculateWidth() {
+      if (this.isLoggedIn) {
+        return `calc(100% - ${this.userPreferencesStore.getDrawerWidth}px)`;
+      }
+    },
+    calculateStyles() {
+      return {
+        left: `${this.userPreferencesStore.getDrawerWidth}px`,
+        padding: "32px",
+        'padding-left': '16px',
+        'padding-right': '16px',
+        top: '50px'
+      };
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.showMain = true;
+    });
+  },
+  created(){
+    this.$watch(
+      () => this.authStore.isLoggedIn, 
+      (val) => {
+        if(!val){
+          this.$router.push("/login")
+        }
+      }
+    )
+  }
 };
 </script>
 

@@ -4,6 +4,7 @@ import Workflow from '../views/Workflow.vue'
 import Customers from '../views/Customers.vue'
 import Users from '../views/Users.vue'
 import Login from '../views/Login.vue'
+import { useAuthStore } from '../stores/auth';
 
 
 const router = createRouter({
@@ -13,26 +14,31 @@ const router = createRouter({
       path: '/',
       name: 'dashboard',
       component: Orders,
+      meta: { requiresAuth: true } 
     },
     {
       path: '/orders',
       name: 'orders',
       component: Orders,
+      meta: { requiresAuth: true } 
     },
     {
       path: '/workflow',
       name: 'workflow',
       component: Workflow,
+      meta: { requiresAuth: true } 
     },
     {
       path: '/customers',
       name: 'customers',
       component: Customers,
+      meta: { requiresAuth: true }
     },
     {
       path: '/users',
       name: 'users',
       component: Users,
+      // meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -42,4 +48,12 @@ const router = createRouter({
   ],
 })
 
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  if (to.matched.some(record => record.meta.requiresAuth) && !authStore.isLoggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 export default router

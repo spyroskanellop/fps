@@ -17,6 +17,7 @@ export default function initializeMockAdapter(instance) {
     console.log("%cInitializing MockAdapter", styles.join(';'));
 
     const mock = new MockAdapter(instance);
+    console.log(mock);
 
     mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/users`).reply(config => {
         if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
@@ -136,7 +137,6 @@ export default function initializeMockAdapter(instance) {
             message: "Unauthenticated"
         }]
     })
-
     mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/orders`).reply(config => {
         if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
             return [200,
@@ -396,7 +396,6 @@ export default function initializeMockAdapter(instance) {
             message: "Unauthenticated"
         }]
     })
-
     mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/customers`).reply(config => {
         if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
             return [200,
@@ -458,7 +457,6 @@ export default function initializeMockAdapter(instance) {
             message: "Unauthenticated"
         }]
     })
-
     mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/customers/1`).reply(config => {
         if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
             return [200,
@@ -511,6 +509,17 @@ export default function initializeMockAdapter(instance) {
             message: "Unauthenticated"
         }]
     })
+    mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/auth/login`).reply(config => {
+        return [200, {
+            user: {
+                fullName: "Spyros Kanellopoulos",
+                role: "ADMIN"
+            },
+            access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJyb2xlIjoiYWRtaW4iLCJleHBpcmF0aW9uIjoiMjAyNS0wNS0xOVQxMjowMDowMFoifQ.L5nLbv7KQNybHP2PoDiFh2hVI5h_6qpa2TDFl7UL_D0"
+        }]
+    })
+
+
     // ================================================================================================================================================== //
 
     mock.onDelete(new RegExp(`^${import.meta.env.VITE_APP_SERVICE_URL}/patients/`)).reply(config => {
@@ -544,4 +553,11 @@ export default function initializeMockAdapter(instance) {
     });
 
 
+    mock.onAny().reply(config => {
+        console.log('UNMATCHED REQUEST')
+        console.log('method:', config.method)
+        console.log('url:', config.url)
+
+        return [404]
+    })
 }

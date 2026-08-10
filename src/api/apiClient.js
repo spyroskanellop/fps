@@ -3,10 +3,10 @@ import initializeMockAdapter from '../mock/mockAdapter'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_APP_SERVICE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  },
+  // headers: {
+  //   'Content-Type': 'application/json',
+  //   'Accept': 'application/json'
+  // },
   timeout: 5000,
 });
 

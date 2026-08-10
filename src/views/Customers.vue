@@ -596,7 +596,6 @@
                     .finally()
             },
             addCustomer(){
-                console.log("Add customer");
                 this.$refs.form.validate()
                 .then((res) => {
                     console.log(res);
@@ -604,22 +603,22 @@
                         createCustomer(this.form)
                         .then((res) => {
                             console.log(res)
-                                this.users.unshift({
-                                    id: this.form.id,
-                                    name: this.form.name,
-                                    contact_person: this.form.contact_person,
-                                    email: this.form.email,
-                                    phone: this.form.phone,
-                                    industry: this.form.industry,
-                                    status: this.form.status,
-                                    notes: this.form.notes,
-                                    createdAt: new Date().toLocaleString(),
-                                    updatedAt: new Date().toLocaleString(),
-                                    deliveredAt: new Date().toLocaleString(),
-                                    createdBy: "aloubardis",
-                                    updatedBy: "aloubardis",
-                                    deletedAt: null
-                                })
+                            this.users.unshift({
+                                id: this.form.id,
+                                name: this.form.name,
+                                contact_person: this.form.contact_person,
+                                email: this.form.email,
+                                phone: this.form.phone,
+                                industry: this.form.industry,
+                                status: this.form.status,
+                                notes: this.form.notes,
+                                createdAt: new Date().toLocaleString(),
+                                updatedAt: new Date().toLocaleString(),
+                                deliveredAt: new Date().toLocaleString(),
+                                createdBy: "aloubardis",
+                                updatedBy: "aloubardis",
+                                deletedAt: null
+                            })
                             console.log(this.users);    
                             this.dialogStatus = false;
                         })
