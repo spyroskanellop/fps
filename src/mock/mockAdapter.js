@@ -17,10 +17,9 @@ export default function initializeMockAdapter(instance) {
     console.log("%cInitializing MockAdapter", styles.join(';'));
 
     const mock = new MockAdapter(instance);
-    console.log(mock);
 
     mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/users`).reply(config => {
-        if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
+        if (config.headers.Authorization === `Bearer ${JSON.parse(window.localStorage.auth).token}` && config.headers.Accept === 'application/json, text/plain, */*') {
             return [200,
                 {
                     usersList: [
@@ -138,7 +137,7 @@ export default function initializeMockAdapter(instance) {
         }]
     })
     mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/orders`).reply(config => {
-        if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
+        if (config.headers.Authorization === `Bearer ${JSON.parse(window.localStorage.auth).token}` && config.headers.Accept === 'application/json, text/plain, */*') {
             return [200,
                 {
                     ordersList: [
@@ -510,13 +509,24 @@ export default function initializeMockAdapter(instance) {
         }]
     })
     mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/auth/login`).reply(config => {
-        return [200, {
-            user: {
-                fullName: "Spyros Kanellopoulos",
-                role: "ADMIN"
-            },
-            access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJyb2xlIjoiYWRtaW4iLCJleHBpcmF0aW9uIjoiMjAyNS0wNS0xOVQxMjowMDowMFoifQ.L5nLbv7KQNybHP2PoDiFh2hVI5h_6qpa2TDFl7UL_D0"
+        const params = new URLSearchParams(config.data)
+        const usernameOrEmail = params.get('usernameOrEmail')
+        const password = params.get('password')
+        
+        if (usernameOrEmail === 'root' && password === 'root') {
+            return [200, {
+                user: {
+                    fullName: "Spyros Kanellopoulos",
+                    role: "ADMIN"
+                },
+                access_token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJyb2xlIjoiYWRtaW4iLCJleHBpcmF0aW9uIjoiMjAyNS0wNS0xOVQxMjowMDowMFoifQ.L5nLbv7KQNybHP2PoDiFh2hVI5h_6qpa2TDFl7UL_D0"
+            }]
+        }
+
+        return [401, {
+            message: 'Invalid username or password'
         }]
+        
     })
 
 

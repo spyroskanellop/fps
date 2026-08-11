@@ -2,26 +2,26 @@ import axios from 'axios'
 import initializeMockAdapter from '../mock/mockAdapter'
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_APP_SERVICE_URL,
-  // headers: {
-  //   'Content-Type': 'application/json',
-  //   'Accept': 'application/json'
-  // },
-  timeout: 5000,
-});
+    baseURL: import.meta.env.VITE_APP_SERVICE_URL,
+    timeout: 5000,
+})
 
 apiClient.interceptors.request.use(
-  config => {
-    const auth = JSON.parse(localStorage.getItem('auth'));
-    if (auth) {
-      config.headers.Authorization = `Bearer ${auth.token}`;
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
+    config => {
+        if (config.url === '/auth/login') {
+            return config
+        }
+        console.log(config);
+        const auth = JSON.parse(localStorage.getItem('auth'))
+
+        if (auth?.token) {
+            config.headers.Authorization = `Bearer ${auth.token}`
+        }
+
+        return config
+    },
+    error => Promise.reject(error)
+)
 
 // Response Interceptor with centralized management of response codes
 apiClient.interceptors.response.use(
@@ -43,7 +43,6 @@ apiClient.interceptors.response.use(
         case 401:
           console.error('Unauthorized: ', error.response.data.message);
           // Handle 401-specific logic (e.g., redirect to login)
-          // alert('Unauthorized. Redirecting to login...');
           // localStorage.removeItem('auth');
           // window.location.href = '/login';
           break;

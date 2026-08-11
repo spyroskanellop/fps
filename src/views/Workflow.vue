@@ -295,7 +295,6 @@ export default {
           color: stage.color,
           icon: stage.icon || null,
           items: sourceItems.filter((item) => {
-            console.log(item)
             return (item.current_stage.toLowerCase() === stage.name.toLowerCase());
           }),
         };

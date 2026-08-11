@@ -39,24 +39,16 @@
                     class="text-capitalize rounded-md" block tile type="submit">
                     Σύνδεση
                   </v-btn>
-                  <!-- <v-btn class="mt-4 text-capitalize font-weight-medium" color="secondary" block
-                    @click="() => {
-                      this.model.user.usernameOrEmail = 'user';
-                      this.model.user.password = 'pass';
-                      
-                      this.$nextTick(() => {
-                        submitHandler();
-                      });
-                    }"
-                    variant="outlined">Test
-                  </v-btn> -->
 
                 </v-form>
   
                 <h5 class="text-center grey--text mt-4 mb-3 text-uppercase font-weight-medium position-relative divider" style="color: #9ca3af;">Εναλλακτικές μέθοδοι σύνδεσης</h5>
-                <div class="d-flex justify-center align-center mx-10 mb-8 ga-4">
-                  <v-btn depressed variant="tonal" color="red">
+                <div class="d-flex justify-center align-center mb-8 ga-4">
+                  <!-- <v-btn depressed variant="tonal" color="red">
                     <v-icon color="red">mdi-google</v-icon>
+                  </v-btn> -->
+                  <v-btn class="text-capitalize rounded-md" depressed variant="tonal" color="secondary" block>
+                    Create a Passkey
                   </v-btn>
                   
                 </div>
@@ -193,20 +185,20 @@
   .divider::before{
     content: "";
     position: absolute;
-    width: 30%;
+    width: 20%;
     height: 1px;
     left: 0;
-    top: 30%;
+    top: 40%;
     transform: translateY(100%);
     background: #dcdee3;
   }
   .divider::after{
     content: "";
     position: absolute;
-    width: 30%;
+    width: 20%;
     height: 1px;
     right: 0;
-    top: 30%;
+    top: 40%;
     transform: translateY(100%);
     background: #dcdee3;
   }

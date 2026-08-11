@@ -74,20 +74,15 @@
     </v-navigation-drawer>
     <v-app-bar v-if="!isMobile && this.isLoggedIn" app height="75" elevation="0" class="mr-2">
       <v-row>
-        <v-col cols="auto" class="d-flex align-center justify-end"><BsBell /></v-col>
+        <!-- <v-col cols="auto" class="d-flex align-center justify-end"><BsBell /></v-col> -->
         <v-col cols="auto" class="d-flex align-center justify-end">  <v-divider class="border-opacity-100" color="#e2e8f0" vertical></v-divider></v-col>
         
         <v-col cols="auto">
           <v-menu offset-y transition="slide-x-transition" class="account-menu">
               <!-- Account button -->
               <template v-slot:activator="{props}">
-                <v-avatar
-                  size="36px"
-                  v-bind="props">
-                  <v-img
-                    alt="Avatar"
-                    src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-                  ></v-img>
+                <v-avatar size="36px" v-bind="props">
+                  <v-img alt="Avatar" src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"></v-img>
                 </v-avatar>
               </template>
 
@@ -111,7 +106,7 @@
                   </div>
                   <v-divider class="mt-2"></v-divider>
                   <div class="my-2 px-3">
-                      <v-btn rounded="xs" variant="text" color="#ae152d" block prepend-icon="mdi-exit-to-app" class="justify-start" style="text-transform: capitalize;" @click="logOut">Logout</v-btn>
+                      <v-btn rounded="xs" variant="text" color="#ae152d" block prepend-icon="mdi-exit-to-app" class="justify-start" style="text-transform: capitalize;" @click="handleLogout">Logout</v-btn>
                   </div>
                 </v-list>
               </v-card>
