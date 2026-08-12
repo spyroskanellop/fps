@@ -4,7 +4,6 @@
             <v-col>
                 <span class="text-uppercase">Επισκοπηση εργαστηριου</span>
                 <h1>Παραγγελίες</h1> 
-                <!-- {{ this.items.length }} -->
             </v-col>
             <v-col class="d-flex ga-5 justify-end align-center">
 
@@ -22,7 +21,7 @@
                             <v-list-item title="Φιλτρα Παραγγελιων">
                                 <template v-slot:append>
                                     <v-btn class="weight-bold" color="#0369a1" variant="text">
-                                        Επαναφορα
+                                        Επαναφορά
                                     </v-btn>
                                 </template>
                             </v-list-item>
