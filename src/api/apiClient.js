@@ -41,8 +41,8 @@ apiClient.interceptors.response.use(
           break;
 
         case 401:
-          console.error('Unauthorized: ', error.response.data.message);
           // Handle 401-specific logic (e.g., redirect to login)
+          console.error('Unauthorized: ', error.response.data.message);
           // localStorage.removeItem('auth');
           // window.location.href = '/login';
           break;

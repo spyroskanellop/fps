@@ -396,7 +396,7 @@ export default function initializeMockAdapter(instance) {
         }]
     })
     mock.onGet(`${import.meta.env.VITE_APP_SERVICE_URL}/customers`).reply(config => {
-        if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
+        if (config.headers.Authorization === `Bearer ${JSON.parse(window.localStorage.auth).token}` && config.headers.Accept === 'application/json, text/plain, */*') {
             return [200,
                 {
                     customersList: [
@@ -485,7 +485,7 @@ export default function initializeMockAdapter(instance) {
 
 
     mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/users`).reply(config => {
-        if (config.headers['Authorization'] === `Bearer ${JSON.parse(window.localStorage.getItem("auth")).token}` && config.headers['Accept'] === 'application/json') {
+        if (config.headers.Authorization === `Bearer ${JSON.parse(window.localStorage.auth).token}` && config.headers.Accept === 'application/json, text/plain, */*') {
             const requestData = JSON.parse(config.data);
             console.log(requestData);
 
@@ -508,6 +508,36 @@ export default function initializeMockAdapter(instance) {
             message: "Unauthenticated"
         }]
     })
+    mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/customers`).reply(config => {
+        if (config.headers.Authorization === `Bearer ${JSON.parse(window.localStorage.auth).token}` && config.headers.Accept === 'application/json, text/plain, */*') {
+            const requestData = JSON.parse(config.data);
+            console.log(requestData);
+
+            return [200,
+                {
+                    message: "Record Successfully saved",
+                    customer: {
+                        id: requestData.uid,
+                        name: requestData.name,
+                        contact_person: requestData.contact_person,
+                        industry: requestData.industry,
+                        email: requestData.email,
+                        phone: requestData.phone,
+                        street: requestData.street,
+                        city: requestData.city,
+                        TK: requestData.TK,
+                        notes: requestData.notes,
+                        status: requestData.status,
+                        createdAt: requestData.createdAt,
+                        updatedAt: requestData.updatedAt,
+                        deletedAt: requestData.deletedAt
+                    }
+                }];
+        }
+        return [401, {
+            message: "Unauthenticated"
+        }]
+    })
     mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/auth/login`).reply(config => {
         const params = new URLSearchParams(config.data)
         const usernameOrEmail = params.get('usernameOrEmail')
@@ -519,7 +549,7 @@ export default function initializeMockAdapter(instance) {
                     fullName: "Spyros Kanellopoulos",
                     role: "ADMIN"
                 },
-                access_token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJyb2xlIjoiYWRtaW4iLCJleHBpcmF0aW9uIjoiMjAyNS0wNS0xOVQxMjowMDowMFoifQ.L5nLbv7KQNybHP2PoDiFh2hVI5h_6qpa2TDFl7UL_D0"
+                access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJyb2xlIjoiYWRtaW4iLCJleHBpcmF0aW9uIjoiMjAyNS0wNS0xOVQxMjowMDowMFoifQ.L5nLbv7KQNybHP2PoDiFh2hVI5h_6qpa2TDFl7UL_D0"
             }]
         }
 

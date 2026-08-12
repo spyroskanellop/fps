@@ -11,14 +11,13 @@
                     Σύνθετα Φίλτρα
                 </v-btn>
 
-
-                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-customer-dialog">
+                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-customer-dialog" v-model="dialogStatus">
                     <template v-slot:activator="{ props: activatorProps }">
-                        <v-btn color="#0369a1" class="new-customer-btn" v-bind="activatorProps">Δημιουργία Νέου Πελάτη</v-btn>
+                        <v-btn color="#0369a1" class="new-customer-btn" @click="dialogStatus = true; generateΙd();">Δημιουργία Νέου Πελάτη</v-btn>
                     </template>
 
                     <template v-slot:default="{ isActive }">
-                        <v-form @prevent-default="addCustomer" ref="form">
+                        <v-form @submit.prevent="addCustomer" ref="form">
                             <v-card class="new-customer-card">
                                 <template v-slot:title>
                                     <v-row>
@@ -32,7 +31,7 @@
                                             <p class="header-subtitle">Αναλυση αρχειου πελατη</p>
                                         </v-col>
                                         <v-col>
-                                            <v-btn @click="isActive.value = false" variant="text" class="float-right">
+                                            <v-btn @click="dialogStatus = false" variant="text" class="float-right">
                                                 <v-icon>mdi-close</v-icon>
                                             </v-btn>
                                         </v-col>
@@ -107,12 +106,18 @@
                                     <v-row no-gutters class="ga-6 mb-6">
                                         <v-col>
                                             <h4 class="description mb-2">Αριθμός Τηλεφώνου</h4>
-                                            <v-text-field
+
+                                            <v-number-input
                                                 v-model="form.phone"
                                                 density="compact"
-                                                placeholder="+1 555 123 4567"
+                                                control-variant="stacked"
+                                                placeholder="2610 123 456"
                                                 variant="outlined"
-                                            ></v-text-field>
+                                                :rules="[rules.required]"
+                                                :min="0"
+                                                inset
+                                            ></v-number-input>
+                                            
                                         </v-col>
                                         <v-col>
                                             <h4 class="description mb-2">Διευθυνση Email</h4>
@@ -133,39 +138,57 @@
                                         <v-col><h3>Στοιχεια Τοποθεσιας</h3></v-col>
                                     </v-row>
 
-                                    <v-row class="ga-2" no-gutters>
-                                        <v-col>
+                                    <v-row class="ga-6" no-gutters>
+                                        <v-col cols="8">
                                             <h4 class="description mb-2">Διευθυνση Οδου</h4>
                                             <v-text-field
                                                 v-model="form.address"
                                                 density="compact"
-                                                placeholder="123 Main Street"
+                                                placeholder="Κανάρη"
                                                 variant="outlined"
                                                 :rules="[rules.required]"
                                             ></v-text-field>
+                                        </v-col>
+                                        <v-col>
+                                            <h4 class="description mb-2">Αριθμός Οδου</h4>
+                                            <v-number-input
+                                                v-model="form.streetNumber"
+                                                density="compact"
+                                                control-variant="stacked"
+                                                placeholder="12"
+                                                variant="outlined"
+                                                inset
+                                            ></v-number-input>
                                         </v-col>
                                     </v-row>
 
                                     <v-row no-gutters class="ga-6 mb-1">
                                         <v-col>
                                             <h4 class="description mb-2">Πόλη</h4>
-                                            <v-text-field
+                                            <v-autocomplete
                                                 v-model="form.city"
                                                 density="compact"
-                                                placeholder="Αττική"
-                                                variant="outlined"
+                                                placeholder="Αθήνα"
+                                                :items="cityItems"
+                                                item-title="label"
+                                                item-value="value"
                                                 :rules="[rules.required]"
-                                            ></v-text-field>
+                                                variant="outlined"
+                                                ></v-autocomplete>
                                         </v-col>
                                         <v-col>
                                             <h4 class="description mb-2">Ταχυδρομικός Κώδικας</h4>
-                                            <v-text-field
+                                            <v-number-input
                                                 v-model="form.postal_code"
                                                 density="compact"
-                                                placeholder="10001"
+                                                control-variant="stacked"
+                                                placeholder="12345"
                                                 variant="outlined"
                                                 :rules="[rules.required]"
-                                            ></v-text-field>
+                                                :min="0"
+                                                max="99999"
+                                                inset
+                                            ></v-number-input>
                                         </v-col>
                                     </v-row>
                                 </div>
@@ -185,7 +208,7 @@
                                                 </v-btn>
                                             </v-col>
                                             <v-col class="d-flex align-center justify-end pr-4">
-                                                <v-switch class="switch" color="primary" v-model="this.isActive" inset :model-value="true" hide-details></v-switch>
+                                                <v-switch class="switch" color="primary" v-model="this.form.isActive" inset hide-details></v-switch>
                                             </v-col>
                                         </v-row>
                                     </div>
@@ -231,7 +254,7 @@
                             
                         </v-form>
                     </template>
-                    </v-dialog>
+                </v-dialog>
             </v-col>
         </v-row>
 
@@ -372,7 +395,7 @@
                     </div>
                 </template>
 
-                <template v-slot:expanded-row="{ columns, item }">   
+                <!-- <template v-slot:expanded-row="{ columns, item }">   
                     <tr class="expanded-row">
                         <td :colspan="columns.length" class="px-5 py-6">
                             <v-row class="justify-space-between" no-gutters>
@@ -381,7 +404,7 @@
                             </v-row>
                         </td>
                     </tr>
-                </template>
+                </template> -->
                 
             </v-data-table>
         </div>
@@ -395,19 +418,9 @@
     export default {
         name: "Orders",
         components: {
-            CaFilterEdit,
-            FeTrendingUp,
-            FlClipboardMultiple,
-            MiMoneyPlus,
-            CgSandClock, 
-            MdTimeline,
-            AkTriangleAlert,
-            CaMachineLearningModel,
-            HiRocketLaunch,
-            McBookmarkAddLine,
-            AkPerson,
-            ClShieldCheck,
-            BxUserPlus
+            CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock,  MdTimeline,
+            AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine, AkPerson,
+            ClShieldCheck, BxUserPlus
         },
         data() {
             return {
@@ -423,145 +436,118 @@
                     { title: "Σημειωσεις", key: "notes", value: "notes", sortable: true},
                     { title: "Στιγμιοτυπα", key: "timestamps", value: "timestamps", sortable: true},
                 ],
-                items: [
-                    {
-                        id: '#CUST-1024',
-                        name: 'Vanguard Neon',
-                        contact_person: 'Sarah Jenkins',
-                        phone: '+1 (555) 123-4567',
-                        email: 's.jenkins@vanguard.io',
-                        street: '427 Industrial Way',
-                        city: 'Portland',
-                        zipCode: '97201',
-                        industry: 'Streetwear',
-                        status: 'Active',
-                        notes: 'Looking to expand into new markets in Q3.',
-                        createdAt: '2026-05-01T10:15:30Z',
-                        updatedAt: '2026-05-10T14:45:00Z'
-                    },
-                    {
-                        id: '#CUST-1025',
-                        name: 'Aether Systems',
-                        contact_person: 'Marcus Thorne',
-                        phone: '+1 (555) 123-4567',
-                        email: 'prc-99-alpha@vanguard.io',
-                        street: '427 Industrial Way',
-                        city: 'Portland',
-                        zipCode: '97201',
-                        industry: 'Manufacturing',
-                        status: 'Inactive',
-                        notes: 'Recently completed a successful production run with Vanguard.',
-                        createdAt: '2026-04-15T09:00:00Z',
-                        updatedAt: '2026-05-05T16:30:00Z'
-                    },
-                    {
-                        id: '#CUST-1026 ',
-                        name: 'Green Future Organics',
-                        contact_person: 'Elena Rodriguez',
-                        phone: '+1 (555) 123-4567',
-                        email: 'e.rod@greenfuture.org',
-                        street: '88 Eco Avenue',
-                        city: 'Boulder',
-                        zipCode: '97201',
-                        industry: 'Non-Profit',
-                        status: 'contract_pending',
-                        notes: 'In discussions for a potential partnership on sustainable packaging.',
-                        createdAt: '2026-05-05T11:30:00Z',
-                        updatedAt: '2026-05-12T13:45:00Z'
-                    },
-                    {
-                        id: '#CUST-1027',
-                        name: 'C-88219',
-                        contact_person: 'PRC-99-ALPHA',
-                        phone: '+1 (555) 123-4567',
-                        email: 'prc-99-alpha@vanguard.io',
-                        street: '427 Industrial Way',
-                        city: 'Portland',
-                        zipCode: '97201',
-                        industry: 'Manufacturing',
-                        status: 'Active',
-                        notes: 'Looking to expand into new markets in Q3.',
-                        createdAt: '2026-05-01T10:15:30Z',
-                        updatedAt: '2026-05-10T14:45:00Z'
-                    },
-                    {
-                        id: '#CUST-1028',
-                        name: 'C-88219',
-                        contact_person: 'PRC-99-ALPHA',
-                        phone: '+1 (555) 123-4567',
-                        email: 'prc-99-alpha@vanguard.io',
-                        street: '427 Industrial Way',
-                        city: 'Portland',
-                        zipCode: '97201',
-                        industry: 'Corporate',
-                        status: 'Active',
-                        notes: 'Looking to expand into new markets in Q3.',
-                        createdAt: '2026-05-01T10:15:30Z',
-                        updatedAt: '2026-05-10T14:45:00Z'
-                    },
-                    {
-                        id: '#CUST-1029',
-                        name: 'C-88219',
-                        contact_person: 'PRC-99-ALPHA',
-                        phone: '+1 (555) 123-4567',
-                        email: 'prc-99-alpha@vanguard.io',
-                        street: '427 Industrial Way',
-                        city: 'Portland',
-                        zipCode: '97201',
-                        industry: 'Corporate',
-                        status: 'Inactive',
-                        notes: 'Recently completed a successful production run with Vanguard.',
-                        createdAt: '2026-04-15T09:00:00Z',
-                        updatedAt: '2026-05-05T16:30:00Z'
-                    },
-                    {
-                        id: '#CUST-1030',
-                        name: 'C-88219',
-                        contact_person: 'PRC-99-ALPHA',
-                        phone: '+1 (555) 123-4567',
-                        email: 'prc-99-alpha@vanguard.io',
-                        street: '427 Industrial Way',
-                        city: 'Portland',
-                        zipCode: '97201',
-                        industry: 'Streetwear',
-                        status: 'Inactive',
-                        notes: 'Recently completed a successful production run with Vanguard.',
-                        createdAt: '2026-04-15T09:00:00Z',
-                        updatedAt: '2026-05-05T16:30:00Z'
-                    },
-                    {
-                        id: '#CUST-1031',
-                        name: 'C-88219',
-                        contact_person: 'PRC-99-ALPHA',
-                        phone: '+1 (555) 123-4567',
-                        email: 'prc-99-alpha@vanguard.io',
-                        street: '427 Industrial Way',
-                        city: 'Portland',
-                        zipCode: '97201',
-                        industry: 'Streetwear',
-                        status: 'Active',
-                        notes: 'Looking to expand into new markets in Q3.',
-                        createdAt: '2026-05-01T10:15:30Z',
-                        updatedAt: '2026-05-10T14:45:00Z'
-                    },
-                ],
+                items: [],
                 form: {
                     id: "",
                     name: "",
                     contact_person: "",
-                    phone: "",
+                    phone: null,
                     email: "",
                     address: "",
-                    city: "",
+                    city: null,
                     industry: null,
                     status: "",
                     notes: "",
+                    isActive: true,
                 },
+                filterMenu: false,
                 industryItems: [
                     { label: 'Κατασκευές', value: 'manufacturing'},
                     { label: 'Ένδυση', value: 'streetwear'},
                     { label: 'Αλυσίδα', value: 'Corporate'},
                 ],
+                cityItems: [
+                    { label: 'Αθήνα', value: 'athens' },
+                    { label: 'Θεσσαλονίκη', value: 'thessaloniki' },
+                    { label: 'Πάτρα', value: 'patras' },
+                    { label: 'Πειραιάς', value: 'piraeus' },
+                    { label: 'Λάρισα', value: 'larissa' },
+                    { label: 'Ηράκλειο', value: 'heraklion' },
+                    { label: 'Περιστέρι', value: 'peristeri' },
+                    { label: 'Καλλιθέα', value: 'kallithea' },
+                    { label: 'Αχαρνές', value: 'acharnes' },
+                    { label: 'Καλαμαριά', value: 'kalamaria' },
+                    { label: 'Νίκαια', value: 'nikaia' },
+                    { label: 'Γλυφάδα', value: 'glyfada' },
+                    { label: 'Βόλος', value: 'volos' },
+                    { label: 'Ίλιον', value: 'ilion' },
+                    { label: 'Ηλιούπολη', value: 'ilioupoli' },
+                    { label: 'Κερατσίνι', value: 'keratsini' },
+                    { label: 'Εύοσμος', value: 'evosmos' },
+                    { label: 'Χαλάνδρι', value: 'chalandri' },
+                    { label: 'Νέα Σμύρνη', value: 'nea-smyrni' },
+                    { label: 'Μαρούσι', value: 'marousi' },
+                    { label: 'Άγιος Δημήτριος', value: 'agios-dimitrios' },
+                    { label: 'Ζωγράφου', value: 'zografou' },
+                    { label: 'Αιγάλεω', value: 'aigaleo' },
+                    { label: 'Ιωάννινα', value: 'ioannina' },
+                    { label: 'Παλαιό Φάληρο', value: 'palaio-faliro' },
+                    { label: 'Νέα Ιωνία', value: 'nea-ionia' },
+                    { label: 'Κορυδαλλός', value: 'korydallos' },
+                    { label: 'Αγία Παρασκευή', value: 'agia-paraskevi' },
+                    { label: 'Τρίκαλα', value: 'trikala' },
+                    { label: 'Χαλκίδα', value: 'chalkida' },
+                    { label: 'Βύρωνας', value: 'vyronas' },
+                    { label: 'Γαλάτσι', value: 'galatsi' },
+                    { label: 'Αλεξανδρούπολη', value: 'alexandroupoli' },
+                    { label: 'Σέρρες', value: 'serres' },
+                    { label: 'Κατερίνη', value: 'katerini' },
+                    { label: 'Ξάνθη', value: 'xanthi' },
+                    { label: 'Καλαμάτα', value: 'kalamata' },
+                    { label: 'Καβάλα', value: 'kavala' },
+                    { label: 'Χανιά', value: 'chania' },
+                    { label: 'Λαμία', value: 'lamia' },
+                    { label: 'Κομοτηνή', value: 'komotini' },
+                    { label: 'Ρόδος', value: 'rhodes' },
+                    { label: 'Δράμα', value: 'drama' },
+                    { label: 'Βέροια', value: 'veria' },
+                    { label: 'Κοζάνη', value: 'kozani' },
+                    { label: 'Καρδίτσα', value: 'karditsa' },
+                    { label: 'Ρέθυμνο', value: 'rethymno' },
+                    { label: 'Πτολεμαΐδα', value: 'ptolemaida' },
+                    { label: 'Τρίπολη', value: 'tripoli' },
+                    { label: 'Κόρινθος', value: 'corinth' },
+                    { label: 'Γέρακας', value: 'gerakas' },
+                    { label: 'Μυτιλήνη', value: 'mytilene' },
+                    { label: 'Άργος', value: 'argos' },
+                    { label: 'Χίος', value: 'chios' },
+                    { label: 'Αγρίνιο', value: 'agrinio' },
+                    { label: 'Σαλαμίνα', value: 'salamina' },
+                    { label: 'Ελευσίνα', value: 'elefsina' },
+                    { label: 'Κέρκυρα', value: 'corfu' },
+                    { label: 'Πύργος', value: 'pyrgos' },
+                    { label: 'Μέγαρα', value: 'megara' },
+                    { label: 'Θήβα', value: 'thiva' },
+                    { label: 'Λιβαδειά', value: 'livadeia' },
+                    { label: 'Κως', value: 'kos' },
+                    { label: 'Ναύπλιο', value: 'nafplio' },
+                    { label: 'Έδεσσα', value: 'edessa' },
+                    { label: 'Φλώρινα', value: 'florina' },
+                    { label: 'Καστοριά', value: 'kastoria' },
+                    { label: 'Κιλκίς', value: 'kilkis' },
+                    { label: 'Γιαννιτσά', value: 'giannitsa' },
+                    { label: 'Πρέβεζα', value: 'preveza' },
+                    { label: 'Άρτα', value: 'arta' },
+                    { label: 'Νάουσα', value: 'naousa' },
+                    { label: 'Ορεστιάδα', value: 'orestiada' },
+                    { label: 'Αμαλιάδα', value: 'amaliada' },
+                    { label: 'Σπάρτη', value: 'sparta' },
+                    { label: 'Θήρα', value: 'thira' },
+                    { label: 'Ερμούπολη', value: 'ermoupoli' },
+                    { label: 'Λευκάδα', value: 'lefkada' },
+                    { label: 'Ζάκυνθος', value: 'zakynthos' },
+                    { label: 'Αργοστόλι', value: 'argostoli' },
+                    { label: 'Ναύπακτος', value: 'nafaktos' },
+                    { label: 'Αίγιο', value: 'aigio' },
+                    { label: 'Καρπενήσι', value: 'karpenisi' },
+                    { label: 'Γρεβενά', value: 'grevena' },
+                    { label: 'Πολύγυρος', value: 'polygyros' },
+                    { label: 'Αλεξάνδρεια', value: 'alexandreia' },
+                    { label: 'Σητεία', value: 'siteia' },
+                    { label: 'Ιεράπετρα', value: 'ierapetra' },
+                    { label: 'Άγιος Νικόλαος', value: 'agios-nikolaos' }
+                ],
+                dialogStatus: false,
                 isActive: true,
                 HiRocketLaunch: HiRocketLaunch,
                 McBookmarkAddLine: McBookmarkAddLine,
@@ -571,10 +557,8 @@
                     email: [
                         value => {
                             if (regex.test(value)) {
-                                console.log("Valid Email address");
                                 return true;
                             } else {
-                                console.log("Email not valid")
                                 return 'Το email δεν είναι έγκυρο';
                             }
                         }
@@ -599,18 +583,21 @@
                 this.$refs.form.validate()
                 .then((res) => {
                     console.log(res);
-                    if(res.valid){
+                    if(res.valid){                        
                         createCustomer(this.form)
                         .then((res) => {
                             console.log(res)
-                            this.users.unshift({
+                            this.items.unshift({
                                 id: this.form.id,
                                 name: this.form.name,
                                 contact_person: this.form.contact_person,
                                 email: this.form.email,
                                 phone: this.form.phone,
                                 industry: this.form.industry,
-                                status: this.form.status,
+                                street: this.form.address,
+                                city: this.form.city,
+                                zipCode: this.form.zipCode,
+                                status: this.form.status || 'active',
                                 notes: this.form.notes,
                                 createdAt: new Date().toLocaleString(),
                                 updatedAt: new Date().toLocaleString(),
@@ -619,7 +606,6 @@
                                 updatedBy: "aloubardis",
                                 deletedAt: null
                             })
-                            console.log(this.users);    
                             this.dialogStatus = false;
                         })
                         .catch((err) => {
@@ -637,13 +623,24 @@
 
                 })
                 .finally();
-            }
+
+            },
+            generateΙd(){
+                let result = '';
+                const characters = '012345';
+                for (let i = 0; i < 6; i++) {
+                    const randomInd = Math.floor(Math.random() * characters.length);
+                    result += characters.charAt(randomInd);
+                }
+                this.form.id = result
+            },
         },
         created(){
             this.fetchCustomers();
         },
         computed:{
             getTotalCustomers(){
+                return "5"
                 return this.items.length;
             }
         }

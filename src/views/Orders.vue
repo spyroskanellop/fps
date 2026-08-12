@@ -3,13 +3,119 @@
         <v-row class="header">
             <v-col>
                 <span class="text-uppercase">Επισκοπηση εργαστηριου</span>
-                <h1>Παραγγελίες</h1> {{ this.items.length }}
+                <h1>Παραγγελίες</h1> 
+                <!-- {{ this.items.length }} -->
             </v-col>
             <v-col class="d-flex ga-5 justify-end align-center">
-                <v-btn variant="outlined" color="#0369a1">
-                    <template v-slot:prepend><CaFilterEdit /></template>
-                    Σύνθετα Φίλτρα
-                </v-btn>
+
+                <v-menu offset-y class="filter-menu" :offset="[-8, -12]" location="bottom end"
+                 scroll-strategy="none" height="auto" :close-on-content-click="false">
+                    <template v-slot:activator="{ props }">
+                        <v-btn variant="outlined" color="#0369a1" v-bind="props">
+                            <template v-slot:prepend><CaFilterEdit /></template>
+                            Σύνθετα Φίλτρα
+                        </v-btn>
+                    </template>
+
+                    <v-card min-width="300" height="auto" class="overflow-hidden">
+                        <v-list class="header">
+                            <v-list-item title="Φιλτρα Παραγγελιων">
+                                <template v-slot:append>
+                                    <v-btn class="weight-bold" color="#0369a1" variant="text">
+                                        Επαναφορα
+                                    </v-btn>
+                                </template>
+                            </v-list-item>
+                        </v-list>
+
+                        <v-divider></v-divider>
+
+                        <v-list>
+                            <v-list-item>
+                                <label>Ονομα Πελατη</label>
+                                <v-text-field
+                                    v-model="filter.customerName"
+                                    density="compact"
+                                    placeholder="Αναζήτηση Πελάτη..."
+                                    prepend-inner-icon="mdi-magnify"
+                                    variant="outlined"
+                                    class="mt-2"
+                                    hide-details
+                                ></v-text-field>
+                            </v-list-item>
+
+                            <v-list-item>
+                                <label>Ονομα Παραγγελιας</label>
+                                <v-text-field
+                                    v-model="filter.orderName"
+                                    density="compact"
+                                    placeholder="Αναζήτηση Παραγγελίας..."
+                                    prepend-inner-icon="mdi-magnify"
+                                    variant="outlined"
+                                    class="mt-2"
+                                    hide-details
+                                ></v-text-field>
+                            </v-list-item>
+
+                            <v-list-item>
+                                <label>Τρεχουσα Φαση</label>
+                                <v-row class="row-btn mt-2 ga-2" no-gutters>
+                                    <v-btn>Προετοιμασία</v-btn>
+                                    <v-btn>Κοπή</v-btn>
+                                    <v-btn>Ράψιμο</v-btn>
+                                    <v-btn>Έλεγχος</v-btn>
+                                    <v-btn>Αποστολή</v-btn>                                    
+                                </v-row>
+                            </v-list-item>
+
+                            <v-list-item>
+                                <label>Κατασταση Παραγγελιας</label>
+                                <v-row class="row-btn mt-2 ga-2" no-gutters>
+                                    <v-btn>Πληρωμένη</v-btn>
+                                    <v-btn>Εκκρεμεί</v-btn>                                                                        
+                                </v-row>
+                            </v-list-item>
+
+                            <v-list-item>
+                                <v-row no-gutters class="ga-6">
+                                    <v-col class="pa-0">
+                                        <label>Καταχωρηση Παραγγελιας</label>
+                                        <v-date-input
+                                            v-model="filter.orderDate"
+                                            class="date-input mt-2"
+                                            prepend-icon=""
+                                            append-inner-icon="$calendar"
+                                            variant="outlined"
+                                            density="compact"
+                                        ></v-date-input>
+                                    </v-col>
+                                    
+                                    <v-col class="pa-0">
+                                        <label>Ημερομηνια Παραδοσης</label>
+                                        <v-date-input
+                                            v-model="filter.deliveryDate"
+                                            class="date-input mt-2"
+                                            prepend-icon=""
+                                            append-inner-icon="$calendar"
+                                            variant="outlined"
+                                            density="compact"
+                                        ></v-date-input>
+                                    </v-col>
+                                </v-row>
+                            </v-list-item>
+                        </v-list>
+                        <v-divider />
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                                <v-col>
+                                    <v-btn color="primary" height="auto" variant="tonal" @click="menu = false">
+                                        Εφαρμογή Φίλτρων
+                                    </v-btn>
+                                </v-col>
+                        </v-card-actions>
+                    </v-card>
+                </v-menu>
+
                 <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog" v-model="dialogStatus">
                     <template v-slot:activator="{ props }">
                         <v-btn color="#0369a1" class="new-order-btn" v-bind="props">Δημιουργία Νέας Παραγγελίας</v-btn>
@@ -255,7 +361,7 @@
             </v-col>
         </v-row>
 
-        <v-row class="ga-6">
+        <v-row class="ga-6 kpi-cards">
             <v-col>
                 <v-card class="mx-auto py-2 px-5">
                     <v-card-item>
@@ -563,7 +669,11 @@
                     final_amount: "",
                     balance: "",
                     paymentStatus: null,
-                }
+                },
+                filter: {
+                    customerName: "",
+                    orderName: ""
+                },
             }
         },
         created(){
@@ -583,19 +693,12 @@
             formatTimestamp(timestamp){
                 return new Date(timestamp).toLocaleString();
             },
-            async createOrder(){
-                const {valid} = await this.$refs.form.validate();
-
-                if(valid){
-                    alert("not valid");
-                    return
-                } else {
-                    // TODO need to format values
-                    console.log("Pass")
-                    console.log(this.form);
-
-                    this.items.unshift({
-                            id: "11111",
+            createOrder(){
+                this.$refs.form.validate()
+                .then((result)=> {
+                    if(result.valid){
+                        this.items.unshift({
+                            id: "24789",
                             cust_name: this.form.cust_name,
                             product_name: this.form.product.name,
                             color: this.form.product.color,
@@ -613,9 +716,13 @@
                             updatedBy: "aloubardis",
                             deletedAt: null
                         })
-                    console.log(this.items);
-                    this.dialogStatus = false;
-                }
+                        console.log(this.items);
+                        this.dialogStatus = false;
+                    }else {
+                        alert("Please fill in all required fields correctly.");
+                    } 
+                });
+                
             },
             isOverdue(itemDuedate){
                 const [year, month, day] = itemDuedate.split("-");
@@ -638,14 +745,13 @@
                 return '€'+ (this.sumBulance/100).toFixed(2) || 'Not Available'
             },
             getOverdueOrders(){
+                return "5";
                 this.items.forEach((item) => {
                     if(this.isOverdue(item.dueDate)){
                         this.overdueOrders += 1;
                     }
                 })
-                console.log(this.items.length)
                 return this.overdueOrders;
-                // return 5;
             }
         }
 
@@ -720,10 +826,10 @@
         line-height: 1.25rem;
         gap: .5rem;
     }
-    :deep(.v-card-actions span){
+    :deep(.kpi-cards .v-card-actions span){
         padding: 1rem;
     }
-    :deep(.v-card-actions span){
+    :deep(.kpi-cards .v-card-actions span){
         font-family: Manrope;
         color: #00687b;
         font-weight: 800;
@@ -733,10 +839,10 @@
         gap: 0.75rem;
         text-transform: capitalize;
     }
-    :deep(.v-card-actions .v-btn:nth-child(1)){
+    :deep(.kpi-cards .v-card-actions .v-btn:nth-child(1)){
         flex: 1;
     }
-    :deep(.v-card-actions .v-btn:nth-child(2)){
+    :deep(.kpi-cards .v-card-actions .v-btn:nth-child(2)){
         flex: 2;
     }
     .background-icon{
@@ -1048,5 +1154,64 @@
     .date-input :deep(.v-field__prepend-inner){
         padding-left: .5rem;
         font-size: .875rem;
+    }
+    .filter-menu .v-card{
+        background: white;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        border-radius: 0.75rem;
+    }
+    .filter-menu .header{
+        background-color: #f8fafc80;
+    }
+    .filter-menu :deep(.v-list-item-title){
+        color: #64748b;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 800;
+    }
+    .filter-menu label{
+        color: #94a3b8;
+        font-size: 0.625rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    .filter-menu :deep(.v-field){
+        font-size: 0.75rem;
+        line-height: 1rem;
+        border-radius: 0.5rem;
+    }
+    .filter-menu :deep(.v-field .v-field__outline .v-field__outline__start),
+    .filter-menu :deep(.v-field .v-field__outline .v-field__outline__end)
+    {
+        border-color: #e2e8f0;
+        opacity: 1;
+    }
+    .filter-menu .row-btn button{
+        color: #475569;
+        font-weight: 700;
+        font-size: 0.625rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 9999px;
+        text-transform: capitalize;
+        height: auto;
+        box-shadow: none;
+    }
+    .filter-menu .row-btn button.active{
+        background-color: #0369a1;
+        color: white;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+    .filter-menu .v-card-actions button{
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.625rem 1.5rem;
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        border-radius: 0.5rem;
+        text-transform: capitalize;
     }
 </style>

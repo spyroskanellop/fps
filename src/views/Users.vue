@@ -156,7 +156,7 @@
                                 </v-badge>
                             </v-col>
                             <v-col class="d-flex justify-end">
-                                <v-menu offset-y class="card-menu" :offset="[-8, -12]" location="bottom end" scroll-strategy="close">
+                                <v-menu offset-y class="card-menu" :offset="[-8, -12]" location="bottom end" scroll-strategy="none">
                                 <template v-slot:activator="{ props }">
                                   <v-btn v-bind="props" icon="mdi-dots-vertical" size="medium" color="#94a3b8" variant="plain"></v-btn>
                                 </template>
@@ -299,21 +299,20 @@
                     if(res.valid){
                         createUser(this.form)
                         .then((res) => {
-                            console.log(res)
-                                this.users.unshift({
-                                    id: this.form.uid,
-                                    avatar_img: this.imagePreview,
-                                    username: this.form.firstName.charAt(0)+this.form.lastName,
-                                    email: this.form.email,
-                                    isActive: true,
-                                    role: this.form.role.name,
-                                    createdAt: new Date().toLocaleString(),
-                                    updatedAt: new Date().toLocaleString(),
-                                    deliveredAt: new Date().toLocaleString(),
-                                    createdBy: "aloubardis",
-                                    updatedBy: "aloubardis",
-                                    deletedAt: null
-                                })
+                            this.users.unshift({
+                                id: this.form.uid,
+                                avatar_img: this.imagePreview,
+                                username: this.form.firstName.charAt(0)+this.form.lastName,
+                                email: this.form.email,
+                                isActive: true,
+                                role: this.form.role.name,
+                                createdAt: new Date().toLocaleString(),
+                                updatedAt: new Date().toLocaleString(),
+                                deliveredAt: new Date().toLocaleString(),
+                                createdBy: "aloubardis",
+                                updatedBy: "aloubardis",
+                                deletedAt: null
+                            })
                             console.log(this.users);    
                             this.dialogStatus = false;
                         })

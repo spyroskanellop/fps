@@ -82,7 +82,7 @@
                             </v-col>
 
                             <v-col cols="auto">
-                            <v-menu offset-y class="card-menu" :offset="[-8, -12]" location="bottom end" scroll-strategy="close">
+                            <v-menu offset-y class="card-menu" :offset="[-8, -12]" location="bottom end" scroll-strategy="none">
                                 <template v-slot:activator="{ props }">
                                   <v-btn v-bind="props" icon="mdi-dots-vertical" size="medium" color="#94a3b8" variant="plain"></v-btn>
                                 </template>
@@ -108,15 +108,15 @@
 
                                       <v-divider class="mt-2" />
 
-                                      <v-list-item>
-                                      <template v-slot:prepend>
-                                          <v-icon icon="mdi-eye-arrow-right-outline"></v-icon>
-                                      </template>
+                                      <!-- <v-list-item>
+                                        <template v-slot:prepend>
+                                            <v-icon icon="mdi-eye-arrow-right-outline"></v-icon>
+                                        </template>
 
-                                      <v-list-item-title class="text-sm">
-                                        View Details
-                                      </v-list-item-title>
-                                    </v-list-item>
+                                        <v-list-item-title class="text-sm">
+                                          View Details
+                                        </v-list-item-title>
+                                    </v-list-item> -->
                                 </v-list>
                                 </v-card>
                             </v-menu>
