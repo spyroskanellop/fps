@@ -90,24 +90,14 @@
                             </v-list-item>
                         </v-list>
                         <v-divider />
-                        <!-- <v-card-actions>
- <v-spacer></v-spacer>
- <v-col class="d-flex justify-end">
- <v-btn class="d-flex justify-end" color="primary" height="auto" variant="tonal" @click="applyFilters(); menu = false">
- Εφαρμογή Φίλτρων
- </v-btn>
- </v-col>
- </v-card-actions> -->
                     </v-card>
                 </v-menu>
 
-                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog"
-                    v-model="dialogStatus">
-                    <template v-slot:activator="{ props }">
-                        <v-btn color="#0369a1" class="new-order-btn" v-bind="props">Δημιουργία Νέας Παραγγελίας</v-btn>
+                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog" v-model="dialogStatus">
+                    <template v-slot:activator>
+                        <v-btn color="#0369a1" class="new-order-btn" @click="dialogStatus = true; dialogMode = 'C'; clearForm();">Δημιουργία Νέας Παραγγελίας</v-btn>
                     </template>
-                    <!-- Add validation here -->
-                    <v-form @submit.prevent class="h-100" ref="form">
+                    <v-form @submit.prevent="createOrder" class="h-100" ref="form">
                         <v-card class="new-order-card">
                             <template v-slot:title>
                                 <v-row>
@@ -119,7 +109,12 @@
                                         </v-avatar>
                                     </v-col>
                                     <v-col>
-                                        <h3 class="header-title">Δημιουργία Νέας Παραγγελίας</h3>
+                                        <h3 v-if="dialogMode === 'C'" class="header-title">
+                                            Δημιουργία Νέας Παραγγελίας
+                                        </h3>
+                                        <h3 v-else class="header-title">
+                                            Επεξεργασία Παραγγελίας
+                                        </h3>
                                         <p class="header-subtitle">Μοναδα Παραγωγης</p>
                                     </v-col>
                                     <v-col>
@@ -146,14 +141,14 @@
                                         :rules="[rules.required]" variant="outlined" hide-details></v-text-field>
                                     <v-row no-gutters class="ga-6 my-4">
                                         <!-- <v-col>
- <h4 class="description mb-2">SKU Reference</h4>
- <v-text-field
- density="compact"
- placeholder="TX-2048-IND"
- variant="outlined"
- hide-details
- ></v-text-field>
- </v-col> -->
+                                        <h4 class="description mb-2">SKU Reference</h4>
+                                        <v-text-field
+                                        density="compact"
+                                        placeholder="TX-2048-IND"
+                                        variant="outlined"
+                                        hide-details
+                                        ></v-text-field>
+                                        </v-col> -->
                                         <v-col>
                                             <h4 class="description mb-2">Τεμάχια</h4>
                                             <v-number-input v-model="form.qty" density="compact"
@@ -180,10 +175,10 @@
                                     <v-row no-gutters class="ga-6 my-4">
                                         <v-col>
                                             <h4 class="description mb-2">Χρώμα</h4>
-                                            <v-select v-model="form.product.color" density="compact"
+                                            <v-autocomplete v-model="form.product.color" density="compact"
                                                 placeholder="Επιλέξτε χρώμα" :items="colorItems" item-title="label"
                                                 item-value="value" :rules="[rules.required]"
-                                                variant="outlined"></v-select>
+                                                variant="outlined"></v-autocomplete>
                                         </v-col>
                                         <v-col>
                                             <h4 class="description mb-2">Μεγεθος</h4>
@@ -273,9 +268,14 @@
                             <v-divider></v-divider>
                             <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
                                 <v-btn class="h-auto" text="Απόρριψη Αλλαγών"></v-btn>
-                                <v-btn class="h-auto create-order-btn" type="submit" text="Δημιουργία Παραγγελίας"
-                                    :prepend-icon="HiRocketLaunch" @click="createOrder"></v-btn>
 
+                                <v-btn v-if="dialogMode === 'C'" class="h-auto create-order-btn" type="submit"
+                                    text="Δημιουργία Παραγγελίας"
+                                    :prepend-icon="HiRocketLaunch"></v-btn>
+
+                                <v-btn v-else :loading="loading" class="h-auto create-order-btn"
+                                    text="Επεξεργασία Παραγγελίας" :prepend-icon="HiRocketLaunch"
+                                    @click="updateOrder(form)"></v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-form>
@@ -504,7 +504,7 @@
                                     </div>
                                 </v-col>
                                 <v-col cols="3">
-                                    <v-btn color="primary" class="float-right primary-btn">Update Status</v-btn>
+                                    <v-btn color="primary" class="float-right primary-btn" @click="openUpdateOrderModal(item)">Update Status</v-btn>
                                 </v-col>
                             </v-row>
                         </td>
@@ -540,6 +540,7 @@
                 { title: "Στιγμιότυπα", key: "timestamps", value: "timestamps", sortable: true },
             ],
             dialogStatus: false,
+            dialogMode: ['C', 'U'],
             payment_statusItems: [
                 { label: 'Πληρωμένη', value: 'Paid' },
                 { label: 'Εκκρεμεί', value: 'Pending' },
@@ -571,8 +572,45 @@
                 { label: '3XL', value: 'xxx_large' },
             ],
             colorItems: [
-                { label: 'Black', value: 'BLACK' },
-                { label: 'White', value: 'WHITE' },
+                { label: 'Μαύρο', value: 'BLACK' },
+                { label: 'Λευκό', value: 'WHITE' },
+                { label: 'Γκρι', value: 'GREY' },
+                { label: 'Ανθρακί', value: 'CHARCOAL' },
+                { label: 'Ασημί', value: 'SILVER' },
+
+                { label: 'Κόκκινο', value: 'RED' },
+                { label: 'Μπορντό', value: 'BURGUNDY' },
+                { label: 'Βυσσινί', value: 'MAROON' },
+                { label: 'Ροζ', value: 'PINK' },
+                { label: 'Ροζ Τριανταφυλλί', value: 'ROSE' },
+
+                { label: 'Πορτοκαλί', value: 'ORANGE' },
+                { label: 'Κίτρινο', value: 'YELLOW' },
+                { label: 'Μουσταρδί', value: 'MUSTARD' },
+                { label: 'Χρυσό', value: 'GOLD' },
+
+                { label: 'Πράσινο', value: 'GREEN' },
+                { label: 'Λαδί', value: 'OLIVE' },
+                { label: 'Χακί', value: 'KHAKI' },
+                { label: 'Μέντα', value: 'MINT' },
+                { label: 'Σμαραγδί', value: 'EMERALD' },
+
+                { label: 'Μπλε', value: 'BLUE' },
+                { label: 'Μπλε Σκούρο', value: 'NAVY' },
+                { label: 'Γαλάζιο', value: 'SKY_BLUE' },
+                { label: 'Μπλε Ρουά', value: 'ROYAL_BLUE' },
+                { label: 'Τιρκουάζ', value: 'TURQUOISE' },
+                { label: 'Πετρόλ', value: 'TEAL' },
+
+                { label: 'Μωβ', value: 'PURPLE' },
+                { label: 'Βιολετί', value: 'VIOLET' },
+                { label: 'Λεβάντα', value: 'LAVENDER' },
+
+                { label: 'Καφέ', value: 'BROWN' },
+                { label: 'Μπεζ', value: 'BEIGE' },
+                { label: 'Κρεμ', value: 'CREAM' },
+                { label: 'Ταμπά', value: 'TAN' },
+                { label: 'Καμηλό', value: 'CAMEL' }
             ],
             items: [],
             sumBulance: 0,
@@ -683,6 +721,74 @@
         formatOrderTitle(item) {
             return item.cust_name + " " + new Date(item.createdAt).toLocaleDateString()
         },
+        openUpdateOrderModal(order) {
+            console.log(order);
+            this.dialogStatus = true;
+            this.dialogMode = 'U';
+            // Set up modal values
+            this.form.cust_name = order.cust_name;
+            this.form.qty = parseInt(order.qty);
+            this.form.product.color = order.color;
+            this.form.product.name = order.product_name;
+            this.form.product.size = order.size;
+            this.form.id = order.id;
+
+            this.form.current_stage = order.current_stage;
+            this.form.pickupLocation = order.pickupLocation;
+            this.form.dueDate = order.dueDate;
+            this.form.priority = order.priority;
+            this.form.final_amount = order.final_amount;
+            this.form.balance = order.balance;
+            this.form.payment_status = order.payment_status;
+
+        },
+        updateOrder(order) {
+            console.log("Updating order:", order);
+            const existingOrder = this.items.find(
+                o => o.id === order.id
+            );
+
+            if (!existingOrder) {
+                console.log("Order not found:", order.id);
+                return;
+            }
+
+            existingOrder.cust_name = order.cust_name;
+            existingOrder.qty = order.qty;
+            existingOrder.product_name = order.product.name;
+            existingOrder.color = order.product.color;
+            existingOrder.size = order.product.size;
+            existingOrder.current_stage = order.current_stage;
+            existingOrder.pickupLocation = order.pickupLocation;
+            existingOrder.dueDate = order.dueDate;
+            existingOrder.priority = order.priority;
+            existingOrder.final_amount = order.final_amount;
+            existingOrder.balance = order.balance;
+            existingOrder.payment_status = order.payment_status;
+
+            this.dialogStatus = false;
+
+            console.log("Updated order:", existingOrder);
+            console.log("Orders:", this.items);
+        },
+        clearForm(){
+            this.form = {
+                cust_name: "",
+                qty: null,
+                product: {
+                    name: "",
+                    color: null,
+                    size: null
+                },
+                current_stage: null,
+                pickupLocation: null,
+                dueDate: "",
+                priority: null,
+                final_amount: "",
+                balance: "",
+                payment_status: null
+            };
+        }
     },
     computed: {
         getActiveOrders() {
@@ -1112,6 +1218,7 @@
         background: #0369a1;
         box-shadow: 0 10px 15px -3px rgb(12 74 110 / 0.2), 0 4px 6px -4px rgb(12 74 110 / 0.2);
         border-radius: 0.5rem;
+        padding: 1rem;
     }
     .create-order-btn :deep(.v-btn__prepend){
         padding: 0 0 0 .75rem;

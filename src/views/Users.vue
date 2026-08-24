@@ -7,15 +7,12 @@
             </v-col>
             <v-col class="d-flex ga-5 justify-end align-center">
 
-                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-user-dialog"
-                    v-model="dialogStatus">
-                    <template v-slot:activator="{ props: activatorProps }">
-                        <v-btn color="#0369a1" class="new-user-btn"
-                            @click="dialogStatus = true; dialogMode = 'C'; form = {}; generateUid(); form.role = this.roles[0]">Δημιουργία
-                            Νέου Χρήστη</v-btn>
+                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-user-dialog" v-model="dialogStatus">
+                    <template v-slot:activator>
+                        <v-btn color="#0369a1" class="new-user-btn" @click="dialogStatus = true; dialogMode = 'C'; form = {}; generateUid(); form.role = this.roles[0]">Δημιουργία Νέου Χρήστη</v-btn>
                     </template>
 
-                    <template v-slot:default="{ isActive }">
+                    <template v-slot:default>
                         <v-form @submit.prevent="addUser" class="h-100" ref="form">
                             <v-card class="new-user-card">
                                 <template v-slot:title>
@@ -50,11 +47,12 @@
                                         <v-row no-gutters class="ga-6">
                                             <v-col cols="auto">
                                                 <div class="photo-wrapper d-flex align-center justify-center">
-                                                    <v-file-input v-if="!imagePreview" accept="image/*" variant="plain"
+                                                    <v-file-input v-if="!imagePreview && dialogMode === 'C'" accept="image/*" variant="plain"
                                                         prepend-icon="mdi-camera" hide-details class="photo-input"
                                                         v-model="form.avatar_img" @update:model-value="previewImage">{{
                                                         imagePreview }}</v-file-input>
-                                                    <v-img v-else :src="imagePreview"></v-img>
+                                                    <v-img v-else-if="imagePreview && dialogMode === 'C'" :src="imagePreview"></v-img>
+                                                    <v-img v-else :aspect-ratio="1" :src="form.avatar_img"></v-img>
                                                 </div>
                                             </v-col>
                                             <v-col class="d-flex flex-column justify-center">
@@ -121,7 +119,7 @@
                                 <v-divider></v-divider>
                                 <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
                                     <v-btn @click="resetForm" class="h-auto" text="Απόρριψη Αλλαγών"></v-btn>
-                                    <v-btn v-if="modalMode === 'C'" :loading="loading" class="h-auto create-user-btn"
+                                    <v-btn v-if="dialogMode === 'C'" :loading="loading" class="h-auto create-user-btn"
                                         text="Δημιουργία Χρήστη" :prepend-icon="userAddIcon" type="submit"></v-btn>
                                     <v-btn v-else :loading="loading" class="h-auto create-user-btn"
                                         text="Επεξεργασία Χρήστη" :prepend-icon="userAddIcon"
@@ -263,8 +261,6 @@ export default {
     },
     created() {
         this.fetchUsers();
-        // this.form.role = this.roles[0];
-        // this.generateUid();
     },
     methods: {
         fetchUsers() {
@@ -348,20 +344,27 @@ export default {
             this.form.lastName = user.lastName;
             this.form.email = user.email;
             this.form.uid = user.id;
+            this.form.avatar_img = user.avatar_img;
             this.form.role = this.roles[0];
         },
         updateUser(user) {
-            this.users.filter((u) => {
-                if (u.id === user.id) {
-                    u.firstName = user.firstName;
-                    u.lastName = user.lastName;
-                    u.email = user.email;
-                    u.uid = user.id;
-                    u.role = this.roles[0];
-                    console.log("Updated status");
-                }
-            })
+            const existingUser = this.users.find(
+                u => u.id === user.uid
+            );
+
+            if (!existingUser) {
+                console.log("User not found:", user.uid);
+                return;
+            }
+
+            existingUser.firstName = user.firstName;
+            existingUser.lastName = user.lastName;
+            existingUser.email = user.email;
+
             this.dialogStatus = false;
+
+            console.log("Updated user:", existingUser);
+            console.log("Users:", this.users);
         }
     },
     components: {
