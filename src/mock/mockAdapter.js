@@ -144,9 +144,18 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "12345123",
                             cust_name: "Λαμπρόπουλος",
-                            product_name: "Γούνες",
-                            color: "Μαύρο",
-                            qty: "12",
+                            products:[
+                                {
+                                    product_name: "Γούνες",
+                                    color: "Μαύρο",
+                                    qty: "12",
+                                },
+                                {
+                                    product_name: "Στολές",
+                                    color: "Λευκό",
+                                    qty: "12",
+                                }
+                            ],
                             current_stage: "PREPARING",
                             payment_status: "PAID",
                             final_amount: "103345",
@@ -163,9 +172,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "12345",
                             cust_name: "Λαμπρόπουλος",
-                            product_name: "Γούνες",
-                            color: "Μαύρο",
-                            qty: "12",
+                            products:[
+                                {
+                                    product_name: "Γούνες",
+                                    color: "Μαύρο",
+                                    qty: "12",
+                                },                                
+                            ],
                             current_stage: "SEWING",
                             payment_status: "PAID",
                             final_amount: "103345",
@@ -182,9 +195,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "67890",
                             cust_name: "Κωστόπουλος",
-                            product_name: "Φόρμες",
-                            color: "Μαύρο",
-                            qty: "11",
+                            products: [
+                                {
+                                    product_name: "Φόρμες",
+                                    color: "Μαύρο",
+                                    qty: "11"
+                                }
+                            ],
                             current_stage: "PREPARING",
                             payment_status: "PENDING",
                             final_amount: "123345",
@@ -201,9 +218,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "14578",
                             cust_name: "Λαμπρόπουλος",
-                            product_name: "Γούνες",
-                            color: "Μαύρο",
-                            qty: "12",
+                            products: [
+                                {
+                                    product_name: "Γούνες",
+                                    color: "Μαύρο",
+                                    qty: "12"
+                                }
+                            ],
                             current_stage: "SEWING",
                             payment_status: "PAID",
                             final_amount: "1245",
@@ -220,9 +241,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "67890",
                             cust_name: "Κωστόπουλος",
-                            product_name: "Φόρμες",
-                            color: "Μαύρο",
-                            qty: "11",
+                            products: [
+                                {
+                                    product_name: "Φόρμες",
+                                    color: "Μαύρο",
+                                    qty: "11"
+                                }
+                            ],
                             current_stage: "CUTTING",
                             payment_status: "PENDING",
                             final_amount: "14590",
@@ -239,9 +264,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "67891",
                             cust_name: "Κωστόπουλος",
-                            product_name: "Φόρμες",
-                            color: "Μαύρο",
-                            qty: "11",
+                            products: [
+                                {
+                                    product_name: "Φόρμες",
+                                    color: "Μαύρο",
+                                    qty: "11"
+                                }
+                            ],
                             current_stage: "DELIVERING",
                             payment_status: "PENDING",
                             final_amount: "1245",
@@ -258,9 +287,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "67892",
                             cust_name: "Κωστόπουλος",
-                            product_name: "Φόρμες",
-                            color: "Μαύρο",
-                            qty: "11",
+                            products: [
+                                {
+                                    product_name: "Φόρμες",
+                                    color: "Μαύρο",
+                                    qty: "11"
+                                }
+                            ],
                             current_stage: "DELIVERING",
                             payment_status: "PENDING",
                             final_amount: "1245",
@@ -277,9 +310,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "67893",
                             cust_name: "Κωστόπουλος",
-                            product_name: "Φόρμες",
-                            color: "Μαύρο",
-                            qty: "11",
+                            products: [
+                                {
+                                    product_name: "Φόρμες",
+                                    color: "Μαύρο",
+                                    qty: "11"
+                                }
+                            ],
                             current_stage: "DELIVERING",
                             payment_status: "PENDING",
                             final_amount: "1245",
@@ -296,9 +333,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "67894",
                             cust_name: "Κωστόπουλος",
-                            product_name: "Φόρμες",
-                            color: "Μαύρο",
-                            qty: "11",
+                            products: [
+                                {
+                                    product_name: "Φόρμες",
+                                    color: "Μαύρο",
+                                    qty: "11"
+                                }
+                            ],
                             current_stage: "DELIVERING",
                             payment_status: "PENDING",
                             final_amount: "1245",
@@ -315,9 +356,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "14579",
                             cust_name: "Λαμπρόπουλος",
-                            product_name: "Γούνες",
-                            color: "Μαύρο",
-                            qty: "12",
+                            products: [
+                                {
+                                    product_name: "Γούνες",
+                                    color: "Μαύρο",
+                                    qty: "12"
+                                }
+                            ],
                             current_stage: "SEWING",
                             payment_status: "PAID",
                             final_amount: "1245",
@@ -334,9 +379,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "14580",
                             cust_name: "Λαμπρόπουλος",
-                            product_name: "Γούνες",
-                            color: "Μαύρο",
-                            qty: "12",
+                            products: [
+                                {
+                                    product_name: "Γούνες",
+                                    color: "Μαύρο",
+                                    qty: "12"
+                                }
+                            ],
                             current_stage: "SEWING",
                             payment_status: "PAID",
                             final_amount: "1245",
@@ -353,9 +402,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "14581",
                             cust_name: "Λαμπρόπουλος",
-                            product_name: "Γούνες",
-                            color: "Μαύρο",
-                            qty: "12",
+                            products: [
+                                {
+                                    product_name: "Γούνες",
+                                    color: "Μαύρο",
+                                    qty: "12"
+                                }
+                            ],
                             current_stage: "SEWING",
                             payment_status: "PAID",
                             final_amount: "1245",
@@ -372,9 +425,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "14582",
                             cust_name: "Λαμπρόπουλος",
-                            product_name: "Γούνες",
-                            color: "Μαύρο",
-                            qty: "12",
+                            products: [
+                                {
+                                    product_name: "Γούνες",
+                                    color: "Μαύρο",
+                                    qty: "12"
+                                }
+                            ],
                             current_stage: "QUALITY_CONTROL",
                             payment_status: "PAID",
                             final_amount: "1245",
