@@ -93,255 +93,8 @@
                     </v-card>
                 </v-menu>
 
-                <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog" v-model="dialogStatus">
-                    <template v-slot:activator>
-                        <v-btn color="#0369a1" class="new-order-btn" @click="dialogStatus = true; dialogMode = 'C';">Δημιουργία Νέας Παραγγελίας</v-btn>
-                    </template>
-                    <v-form @submit.prevent="createOrder" class="h-100" ref="form">
-                        <v-card class="new-order-card">
-                            <template v-slot:title>
-                                <v-row>
-                                    <v-col cols="auto">
-                                        <v-avatar color="#0369a1" variant="tonal" size="50" rounded="lg">
-                                            <v-icon size="30">
-                                                <CaMachineLearningModel />
-                                            </v-icon>
-                                        </v-avatar>
-                                    </v-col>
-                                    <v-col>
-                                        <h3 v-if="dialogMode === 'C'" class="header-title">
-                                            Δημιουργία Νέας Παραγγελίας
-                                        </h3>
-                                        <h3 v-else class="header-title">
-                                            Επεξεργασία Παραγγελίας
-                                        </h3>
-                                        <p class="header-subtitle">Μοναδα Παραγωγης</p>
-                                    </v-col>
-                                    <v-col>
-                                        <v-btn @click="dialogStatus = false" variant="text" class="float-right">
-                                            <v-icon>mdi-close</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                            <v-divider></v-divider>
-                            <v-card-text class="mt-4 px-8">
-                                <div class="mb-7">
-                                    <v-row class="ga-2 mb-6" no-gutters>
-                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider
-                                                color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                        <v-col>
-                                            <h3>Κυριως Στοιχεια</h3>
-                                        </v-col>
-                                    </v-row>
+                <OrdersModal :items="orders" @order-created="addOrder" />
 
-                                    <h4 class="description mb-2">Ονομα Πελατη</h4>
-                                    <v-text-field v-model="form.cust_name" density="compact"
-                                        placeholder="Αναζήτηση Πελάτη..." append-inner-icon="mdi-magnify"
-                                        :rules="[rules.required]" variant="outlined" hide-details></v-text-field>
-                                    <!-- <v-row no-gutters class="ga-6 my-4">
-                                        <v-col>
-                                        <h4 class="description mb-2">SKU Reference</h4>
-                                        <v-text-field
-                                        density="compact"
-                                        placeholder="TX-2048-IND"
-                                        variant="outlined"
-                                        hide-details
-                                        ></v-text-field>
-                                        </v-col>
-                                        <v-col>
-                                            <h4 class="description mb-2">Τεμάχια</h4>
-                                            <v-number-input v-model="form.qty" density="compact"
-                                                control-variant="stacked" placeholder="0" variant="outlined"
-                                                :rules="[rules.required, rules.positive]" :min="0"
-                                                inset></v-number-input>
-                                        </v-col>
-                                    </v-row> -->
-                                </div>
-
-                                <div>
-                                    <v-row class="ga-2 mb-6" no-gutters>
-                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider
-                                                color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                        <v-col>
-                                            <h3>Χαρακτηριστικα Προϊοντος</h3>
-                                        </v-col>
-                                    </v-row>
-
-                                    <!-- <div class="py-1 px-5 product-card">
-                                        <v-row no-gutters class="ga-6 my-4 justify-space-between">
-                                            <v-col cols="9">
-                                                <h4 class="description mb-2">Όνομα Προϊόντος</h4>
-                                                <v-text-field v-model="form.product.name" density="compact"
-                                                    placeholder="Αναζήτηση συγκεκριμένου προϊόντος..."
-                                                    append-inner-icon="mdi-magnify " variant="outlined" hide-details></v-text-field>
-                                                    
-                                            </v-col>
-                                            <v-col cols="2">
-                                                <h4 class="description mb-2">Τεμάχια</h4>
-                                                <v-number-input v-model="form.qty" density="compact"
-                                                    control-variant="stacked" placeholder="0" variant="outlined"
-                                                    :rules="[rules.required, rules.positive]" :min="0"
-                                                    inset></v-number-input>
-                                            </v-col>
-                                        </v-row>
-                                        
-                                        <v-row no-gutters class="ga-6 my-4">
-                                            <v-col>
-                                                <h4 class="description mb-2">Χρώμα</h4>
-                                                <v-autocomplete v-model="form.product.color" density="compact"
-                                                    placeholder="Επιλέξτε χρώμα" :items="colorItems" item-title="label"
-                                                    item-value="value" :rules="[rules.required]"
-                                                    variant="outlined"></v-autocomplete>
-                                            </v-col>
-                                            <v-col>
-                                                <h4 class="description mb-2">Μεγεθος</h4>
-                                                <v-select v-model="form.product.size" density="compact"
-                                                    placeholder="Επιλέξτε μέγεθος" :items="sizeItems" item-title="label"
-                                                    item-value="value" :rules="[rules.required]"
-                                                    variant="outlined"></v-select>
-                                            </v-col>
-                                        </v-row>
-                                    </div> -->
-
-                                    <transition-group name="product-list" tag="div">
-                                        <div class="d-flex flex-column ga-5">
-                                            <v-card class="py-1 px-5 product-card" v-for="(product, index) in form.products" :key="product">
-                                        <v-row no-gutters class="ga-6 my-4 justify-space-between">
-                                            <v-col cols="9">
-                                                <h4 class="description mb-2">Όνομα Προϊόντος</h4>
-                                                <v-text-field v-model="product.name" density="compact"
-                                                    placeholder="Αναζήτηση συγκεκριμένου προϊόντος..."
-                                                    append-inner-icon="mdi-magnify " variant="outlined" hide-details></v-text-field>
-                                                    
-                                            </v-col>
-                                            <v-col cols="2">
-                                                <h4 class="description mb-2">Τεμάχια</h4>
-                                                <v-number-input v-model="product.qty" density="compact"
-                                                    control-variant="stacked" placeholder="0" variant="outlined"
-                                                    :rules="[rules.required, rules.positive]" :min="0"
-                                                    inset></v-number-input>
-                                            </v-col>
-                                        </v-row>
-                                        
-                                        <v-row no-gutters class="ga-6 mt-4 mb-2">
-                                            <v-col>
-                                                <h4 class="description mb-2">Χρώμα</h4>
-                                                <v-autocomplete v-model="product.color" density="compact"
-                                                    placeholder="Επιλέξτε χρώμα" :items="colorItems" item-title="label"
-                                                    item-value="value" :rules="[rules.required]"
-                                                    variant="outlined"></v-autocomplete>
-                                            </v-col>
-                                            <v-col>
-                                                <h4 class="description mb-2">Μεγεθος</h4>
-                                                <v-select v-model="product.size" density="compact"
-                                                    placeholder="Επιλέξτε μέγεθος" :items="sizeItems" item-title="label"
-                                                    item-value="value" :rules="[rules.required]"
-                                                    variant="outlined"></v-select>
-                                            </v-col>
-                                        </v-row>
-                                        <div v-if="index !== 0">
-                                            <v-divider class="mb-2"></v-divider>
-                                            <v-card-actions class="justify-end">
-                                                <v-btn rounded="lg" color="error" @click="removeProduct(index)" icon="mdi-delete-outline" variant="tonal"></v-btn>
-                                            </v-card-actions>
-                                        </div>
-                                            </v-card>
-                                        </div>
-                                        <v-btn class="my-6 add-product-btn" variant="outlined" prepend-icon="mdi-plus" @click="addProduct" block>Προσθηκη Προϊοντος</v-btn>
-                                    </transition-group>
-                                </div>
-
-                                <div>
-                                    <v-row class="ga-2 my-6" no-gutters>
-                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider
-                                                color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                        <v-col>
-                                            <h3>Δρομολογηση Παραγγελιας</h3>
-                                        </v-col>
-                                    </v-row>
-
-                                    <h4 class="description mb-2">Σταδιο Παραγγελιας</h4>
-                                    <v-select v-model="form.current_stage" density="compact" label="Επιλέξτε στάδιο"
-                                        :items="stageItems" item-title="label" item-value="value"
-                                        :rules="[rules.required]" variant="outlined"></v-select>
-                                    <v-row no-gutters class="ga-6 my-4 mb-1">
-                                        <v-col>
-                                            <h4 class="description mb-2">Παραλαβη</h4>
-                                            <v-select v-model="form.pickupLocation" density="compact" label="Επιλέξτε"
-                                                :items="pickupLocationItems" item-title="label" item-value="value"
-                                                :rules="[rules.required]" variant="outlined"></v-select>
-                                        </v-col>
-                                        <v-col>
-                                            <h4 class="description mb-2">Προθεσμια</h4>
-                                            <v-date-input v-model="form.dueDate" class="date-input" prepend-icon=""
-                                                prepend-inner-icon="$calendar" :rules="[rules.required]"
-                                                displayFormat="dd/MM/YYYY" variant="outlined"
-                                                density="compact"></v-date-input>
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-row no-gutters class="ga-6 mb-4">
-                                        <v-col cols="12">
-                                            <h4 class="description mb-2">Επιπεδο Προτεραιοτητας</h4>
-                                            <v-select v-model="form.priority" density="compact"
-                                                label="Επιλέξτε προτεραιότητα" :items="priorityItems" item-title="label"
-                                                item-value="value" :rules="[rules.required]"
-                                                variant="outlined"></v-select>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-
-                                <div class="mt-9">
-                                    <v-row class="ga-2 mb-6" no-gutters>
-                                        <v-col cols="1" class="d-flex align-center justify-center pa-0"><v-divider
-                                                color="#0369a1" class="border-opacity-100"></v-divider></v-col>
-                                        <v-col>
-                                            <h3>Οικονομικο Συνολο</h3>
-                                        </v-col>
-                                    </v-row>
-
-                                    <div class="financial-container">
-                                        <v-row no-gutters class="ga-6 mb-4">
-                                            <v-col>
-                                                <h4 class="description mb-2">Συνολικο Ποσο</h4>
-                                                <v-text-field v-model="form.final_amount" density="compact"
-                                                    placeholder="€0.00" variant="outlined"></v-text-field>
-                                            </v-col>
-                                            <v-col>
-                                                <h4 class="description mb-2">Υπολοιπο</h4>
-                                                <v-text-field v-model="form.balance" density="compact"
-                                                    placeholder="€0.00" variant="outlined"></v-text-field>
-                                            </v-col>
-                                        </v-row>
-
-                                        <v-row>
-                                            <v-col>
-                                                <h4 class="description mb-2">Κατασταση Παραγγελιας</h4>
-                                                <v-select v-model="form.payment_status" density="compact"
-                                                    label="Επιλέξτε φάση" :items="payment_statusItems"
-                                                    item-title="label" item-value="value" variant="outlined"></v-select>
-                                            </v-col>
-                                        </v-row>
-                                    </div>
-                                </div>
-
-                            </v-card-text>
-                            <v-divider></v-divider>
-                            <v-card-actions class="d-flex justify-space-between pa-8 ga-6">
-                                <v-btn class="h-auto" text="Απόρριψη Αλλαγών"></v-btn>
-
-                                <v-btn v-if="dialogMode === 'C'" class="h-auto create-order-btn" type="submit"
-                                    text="Δημιουργία Παραγγελίας"
-                                    :prepend-icon="HiRocketLaunch"></v-btn>
-
-                                <v-btn v-else :loading="loading" class="h-auto create-order-btn"
-                                    text="Επεξεργασία Παραγγελίας" :prepend-icon="HiRocketLaunch"
-                                    @click="updateOrder(form)"></v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-form>
-                </v-dialog>
             </v-col>
         </v-row>
 
@@ -436,9 +189,11 @@
                     </div>
                 </template>
                 <template v-slot:[`item.products`]="{ item }">
-                    <div class="multiple-products d-flex align-center ga-3" v-if="item.products && item.products.length > 1">
+                    <div class="multiple-products d-flex align-center ga-3"
+                        v-if="item.products && item.products.length > 1">
                         <h2>{{ item.products[0].product_name }}</h2>
-                        <v-chip variant="tonal" color="#006497" class="font-weight-bold">+ {{ item.products.length - 1 }} ακόμη</v-chip>
+                        <v-chip variant="tonal" color="#006497" class="font-weight-bold">+ {{ item.products.length - 1
+                            }} ακόμη</v-chip>
                     </div>
                     <div v-else>
                         <h2 class="name-header">
@@ -447,7 +202,8 @@
                     </div>
                 </template>
                 <template v-slot:[`item.qty`]="{ item }">
-                    <div class="multiple-products qty d-flex flex-column align-center" v-if="item.products && item.products.length > 1">
+                    <div class="multiple-products qty d-flex flex-column align-center"
+                        v-if="item.products && item.products.length > 1">
                         <h2 class="qty-header">{{ sumQtyProducts(item.products) }}</h2>
                         <span>(σύνολο {{ item.products.length }} είδη)</span>
                     </div>
@@ -509,7 +265,7 @@
                                 <p v-bind="props">C: <span>{{ formatTimestamp(item.createdAt) }}</span></p>
                             </template>
                             <div class="">
-                                <p>Created By: aloubardis</p>
+                                <p>Created By: {{ item.createdBy }}</p>
                             </div>
                         </v-tooltip>
                         <v-tooltip text="Tooltip">
@@ -517,38 +273,55 @@
                                 <p v-bind="props">U: <span>{{ formatTimestamp(item.updatedAt) }}</span></p>
                             </template>
                             <div class="">
-                                <p>Updated By: aloubardis</p>
+                                <p>Updated By: {{ item.updatedBy }}</p>
                             </div>
                         </v-tooltip>
                     </div>
                 </template>
 
+
                 <template v-slot:expanded-row="{ columns, item }">
                     <tr class="expanded-row">
                         <td :colspan="columns.length" class="px-5 py-6">
                             <v-row class="mb-6" no-gutters>
-                                <v-card class="pa-4">
-                                      <v-stepper :items="getSteps(item.products)" editable hide-actions>
-                                                  <template v-for="step in getSteps(item.products)" :key="step.value" v-slot:[`item.${step.value}`]>
-                                                    <v-card>
-                                                        <v-card-title>
-                                                            {{ step.product_name }}
-                                                        </v-card-title>
+                                <v-card class="pa-4 outer-card">
+                                    <v-card-title class="d-flex justify-space-between">
+                                        <div class="d-flex ga-1 left">
+                                            <v-icon>mdi-package-variant</v-icon><span>ΠΡΟΪΟΝΤΑ ΠΑΡΑΓΓΕΛΙΑΣ ({{
+                                                item.products.length }})</span>
+                                        </div>
+                                        <span>Επιλέξτε προϊόν για προβολή στοιχείων</span>
+                                    </v-card-title>
+                                    <v-divider opacity="1"></v-divider>
+                                    <v-stepper :items="getSteps(item.products)" editable hide-actions elevation="0"
+                                        class="ma-0">
+                                        <template v-for="step in getSteps(item.products)" :key="step.value"
+                                            v-slot:[`item.${step.value}`]>
+                                            <v-card class="inner-card">
+                                                <div>
+                                                    <p class="text-uppercase mb-1">Ονομα Προϊοντος</p>
+                                                    <p>{{ step.product_name }}</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-uppercase mb-1">Ποσοτητα</p>
+                                                    <p>{{ step.qty }}</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-uppercase mb-1">Χρωμα</p>
+                                                    <p> {{ mapColorToGR(step.color) }}</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-uppercase mb-1">Μεγεθος</p>
+                                                    <p>{{ mapSize(step.size) }}</p>
+                                                </div>
 
-                                                        <v-card-text>
-                                                            <div>Χρώμα: {{ step.color }}</div>
-                                                            <div>Μέγεθος: {{ step.size }}</div>
-                                                            <div>Ποσότητα: {{ step.qty }}</div>
-                                                        </v-card-text>
-                                                    </v-card>
-                                                </template>
+                                            </v-card>
+                                        </template>
                                     </v-stepper>
-
                                 </v-card>
 
-                                
                             </v-row>
-                                
+
                             <v-row class="justify-space-between" no-gutters>
                                 <v-col cols="3">
                                     <div class="details">
@@ -596,8 +369,9 @@
                                         </div>
                                     </div>
                                 </v-col>
-                                <v-col cols="3">
-                                    <v-btn color="primary" class="float-right primary-btn" @click="openUpdateOrderModal(item)">Update Status</v-btn>
+                                <v-col cols="3" class="d-flex align-center">
+                                    <v-btn color="primary" class="float-right primary-btn"
+                                        @click="openUpdateOrderModal(item)">Επεξεργασία</v-btn>
                                 </v-col>
                             </v-row>
                         </td>
@@ -608,13 +382,17 @@
 
     </v-container>
 </template>
-<script>
- import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine } from '@kalimahapps/vue-icons';
- import {getOrders} from "../api/ordersService";
 
- export default {
+<script>
+import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine } from '@kalimahapps/vue-icons';
+import { getOrders } from "../api/ordersService";
+import { useAuthStore } from "../stores/auth";
+import OrdersModal from "../components/OrdersModal.vue";
+
+export default {
     name: "Orders",
     components: {
+        OrdersModal,
         CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert,
         CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine
     },
@@ -715,6 +493,7 @@
             HiRocketLaunch: HiRocketLaunch,
             McBookmarkAddLine: McBookmarkAddLine,
             expanded: [],
+            authStore: useAuthStore(),
             maxDate: new Date(),
             rules: {
                 required: value => !!value || 'Το πεδίο είναι υποχρεωτικό.',
@@ -729,7 +508,7 @@
                 qty: null,
                 products: [
                     {
-                        name: "",
+                        product_name: "",
                         qty: null,
                         color: null,
                         size: null
@@ -770,39 +549,6 @@
         },
         formatTimestamp(timestamp) {
             return new Date(timestamp).toLocaleString();
-        },
-        createOrder() {
-            console.log("Creating order:", this.form);
-            this.$refs.form.validate()
-                .then((result) => {
-                    if (result.valid) {
-                        this.items.unshift({
-                            id: "24789",
-                            cust_name: this.form.cust_name,
-                            products: this.form.products,
-                            // product_name: this.form.product.name,
-                            // color: this.form.product.color,
-                            // qty: this.form.qty,
-                            
-                            current_stage: this.form.current_stage,
-                            payment_status: this.form.payment_status,
-                            final_amount: this.form.final_amount,
-                            balance: this.form.balance,
-                            priority: this.form.priority,
-                            dueDate: this.form.dueDate, // Need to format me!
-                            createdAt: new Date().toLocaleString(),
-                            updatedAt: new Date().toLocaleString(),
-                            deliveredAt: new Date().toLocaleString(),
-                            createdBy: "aloubardis",
-                            updatedBy: "aloubardis",
-                            deletedAt: null
-                        })
-                        this.dialogStatus = false;
-                    } else {
-                        alert("Please fill in all required fields correctly.");
-                    }
-                });
-
         },
         isOverdue(itemDuedate) {
             const [year, month, day] = itemDuedate.split("-");
@@ -870,7 +616,7 @@
             console.log("Updated order:", existingOrder);
             console.log("Orders:", this.items);
         },
-        clearForm(){
+        clearForm() {
             this.form = {
                 cust_name: "",
                 qty: null,
@@ -888,18 +634,6 @@
                 payment_status: null
             };
         },
-        addProduct() {
-            console.log(this.form);
-            this.form.products.push({
-                name: "",
-                qty: null,
-                color: null,
-                size: null
-            });
-        },
-        removeProduct(index) {
-            this.form.products.splice(index, 1);
-        },
         sumQtyProducts(array) {
             var count = 0;
             array.forEach((item) => {
@@ -913,6 +647,15 @@
                 value: index + 1,
                 ...product
             }));
+        },
+        mapColorToGR(v) {
+            return this.colorItems.find(color => color.value.toUpperCase() === v.toUpperCase())?.label || value
+        },
+        mapSize(v) {
+            return this.sizeItems.find(size => size.value.toUpperCase() === v.toUpperCase())?.label || value
+        },
+        addOrder(order){
+            this.items.unshift(...order);
         }
     },
     computed: {
@@ -968,532 +711,676 @@
         getOrderId() {
             return this.items.map((item) => 'ORD-' + item.id);
         },
+        // getCurrentUser() {
+        //     console.log("created");
+        //     return this.authStore.getFullName();
+        // }
     }
 
 }
 </script>
 
 <style scoped>
-    .header span {
-        color: #006497;
-        letter-spacing: .2em;
-        text-transform: uppercase;
-        font-size: .75rem;
-        font-weight: 700;
-        font-family: Manrope;
-    }
-    .header h1 {
-        color: #2a343a;
-        letter-spacing: -.025em;
-        text-transform: capitalize;
-        font-size: 2.25rem;
-        font-weight: 800;
-        font-family: Manrope;
-    }
-    .header :deep(.v-btn){
-        padding: .675rem 1.5rem;
-        height: auto;
-        border-color: #00649766;
-        border-radius: .5rem;
-        font-size: 0.875rem;
-        font-weight: 700;
-        text-transform: capitalize;
-        letter-spacing: 0;
-        font-family: Manrope;
-    }
-    .header :deep(.v-btn .v-btn__prepend){
-        font-size: 1rem;
-    }
-    .new-order-btn{
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    }
-    :deep(.v-card){
-        width: 100%;
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        border-radius: 0.75rem;
-    }
-    :deep(.v-card.blue){
-        border-left: 4px solid #0064974d;
-    }
-    :deep(.v-card .v-card-title){
-        color: #566167;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        font-family: Manrope;
-    }
-    :deep(.v-card-text){
-        color: #2a343a;
-        font-size: 2.25rem;
-        font-weight: 800;
-        letter-spacing: -0.05em;
-        font-family: Manrope;
-        padding-bottom: 0;
-    }
-    :deep(.risk .v-card-text){
-        color: #a83836;
-    }
-    :deep(.risk .v-card-actions span){
-        color: #566167;
-        font-weight: 500;
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        gap: .5rem;
-    }
-    :deep(.kpi-cards .v-card-actions span){
-        padding: 1rem;
-    }
-    :deep(.kpi-cards .v-card-actions span){
-        font-family: Manrope;
-        color: #00687b;
-        font-weight: 800;
-        font-size: 0.875rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        text-transform: capitalize;
-    }
-    :deep(.kpi-cards .v-card-actions .v-btn:nth-child(1)){
-        flex: 1;
-    }
-    :deep(.kpi-cards .v-card-actions .v-btn:nth-child(2)){
-        flex: 2;
-    }
-    .background-icon{
-        position: absolute;
-        right: -.75rem;
-        bottom: -1rem;
-        font-size: 7rem;
-        color: #2a343a;
-        opacity: 0.05;
-    }
-    .v-table{
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        border-radius: 0.75rem;
-        background: transparent;
-        overflow: hidden;
-    }
-    :deep(.v-table tbody){
-        background: white;
-    }
-    :deep(.v-table .v-divider){
-        display: none;
-    }
-    :deep(.v-table-wrapper){
-        border-radius: 0.75rem;
-    }
-    :deep(.v-table thead tr){
-        background-color: #e2e8f0;
-    }
-    .table-container{
-        background-color: #e2e8f0;
-        padding: 1px;
-        border: 1px solid #e1e9f04d;
-        border-radius: .75rem;
-    }
-    :deep(.v-table.v-data-table .v-table__wrapper table tbody tr td),
-    :deep(.v-table.v-data-table .v-table__wrapper table thead tr th)
-    {
-        border-bottom: 0;
-    }
-    :deep(.v-table.v-data-table .v-table__wrapper table tbody tr td){
-        border-bottom: 1px solid #e1e9f04d;
-        padding: .785rem 1.5rem;
-    }
-    :deep(.v-table.v-data-table .v-table__wrapper table thead th span){
-        font-family: Manrope;
-        color: #566167;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        font-weight: 700;
-        font-size: 0.675rem;
-    }
-    :deep(.v-table.v-data-table .v-table__wrapper){
-        border-radius: 0.75rem;
-    }
-    :deep(.order-header){
-        color: #006497;
-        font-size: 1rem;
-    }
-    :deep(.cust-header){
-        color: #566167;
-        font-size: 1rem;
-        font-weight: 500;
-        font-family: 'Manrope';
-    }
-    :deep(.sku-header){
-        color: #566167;
-        font-size: .75rem;
-        font-family: 'Manrope';
-        font-weight: 400;
-    }
-    :deep(.name-header),
-    .multiple-products h2{
-        color: #2a343a;
-        font-size: 1rem;
-        font-family: 'Manrope';
-        font-weight: 600;
-    }
-    .multiple-products .v-chip{
-        border: 1px solid #00649733;
-        font-size: .675rem;
-        padding: .125rem .5rem;
-    }
-    .multiple-products.qty span{
-        color: #94a3b8;
-        font-size: .675rem;
-        font-weight: 500;
-    }
-    :deep(.qty-header){
-        font-size: .875rem;
-        font-family: 'Manrope';
-        font-weight: 700;
-    }
-    :deep(.stage-header){
-        font-size: .675rem;
-        font-family: 'Manrope';
-        font-weight: 800;
-        text-transform: uppercase;
-        /* color: #075985; */
-        /* background-color: #e0f2fe; */
-        padding: .25rem .75rem;
-        border-radius: 999px;
-        display: inline;
-    }
-    :deep(.stage-header.gray){
-        color: #64748b;
-        background-color: #64748b1f;
-    }
-    :deep(.stage-header.lightblue){
-        color: #075985;
-        background-color: #e0f2fe;
-    }
-    :deep(.stage-header.blue){
-        color: #0369a1;
-        background-color: #036aa11f;
-    }
-    :deep(.stage-header.yellow){
-        color: #92400e;
-        background-color: #fef3c7;
-    }
-    :deep(.stage-header.green){
-        color: #3e9789;
-        background-color: #f0fdfa;
-    }
-    :deep(.payment-header){
-        display: flex;
-        align-items: center;
-        gap: .25rem;
-        font-size: .75rem;
-        text-transform: uppercase;
-        font-family: 'Manrope';
-        font-weight: 700;
-    }
-    :deep(.payment-header.paid){
-        color: #00687b;
-    }
-    :deep(.payment-header.pending){
-        color: #566167;
-    }
-    :deep(.payment-header svg){
-        font-size: 1rem;
-    }
-    .expanded-row{
-        background-color: #eef4fa4d;
-        border: 1px solid #e1e9f04d;
-    }
-    :deep(.expanded-row .details .v-row){
-        color: #006497;
-        font-size: .675rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-    }
-    :deep(.expanded-row .details .content .header){
-        color: #566167;
-        font-size: 0.75rem;
-        line-height: 1rem;
-    }
-    :deep(.expanded-row .details svg){
-        font-size: 1rem;
-    }
-    :deep(.expanded-row .details .content span:not(.header)){
-        font-weight: 700;
-        color: #2a343a;
-    }
-    :deep(.expanded-row .details .content > div:nth-child(1)){
-        border-bottom: 1px solid #e2e8f0;
-    }
-    :deep(.v-data-table-footer__info > div),
-    :deep(.v-data-table-footer__items-per-page span){
-        color: #566167;
-        font-weight: 700;
-        font-size: 0.75rem;
-        line-height: 1rem;
-    }
-    :deep(.v-data-table-footer__items-per-page .v-input .v-field){
-        border-radius: .75rem;
-        background: white;
-    }
-    .primary-btn{
-        color: white;
-        background-color: #0369a1;
-        border-color: #00649766;
-        width: 100%;
-        padding: .675rem 1.5rem;
-        height: auto;
-        border-radius: .5rem;
-        font-size: 0.875rem;
-        font-weight: 700;
-        text-transform: capitalize;
-        letter-spacing: 0;
-        font-family: Manrope;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    }
-    .new-order-dialog :deep(.v-overlay__content){
-        right: 0;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        max-height: none;
-    }
-    .v-overlay-container .new-order-dialog :deep(div.v-card-item){
-        padding: 1.5rem 2rem;
-    }
-    .new-order-card .header-title {
-        color: #2a343a;
-        text-transform: capitalize;
-        line-height: 1.25;
-        font-weight: 800;
-        font-size: 1.25rem;
-    }
-    .new-order-card .header-subtitle {
-        color: #0369a1;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        line-height: 1rem;
-        margin-top: 0.125rem;
-    }
-    .new-order-card .v-card-text h3{
-        color: #566167;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        font-weight: 900;
-        font-size: 0.75rem;
-        line-height: 1rem;
-    }
-    .new-order-card .v-card-text .description{
-        color: #566167;
-        letter-spacing: -0.05em;
-        text-transform: uppercase;
-        font-weight: 700;
-        font-size: .75rem;
-        line-height: 1rem;
-    }
-    .new-order-card .v-card-text :deep(input::placeholder),
-    .new-order-card .v-card-text :deep(.v-label)
-    {
-        color: #566167;
-        font-size: .875rem;
-        opacity: 1;
-    }
-    .new-order-card .v-card-text :deep(.v-input .v-field__outline__start),
-    .new-order-card .v-card-text :deep(.v-input .v-field__outline__notch::before),
-    .new-order-card .v-card-text :deep(.v-input .v-field__outline__notch::after),
-    .new-order-card .v-card-text :deep(.v-input .v-field__outline__end){
-        border-color: #e2e8f0;
-        opacity: 1;
-    }
-    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__start),
-    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::before),
-    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::after),
-    .new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__end){
-        border-color: #b00020;
-        opacity: 1;
-    }
-    .new-order-card .v-card-text :deep(.v-field){
-        border-radius: 0.5rem;
-        padding: .2rem 1rem .2rem 0;
-    }
-    :deep(.v-overlay__scrim){
-        background: #0f172a66;
-        opacity: 1;
-        backdrop-filter: blur(8px);
-    }
-    .save-btn{
-        font-size: 0.675rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        font-weight: 700;
-    }
-    :deep(.v-overlay__content .v-card .v-card-text){
-        overflow-y: auto;
-    }
-    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar) {
-        width: 4px;
-    }
+.header span {
+    color: #006497;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-size: .75rem;
+    font-weight: 700;
+    font-family: Manrope;
+}
 
-    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-track) {
-        background: transparent;
-    }
+.header h1 {
+    color: #2a343a;
+    letter-spacing: -.025em;
+    text-transform: capitalize;
+    font-size: 2.25rem;
+    font-weight: 800;
+    font-family: Manrope;
+}
 
-    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb) {
-        background-color: #0369a020;
-        border-radius: 999px;
-    }
+.header :deep(.v-btn) {
+    padding: .675rem 1.5rem;
+    height: auto;
+    border-color: #00649766;
+    border-radius: .5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    font-family: Manrope;
+}
 
-    :deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb:hover) {
-        background-color: #0369a040;
-    }
-    :deep(.v-overlay__content .v-card.new-order-card){
-        overflow-y: hidden;
-    }
-    .create-order-btn{
-        background: #0369a1;
-        box-shadow: 0 10px 15px -3px rgb(12 74 110 / 0.2), 0 4px 6px -4px rgb(12 74 110 / 0.2);
-        border-radius: 0.5rem;
-        padding: 1rem;
-    }
-    .create-order-btn :deep(.v-btn__prepend){
-        padding: 0 0 0 .75rem;
-        color: white;
-    }
-    .create-order-btn :deep(.v-btn__content){
-        color: white;
-    }
-    .financial-container{
-        background-color: #eef4fa;
-        border-radius: .75rem;
-        padding: 1.5rem;
-    }
-    .financial-container :deep(.v-field){
-        background: white;
-    }
-    .timestamps{
-        color: #566167;
-        font-size: 0.70rem;
-    }
-    .timestamps span{
-        text-decoration: underline dashed;
-    }
-    .date-input :deep(.v-field__prepend-inner){
-        padding-left: .5rem;
-        font-size: .875rem;
-    }
-    .filter-menu .v-card{
-        background: white;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        border-radius: 0.75rem;
-    }
-    .filter-menu .header{
-        background-color: #f8fafc80;
-    }
-    .filter-menu :deep(.v-list-item-title){
-        color: #64748b;
-        font-size: 0.75rem;
-        line-height: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 800;
-    }
-    .filter-menu label{
-        color: #94a3b8;
-        font-size: 0.625rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-    }
-    .filter-menu :deep(.v-field){
-        font-size: 0.75rem;
-        line-height: 1rem;
-        border-radius: 0.5rem;
-    }
-    .filter-menu :deep(.v-field .v-field__outline .v-field__outline__start),
-    .filter-menu :deep(.v-field .v-field__outline .v-field__outline__end),
-    .filter-menu :deep(.v-field .v-field__outline .v-field__outline__notch::before),
-    .filter-menu :deep(.v-field .v-field__outline .v-field__outline__notch::after)
-    {
-        border-color: #e2e8f0;
-        opacity: 1;
-    }
-    .filter-menu .row-btn button{
-        color: #475569;
-        font-weight: 700;
-        font-size: 0.625rem;
-        padding: 0.5rem 0.75rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 9999px;
-        text-transform: capitalize;
-        height: auto;
-        box-shadow: none;
-    }
-    .filter-menu .row-btn button.active{
-        background-color: #0369a1;
-        color: white;
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    }
-    .filter-menu .v-card-actions button{
-        font-size: 0.875rem;
-        font-weight: 500;
-        padding: 0.625rem 1.5rem;
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        border-radius: 0.5rem;
-        text-transform: capitalize;
-    }
-    .product-card{
-        border: 1px solid #e2e8f0;
-        border-radius: .75rem;
-    }
-    .add-product-btn{
-        color: #566167;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        border-color: #e2e8f0;
-        border-style: dashed;
-        border-width: 2px;
-        border-radius: 0.5rem;
-        padding: 1.5rem;
-    }
-    .product-list-enter-active,
-    .product-list-leave-active {
-        transition:
-            opacity 0.4s ease,
-            transform 0.4s ease;
-    }
+.header :deep(.v-btn .v-btn__prepend) {
+    font-size: 1rem;
+}
 
-    .product-list-enter-from {
-        opacity: 0;
-        transform: translateX(12px) scale(0.98);
-    }
+.new-order-btn {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
 
-    .product-list-enter-to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
+:deep(.v-card) {
+    width: 100%;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border-radius: 0.75rem;
+}
 
-    .product-list-leave-from {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
+:deep(.v-card.blue) {
+    border-left: 4px solid #0064974d;
+}
 
-    .product-list-leave-to {
-        opacity: 0;
-        transform: translateX(-8px) scale(0.98);
-    }
+:deep(.v-card .v-card-title) {
+    color: #566167;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: Manrope;
+}
 
-    .product-list-move {
-        transition: transform 0.4s ease;
-    }
-    .expanded-row :deep(.v-stepper-header){
-        justify-content: unset;
-        border-bottom: 1px solid #e2e8f0;
-        gap: 0.5rem;
-    }
-    .expanded-row :deep(.v-stepper-header button){
-        gap: 0.5rem;
-    }
+:deep(.v-card-text) {
+    color: #2a343a;
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    font-family: Manrope;
+    padding-bottom: 0;
+}
+
+:deep(.risk .v-card-text) {
+    color: #a83836;
+}
+
+:deep(.risk .v-card-actions span) {
+    color: #566167;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    gap: .5rem;
+}
+
+:deep(.kpi-cards .v-card-actions span) {
+    padding: 1rem;
+}
+
+:deep(.kpi-cards .v-card-actions span) {
+    font-family: Manrope;
+    color: #00687b;
+    font-weight: 800;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-transform: capitalize;
+}
+
+:deep(.kpi-cards .v-card-actions .v-btn:nth-child(1)) {
+    flex: 1;
+}
+
+:deep(.kpi-cards .v-card-actions .v-btn:nth-child(2)) {
+    flex: 2;
+}
+
+.background-icon {
+    position: absolute;
+    right: -.75rem;
+    bottom: -1rem;
+    font-size: 7rem;
+    color: #2a343a;
+    opacity: 0.05;
+}
+
+.v-table {
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border-radius: 0.75rem;
+    background: transparent;
+    overflow: hidden;
+}
+
+:deep(.v-table tbody) {
+    background: white;
+}
+
+:deep(.v-table .v-divider) {
+    display: none;
+}
+
+:deep(.v-table-wrapper) {
+    border-radius: 0.75rem;
+}
+
+:deep(.v-table thead tr) {
+    background-color: #e2e8f0;
+}
+
+.table-container {
+    background-color: #e2e8f0;
+    padding: 1px;
+    border: 1px solid #e1e9f04d;
+    border-radius: .75rem;
+}
+
+:deep(.v-table.v-data-table .v-table__wrapper table tbody tr td),
+:deep(.v-table.v-data-table .v-table__wrapper table thead tr th) {
+    border-bottom: 0;
+}
+
+:deep(.v-table.v-data-table .v-table__wrapper table tbody tr td) {
+    border-bottom: 1px solid #e1e9f04d;
+    padding: .785rem 1.5rem;
+}
+
+:deep(.v-table.v-data-table .v-table__wrapper table thead th span) {
+    font-family: Manrope;
+    color: #566167;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.675rem;
+}
+
+:deep(.v-table.v-data-table .v-table__wrapper) {
+    border-radius: 0.75rem;
+}
+
+:deep(.order-header) {
+    color: #006497;
+    font-size: 1rem;
+}
+
+:deep(.cust-header) {
+    color: #566167;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'Manrope';
+}
+
+:deep(.sku-header) {
+    color: #566167;
+    font-size: .75rem;
+    font-family: 'Manrope';
+    font-weight: 400;
+}
+
+:deep(.name-header),
+.multiple-products h2 {
+    color: #2a343a;
+    font-size: 1rem;
+    font-family: 'Manrope';
+    font-weight: 600;
+}
+
+.multiple-products .v-chip {
+    border: 1px solid #00649733;
+    font-size: .675rem;
+    padding: .125rem .5rem;
+}
+
+.multiple-products.qty span {
+    color: #94a3b8;
+    font-size: .675rem;
+    font-weight: 500;
+}
+
+:deep(.qty-header) {
+    font-size: .875rem;
+    font-family: 'Manrope';
+    font-weight: 700;
+}
+
+:deep(.stage-header) {
+    font-size: .675rem;
+    font-family: 'Manrope';
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: .25rem .75rem;
+    border-radius: 999px;
+    display: inline;
+}
+
+:deep(.stage-header.gray) {
+    color: #64748b;
+    background-color: #64748b1f;
+}
+
+:deep(.stage-header.lightblue) {
+    color: #075985;
+    background-color: #e0f2fe;
+}
+
+:deep(.stage-header.blue) {
+    color: #0369a1;
+    background-color: #036aa11f;
+}
+
+:deep(.stage-header.yellow) {
+    color: #92400e;
+    background-color: #fef3c7;
+}
+
+:deep(.stage-header.green) {
+    color: #3e9789;
+    background-color: #f0fdfa;
+}
+
+:deep(.payment-header) {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .75rem;
+    text-transform: uppercase;
+    font-family: 'Manrope';
+    font-weight: 700;
+}
+
+:deep(.payment-header.paid) {
+    color: #00687b;
+}
+
+:deep(.payment-header.pending) {
+    color: #566167;
+}
+
+:deep(.payment-header svg) {
+    font-size: 1rem;
+}
+
+.expanded-row {
+    background-color: #eef4fa4d;
+    border: 1px solid #e1e9f04d;
+}
+
+:deep(.expanded-row .details .v-row) {
+    color: #006497;
+    font-size: .675rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+:deep(.expanded-row .details .content .header) {
+    color: #566167;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+:deep(.expanded-row .details svg) {
+    font-size: 1rem;
+}
+
+:deep(.expanded-row .details .content span:not(.header)) {
+    font-weight: 700;
+    color: #2a343a;
+}
+
+:deep(.expanded-row .details .content > div:nth-child(1)) {
+    border-bottom: 1px solid #e2e8f0;
+}
+
+:deep(.v-data-table-footer__info > div),
+:deep(.v-data-table-footer__items-per-page span) {
+    color: #566167;
+    font-weight: 700;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+:deep(.v-data-table-footer__items-per-page .v-input .v-field) {
+    border-radius: .75rem;
+    background: white;
+}
+
+.primary-btn {
+    color: white;
+    background-color: #0369a1;
+    border-color: #00649766;
+    width: 100%;
+    padding: .675rem 1.5rem;
+    height: auto;
+    border-radius: .5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    letter-spacing: 0;
+    font-family: Manrope;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.new-order-dialog :deep(.v-overlay__content) {
+    right: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    max-height: none;
+}
+
+.v-overlay-container .new-order-dialog :deep(div.v-card-item) {
+    padding: 1.5rem 2rem;
+}
+
+.new-order-card .header-title {
+    color: #2a343a;
+    text-transform: capitalize;
+    line-height: 1.25;
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.new-order-card .header-subtitle {
+    color: #0369a1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    margin-top: 0.125rem;
+}
+
+.new-order-card .v-card-text h3 {
+    color: #566167;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.new-order-card .v-card-text .description {
+    color: #566167;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: .75rem;
+    line-height: 1rem;
+}
+
+.new-order-card .v-card-text :deep(input::placeholder),
+.new-order-card .v-card-text :deep(.v-label) {
+    color: #566167;
+    font-size: .875rem;
+    opacity: 1;
+}
+
+.new-order-card .v-card-text :deep(.v-input .v-field__outline__start),
+.new-order-card .v-card-text :deep(.v-input .v-field__outline__notch::before),
+.new-order-card .v-card-text :deep(.v-input .v-field__outline__notch::after),
+.new-order-card .v-card-text :deep(.v-input .v-field__outline__end) {
+    border-color: #e2e8f0;
+    opacity: 1;
+}
+
+.new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__start),
+.new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::before),
+.new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__notch::after),
+.new-order-card .v-card-text :deep(.v-input .v-field--error .v-field__outline__end) {
+    border-color: #b00020;
+    opacity: 1;
+}
+
+.new-order-card .v-card-text :deep(.v-field) {
+    border-radius: 0.5rem;
+    padding: .2rem 1rem .2rem 0;
+}
+
+:deep(.v-overlay__scrim) {
+    background: #0f172a66;
+    opacity: 1;
+    backdrop-filter: blur(8px);
+}
+
+.save-btn {
+    font-size: 0.675rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+:deep(.v-overlay__content .v-card .v-card-text) {
+    overflow-y: auto;
+}
+
+:deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar) {
+    width: 4px;
+}
+
+:deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-track) {
+    background: transparent;
+}
+
+:deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb) {
+    background-color: #0369a020;
+    border-radius: 999px;
+}
+
+:deep(.v-overlay__content .v-card .v-card-text::-webkit-scrollbar-thumb:hover) {
+    background-color: #0369a040;
+}
+
+:deep(.v-overlay__content .v-card.new-order-card) {
+    overflow-y: hidden;
+}
+
+.create-order-btn {
+    background: #0369a1;
+    box-shadow: 0 10px 15px -3px rgb(12 74 110 / 0.2), 0 4px 6px -4px rgb(12 74 110 / 0.2);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.create-order-btn :deep(.v-btn__prepend) {
+    padding: 0 0 0 .75rem;
+    color: white;
+}
+
+.create-order-btn :deep(.v-btn__content) {
+    color: white;
+}
+
+.financial-container {
+    background-color: #eef4fa;
+    border-radius: .75rem;
+    padding: 1.5rem;
+}
+
+.financial-container :deep(.v-field) {
+    background: white;
+}
+
+.timestamps {
+    color: #566167;
+    font-size: 0.70rem;
+}
+
+.timestamps span {
+    text-decoration: underline dashed;
+}
+
+.date-input :deep(.v-field__prepend-inner) {
+    padding-left: .5rem;
+    font-size: .875rem;
+}
+
+.filter-menu .v-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    border-radius: 0.75rem;
+}
+
+.filter-menu .header {
+    background-color: #f8fafc80;
+}
+
+.filter-menu :deep(.v-list-item-title) {
+    color: #64748b;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 800;
+}
+
+.filter-menu label {
+    color: #94a3b8;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.filter-menu :deep(.v-field) {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    border-radius: 0.5rem;
+}
+
+.filter-menu :deep(.v-field .v-field__outline .v-field__outline__start),
+.filter-menu :deep(.v-field .v-field__outline .v-field__outline__end),
+.filter-menu :deep(.v-field .v-field__outline .v-field__outline__notch::before),
+.filter-menu :deep(.v-field .v-field__outline .v-field__outline__notch::after) {
+    border-color: #e2e8f0;
+    opacity: 1;
+}
+
+.filter-menu .row-btn button {
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    text-transform: capitalize;
+    height: auto;
+    box-shadow: none;
+}
+
+.filter-menu .row-btn button.active {
+    background-color: #0369a1;
+    color: white;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.filter-menu .v-card-actions button {
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.625rem 1.5rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border-radius: 0.5rem;
+    text-transform: capitalize;
+}
+
+.product-card {
+    border: 1px solid #e2e8f0;
+    border-radius: .75rem;
+}
+
+.add-product-btn {
+    color: #566167;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-color: #e2e8f0;
+    border-style: dashed;
+    border-width: 2px;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.product-list-enter-active,
+.product-list-leave-active {
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+}
+
+.product-list-enter-from {
+    opacity: 0;
+    transform: translateX(12px) scale(0.98);
+}
+
+.product-list-enter-to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.product-list-leave-from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.product-list-leave-to {
+    opacity: 0;
+    transform: translateX(-8px) scale(0.98);
+}
+
+.product-list-move {
+    transition: transform 0.4s ease;
+}
+
+.expanded-row :deep(.v-stepper-header) {
+    justify-content: unset;
+    border-bottom: 1px solid #e2e8f0;
+    gap: 0.5rem;
+}
+
+.expanded-row :deep(.v-stepper-header button) {
+    gap: 0.5rem;
+}
+
+.expanded-row .v-card-title .left {
+    color: #0369a1;
+}
+
+.expanded-row .v-divider {
+    opacity: 1;
+    display: block;
+}
+
+.expanded-row :deep(.v-stepper-item__title) {
+    font-weight: 500;
+}
+
+.expanded-row :deep(.v-stepper-item--selected .v-stepper-item__title) {
+    color: #006497;
+}
+
+.expanded-row :deep(.v-stepper-item--selected) {
+    border-bottom: 2px solid #006497;
+}
+
+.expanded-row :deep(.v-window) {
+    margin: 0;
+}
+
+.expanded-row .v-card.outer-card {
+    padding: 1rem;
+    background: white;
+    border: 1px solid #a9b3bb33;
+    border-radius: .75rem;
+}
+
+.expanded-row .v-card.inner-card {
+    border: 1px solid #e2e8f0cc;
+    border-radius: .5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.expanded-row .v-card.inner-card>div {
+    grid-column: span 3 / span 3;
+}
+
+.expanded-row .v-card.inner-card p {
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    font-size: .75rem;
+}
+
+.expanded-row .v-card.inner-card p:nth-child(2) {
+    color: #0f172a;
+    font-size: .875rem;
+}
 </style>

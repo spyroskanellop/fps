@@ -4,6 +4,7 @@ import Workflow from '../views/Workflow.vue'
 import Customers from '../views/Customers.vue'
 import Users from '../views/Users.vue'
 import Login from '../views/Login.vue'
+import Test from '../components/OrdersModal.vue'
 import { useAuthStore } from '../stores/auth';
 
 
@@ -44,6 +45,12 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login,
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test,
+      meta: { requiresAuth: false }
     },
   ],
 })

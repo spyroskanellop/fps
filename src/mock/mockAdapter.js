@@ -144,16 +144,19 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "12345123",
                             cust_name: "Λαμπρόπουλος",
-                            products:[
+                            products: [
                                 {
                                     product_name: "Γούνες",
-                                    color: "Μαύρο",
+                                    color: "black",
                                     qty: "12",
+                                    size: "medium"
                                 },
                                 {
                                     product_name: "Στολές",
-                                    color: "Λευκό",
+                                    color: "white",
                                     qty: "12",
+                                    size: "small"
+
                                 }
                             ],
                             current_stage: "PREPARING",
@@ -172,12 +175,13 @@ export default function initializeMockAdapter(instance) {
                         {
                             id: "12345",
                             cust_name: "Λαμπρόπουλος",
-                            products:[
+                            products: [
                                 {
                                     product_name: "Γούνες",
-                                    color: "Μαύρο",
+                                    color: "black",
                                     qty: "12",
-                                },                                
+                                    size: "large"
+                                },
                             ],
                             current_stage: "SEWING",
                             payment_status: "PAID",
@@ -198,8 +202,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Φόρμες",
-                                    color: "Μαύρο",
-                                    qty: "11"
+                                    color: "black",
+                                    qty: "11",
+                                    size: "x_large"
                                 }
                             ],
                             current_stage: "PREPARING",
@@ -221,8 +226,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Γούνες",
-                                    color: "Μαύρο",
-                                    qty: "12"
+                                    color: "black",
+                                    qty: "12",
+                                    size: "xx_large"
                                 }
                             ],
                             current_stage: "SEWING",
@@ -244,8 +250,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Φόρμες",
-                                    color: "Μαύρο",
-                                    qty: "11"
+                                    color: "black",
+                                    qty: "11",
+                                    size: "medium"
                                 }
                             ],
                             current_stage: "CUTTING",
@@ -267,8 +274,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Φόρμες",
-                                    color: "Μαύρο",
-                                    qty: "11"
+                                    color: "black",
+                                    qty: "11",
+                                    size: "small"
                                 }
                             ],
                             current_stage: "DELIVERING",
@@ -290,8 +298,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Φόρμες",
-                                    color: "Μαύρο",
-                                    qty: "11"
+                                    color: "black",
+                                    qty: "11",
+                                    size: "large"
                                 }
                             ],
                             current_stage: "DELIVERING",
@@ -313,8 +322,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Φόρμες",
-                                    color: "Μαύρο",
-                                    qty: "11"
+                                    color: "black",
+                                    qty: "11",
+                                    size: "small"
                                 }
                             ],
                             current_stage: "DELIVERING",
@@ -336,8 +346,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Φόρμες",
-                                    color: "Μαύρο",
-                                    qty: "11"
+                                    color: "black",
+                                    qty: "11",
+                                    size: "small"
                                 }
                             ],
                             current_stage: "DELIVERING",
@@ -359,8 +370,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Γούνες",
-                                    color: "Μαύρο",
-                                    qty: "12"
+                                    color: "black",
+                                    qty: "12",
+                                    size: "medium"
                                 }
                             ],
                             current_stage: "SEWING",
@@ -382,8 +394,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Γούνες",
-                                    color: "Μαύρο",
-                                    qty: "12"
+                                    color: "black",
+                                    qty: "12",
+                                    size: "medium"
                                 }
                             ],
                             current_stage: "SEWING",
@@ -405,8 +418,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Γούνες",
-                                    color: "Μαύρο",
-                                    qty: "12"
+                                    color: "black",
+                                    qty: "12",
+                                    size: "medium"
                                 }
                             ],
                             current_stage: "SEWING",
@@ -428,8 +442,9 @@ export default function initializeMockAdapter(instance) {
                             products: [
                                 {
                                     product_name: "Γούνες",
-                                    color: "Μαύρο",
-                                    qty: "12"
+                                    color: "black",
+                                    qty: "12",
+                                    size: "medium"
                                 }
                             ],
                             current_stage: "QUALITY_CONTROL",
@@ -540,13 +555,38 @@ export default function initializeMockAdapter(instance) {
 
     // ================================================================================================================================================== //
 
+    mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/orders`).reply(config => {
+        if (config.headers.Authorization === `Bearer ${JSON.parse(window.localStorage.auth).token}` && config.headers.Accept === 'application/json, text/plain, */*') {
+            const requestData = JSON.parse(config.data);
+            console.log(requestData);
+
+            return [201,
+                {
+                    message: "Record Successfully saved",
+                    order: {
+                        id: requestData.uid,
+                        current_stage: requestData.current_stage,
+                        cust_name: requestData.cust_name,
+                        dueDate: requestData.dueDate,
+                        final_amount: requestData.final_amount,
+                        balance: requestData.balance,
+                        payment_status: requestData.payment_status,
+                        priority: requestData.priority,
+                        products: requestData.products
+                    }
+                }];
+        }
+        return [401, {
+            message: "Unauthenticated"
+        }]
+    })
 
     mock.onPost(`${import.meta.env.VITE_APP_SERVICE_URL}/users`).reply(config => {
         if (config.headers.Authorization === `Bearer ${JSON.parse(window.localStorage.auth).token}` && config.headers.Accept === 'application/json, text/plain, */*') {
             const requestData = JSON.parse(config.data);
             console.log(requestData);
 
-            return [200,
+            return [201,
                 {
                     message: "Record Successfully saved",
                     user: {
@@ -570,7 +610,7 @@ export default function initializeMockAdapter(instance) {
             const requestData = JSON.parse(config.data);
             console.log(requestData);
 
-            return [200,
+            return [201,
                 {
                     message: "Record Successfully saved",
                     customer: {
