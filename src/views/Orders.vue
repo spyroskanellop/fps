@@ -93,7 +93,15 @@
                     </v-card>
                 </v-menu>
 
-                <OrdersModal :items="orders" @order-created="addOrder" />
+                <v-btn color="#0369a1" class="new-order-btn" @click="openCreateModal">Δημιουργία Νέας Παραγγελίας</v-btn>
+
+                <OrdersModal
+                    v-model="dialogStatus"
+                    :mode="dialogMode"
+                    :order="selectedOrder"
+                    @order-created="addOrder"
+                    @order-updated="updateOrderInList"
+                />
 
             </v-col>
         </v-row>
@@ -323,7 +331,7 @@
                             </v-row>
 
                             <v-row class="justify-space-between" no-gutters>
-                                <v-col cols="3">
+                                <v-col cols="2">
                                     <div class="details">
                                         <v-row no-gutters>
                                             <v-col cols="auto" class="d-flex flex-center mr-1">
@@ -348,8 +356,27 @@
                                         </div>
                                     </div>
                                 </v-col>
+                                <v-col cols="2">
+                                    <div class="details">
+                                        <v-row no-gutters>
+                                            <v-col cols="auto" class="d-flex flex-center mr-1">
+                                                <FaTruckFast />
+                                            </v-col>
+                                            <v-col>
+                                                <h4>Τροπος παραδοσης</h4>
+                                            </v-col>
+                                        </v-row>
 
-                                <v-col cols="3" class="ml-8">
+                                        <div class="content mt-2">
+                                            <div class="d-flex justify-space-between">
+                                                <span class="header">Παραλαβή Από:</span>
+                                                <!-- <span>{{ item.deliveredAt }}</span> -->
+                                                <span>{{ mapLocation(item.pickupLocation) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-col>
+                                <v-col cols="2">
                                     <div class="details">
                                         <v-row no-gutters>
                                             <v-col cols="auto" class="d-flex flex-center mr-1">
@@ -369,9 +396,10 @@
                                         </div>
                                     </div>
                                 </v-col>
-                                <v-col cols="3" class="d-flex align-center">
+                                <v-col cols="2" class="d-flex align-center">
                                     <v-btn color="primary" class="float-right primary-btn"
-                                        @click="openUpdateOrderModal(item)">Επεξεργασία</v-btn>
+                                        @click="openUpdateModal(item)"
+                                    >Επεξεργασία</v-btn>
                                 </v-col>
                             </v-row>
                         </td>
@@ -384,7 +412,7 @@
 </template>
 
 <script>
-import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine } from '@kalimahapps/vue-icons';
+import { CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert, CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine, FaTruckFast } from '@kalimahapps/vue-icons';
 import { getOrders } from "../api/ordersService";
 import { useAuthStore } from "../stores/auth";
 import OrdersModal from "../components/OrdersModal.vue";
@@ -394,7 +422,7 @@ export default {
     components: {
         OrdersModal,
         CaFilterEdit, FeTrendingUp, FlClipboardMultiple, MiMoneyPlus, CgSandClock, MdTimeline, AkTriangleAlert,
-        CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine
+        CaMachineLearningModel, HiRocketLaunch, McBookmarkAddLine, FaTruckFast
     },
     data() {
         return {
@@ -412,7 +440,8 @@ export default {
             ],
             steps: null,
             dialogStatus: false,
-            dialogMode: ['C', 'U'],
+            dialogMode: "C",
+            selectedOrder: null,
             payment_statusItems: [
                 { label: 'Πληρωμένη', value: 'Paid' },
                 { label: 'Εκκρεμεί', value: 'Pending' },
@@ -566,74 +595,74 @@ export default {
         formatOrderTitle(item) {
             return item.cust_name + " " + new Date(item.createdAt).toLocaleDateString()
         },
-        openUpdateOrderModal(order) {
-            console.log(order);
-            this.dialogStatus = true;
-            this.dialogMode = 'U';
-            // Set up modal values
-            this.form.cust_name = order.cust_name;
-            this.form.qty = parseInt(order.qty);
-            this.form.product.color = order.color;
-            this.form.product.name = order.product_name;
-            this.form.product.size = order.size;
-            this.form.id = order.id;
+        // openUpdateOrderModal(order) {
+        //     console.log(order);
+        //     this.dialogStatus = true;
+        //     this.dialogMode = 'U';
+        //     // Set up modal values
+        //     this.form.cust_name = order.cust_name;
+        //     this.form.qty = parseInt(order.qty);
+        //     this.form.product.color = order.color;
+        //     this.form.product.name = order.product_name;
+        //     this.form.product.size = order.size;
+        //     this.form.id = order.id;
 
-            this.form.current_stage = order.current_stage;
-            this.form.pickupLocation = order.pickupLocation;
-            this.form.dueDate = order.dueDate;
-            this.form.priority = order.priority;
-            this.form.final_amount = order.final_amount;
-            this.form.balance = order.balance;
-            this.form.payment_status = order.payment_status;
+        //     this.form.current_stage = order.current_stage;
+        //     this.form.pickupLocation = order.pickupLocation;
+        //     this.form.dueDate = order.dueDate;
+        //     this.form.priority = order.priority;
+        //     this.form.final_amount = order.final_amount;
+        //     this.form.balance = order.balance;
+        //     this.form.payment_status = order.payment_status;
 
-        },
-        updateOrder(order) {
-            console.log("Updating order:", order);
-            const existingOrder = this.items.find(
-                o => o.id === order.id
-            );
+        // },
+        // updateOrder(order) {
+        //     console.log("Updating order:", order);
+        //     const existingOrder = this.items.find(
+        //         o => o.id === order.id
+        //     );
 
-            if (!existingOrder) {
-                console.log("Order not found:", order.id);
-                return;
-            }
+        //     if (!existingOrder) {
+        //         console.log("Order not found:", order.id);
+        //         return;
+        //     }
 
-            existingOrder.cust_name = order.cust_name;
-            existingOrder.qty = order.qty;
-            existingOrder.product_name = order.product.name;
-            existingOrder.color = order.product.color;
-            existingOrder.size = order.product.size;
-            existingOrder.current_stage = order.current_stage;
-            existingOrder.pickupLocation = order.pickupLocation;
-            existingOrder.dueDate = order.dueDate;
-            existingOrder.priority = order.priority;
-            existingOrder.final_amount = order.final_amount;
-            existingOrder.balance = order.balance;
-            existingOrder.payment_status = order.payment_status;
+        //     existingOrder.cust_name = order.cust_name;
+        //     existingOrder.qty = order.qty;
+        //     existingOrder.product_name = order.product.name;
+        //     existingOrder.color = order.product.color;
+        //     existingOrder.size = order.product.size;
+        //     existingOrder.current_stage = order.current_stage;
+        //     existingOrder.pickupLocation = order.pickupLocation;
+        //     existingOrder.dueDate = order.dueDate;
+        //     existingOrder.priority = order.priority;
+        //     existingOrder.final_amount = order.final_amount;
+        //     existingOrder.balance = order.balance;
+        //     existingOrder.payment_status = order.payment_status;
 
-            this.dialogStatus = false;
+        //     this.dialogStatus = false;
 
-            console.log("Updated order:", existingOrder);
-            console.log("Orders:", this.items);
-        },
-        clearForm() {
-            this.form = {
-                cust_name: "",
-                qty: null,
-                product: {
-                    name: "",
-                    color: null,
-                    size: null
-                },
-                current_stage: null,
-                pickupLocation: null,
-                dueDate: "",
-                priority: null,
-                final_amount: "",
-                balance: "",
-                payment_status: null
-            };
-        },
+        //     console.log("Updated order:", existingOrder);
+        //     console.log("Orders:", this.items);
+        // },
+        // clearForm() {
+        //     this.form = {
+        //         cust_name: "",
+        //         qty: null,
+        //         product: {
+        //             name: "",
+        //             color: null,
+        //             size: null
+        //         },
+        //         current_stage: null,
+        //         pickupLocation: null,
+        //         dueDate: "",
+        //         priority: null,
+        //         final_amount: "",
+        //         balance: "",
+        //         payment_status: null
+        //     };
+        // },
         sumQtyProducts(array) {
             var count = 0;
             array.forEach((item) => {
@@ -654,8 +683,21 @@ export default {
         mapSize(v) {
             return this.sizeItems.find(size => size.value.toUpperCase() === v.toUpperCase())?.label || value
         },
+        mapLocation(v) {
+            return this.pickupLocationItems.find(location => location.value.toUpperCase() === v.toUpperCase())?.label || value
+        },
         addOrder(order){
             this.items.unshift(...order);
+        },
+        openCreateModal() {
+            this.dialogMode = "C";
+            this.selectedOrder = null;
+            this.dialogStatus = true;
+        },
+        openUpdateModal(order) {
+            this.dialogMode = "U";
+            this.selectedOrder = order;
+            this.dialogStatus = true;
         }
     },
     computed: {

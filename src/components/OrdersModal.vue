@@ -1,9 +1,6 @@
 <template>
-    <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog" v-model="dialogStatus">
-        <template v-slot:activator>
-            <v-btn color="#0369a1" class="new-order-btn" @click="dialogStatus = true; dialogMode = 'C';">Δημιουργία Νέας
-                Παραγγελίας</v-btn>
-        </template>
+    <v-dialog max-width="576" transition="slide-x-reverse-transition" class="new-order-dialog" :model-value="modelValue"
+    @update:model-value="$emit('update:modelValue', $event)">
         <v-form @submit.prevent="createOrder" class="h-100" ref="form">
             <v-card class="new-order-card">
                 <template v-slot:title>
@@ -25,7 +22,7 @@
                             <p class="header-subtitle">Μοναδα Παραγωγης</p>
                         </v-col>
                         <v-col>
-                            <v-btn @click="dialogStatus = false" variant="text" class="float-right">
+                            <v-btn @click="closeModal" variant="text" class="float-right">
                                 <v-icon>mdi-close</v-icon>
                             </v-btn>
                         </v-col>
@@ -43,9 +40,9 @@
                         </v-row>
 
                         <h4 class="description mb-2">Ονομα Πελατη</h4>
-                        <v-text-field v-model="form.cust_name" density="compact" placeholder="Αναζήτηση Πελάτη..."
-                            append-inner-icon="mdi-magnify" :rules="[rules.required]" variant="outlined"
-                            hide-details></v-text-field>
+                        <v-autocomplete v-model="form.cust_name" density="compact" :items="customers" placeholder="Αναζήτηση Πελάτη..."
+                        append-inner-icon="mdi-magnify" :rules="[rules.required]" variant="outlined"
+                        hide-details></v-autocomplete>
                     </div>
 
                     <div>
@@ -199,6 +196,8 @@
 import { CaMachineLearningModel, HiRocketLaunch } from '@kalimahapps/vue-icons';
 import { useAuthStore } from "../stores/auth";
 import { createOrder } from "../api/ordersService";
+import { getCustomers } from "../api/customersService";
+
 import Swal from 'sweetalert2'
 
 export default {
@@ -213,31 +212,48 @@ export default {
             required: true,
             default: () => []
         },
+        modelValue: {
+            type: Boolean,
+            default: false
+        },
+        mode: {
+            type: String,
+            default: "C"
+        },
+        order: {
+            type: Object,
+            default: null
+        }
     },
+    emits: [
+        "update:modelValue",
+        "order-created",
+        "order-updated"
+    ],
     data(){
         return {
-            dialogStatus: false,
-            dialogMode: ['C', 'U'],
+            // dialogStatus: false,
+            // dialogMode: ['C', 'U'],
             payment_statusItems: [
-                { label: 'Πληρωμένη', value: 'Paid' },
-                { label: 'Εκκρεμεί', value: 'Pending' },
+                { label: 'Πληρωμένη', value: 'paid' },
+                { label: 'Εκκρεμεί', value: 'pending' },
                 // {label: 'Προκαταβολή', value: 'Deposit'},
             ],
             priorityItems: [
-                { label: 'Χαμηλή', value: 'Low' },
-                { label: 'Μεσαία', value: 'Medium' },
-                { label: 'Υψηλή', value: 'High' },
+                { label: 'Χαμηλή', value: 'low' },
+                { label: 'Μεσαία', value: 'medium' },
+                { label: 'Υψηλή', value: 'high' },
             ],
             pickupLocationItems: [
-                { label: 'Κατάστημα', value: 'Shop' },
-                { label: 'Παράδοση', value: 'Delivery' },
+                { label: 'Κατάστημα', value: 'shop' },
+                { label: 'Παράδοση', value: 'delivery' },
             ],
             stageItems: [
-                { label: 'Προετοιμασία', value: 'Preparing' },
-                { label: 'Κοπή', value: 'Cutting' },
-                { label: 'Ράψιμο', value: 'Sewing' },
-                { label: 'Έλεγχος Ποιότητας', value: 'Quality_control' },
-                { label: 'Παράδοση', value: 'Delivering' },
+                { label: 'Προετοιμασία', value: 'preparing' },
+                { label: 'Κοπή', value: 'cutting' },
+                { label: 'Ράψιμο', value: 'sewing' },
+                { label: 'Έλεγχος Ποιότητας', value: 'quality_control' },
+                { label: 'Παράδοση', value: 'delivering' },
             ],
             sizeItems: [
                 { label: 'X-SM', value: 'x_small' },
@@ -289,9 +305,9 @@ export default {
                 { label: 'Ταμπά', value: 'TAN' },
                 { label: 'Καμηλό', value: 'CAMEL' }
             ],
+            customers: [],
             form: {
-                cust_name: "",
-                qty: null,
+                cust_name: null,
                 products: [
                     {
                         product_name: "",
@@ -301,7 +317,7 @@ export default {
                     }
                 ],
                 current_stage: null,
-                pickupLocation: null,
+                // pickupLocation: null,
                 dueDate: null,
                 priority: null,
                 final_amount: "",
@@ -317,6 +333,14 @@ export default {
         }
     },
     created() {
+        getCustomers()
+            .then(response => {
+                console.log("Fetched customers:", response.data);
+                this.customers = response.data.customersList.map(customer => customer.name);
+            })
+            .catch(error => {
+                console.error("Error fetching customers:", error);
+            });
     },
     methods: {
         createOrder() {
@@ -333,7 +357,7 @@ export default {
                             final_amount: this.form.final_amount,
                             balance: this.form.balance,
                             priority: this.form.priority,
-                            dueDate: this.$vuetify.date.parseISO(order.dueDate),
+                            dueDate: this.form.dueDate,
                             createdAt: new Date().toLocaleString(),
                             updatedAt: new Date().toLocaleString(),
                             deliveredAt: new Date().toLocaleString(),
@@ -353,7 +377,7 @@ export default {
                                         final_amount: this.form.final_amount,
                                         balance: this.form.balance,
                                         priority: this.form.priority,
-                                        dueDate: this.$vuetify.date.parseISO(order.dueDate),
+                                        dueDate: response.data.dueDate,
                                         createdAt: new Date().toLocaleString(),
                                         updatedAt: new Date().toLocaleString(),
                                         deliveredAt: new Date().toLocaleString(),
@@ -394,12 +418,63 @@ export default {
         removeProduct(index) {
             this.form.products.splice(index, 1);
         },
+        resetForm() {
+            this.form = {
+                cust_name: null,
+                products: [
+                    {
+                        product_name: null,
+                        qty: null,
+                        color: null,
+                        size: null
+                    }
+                ],
+                current_stage: null,
+                pickupLocation: null,
+                dueDate: null,
+                priority: null,
+                final_amount: null,
+                balance: null,
+                payment_status: null
+            };
+
+            this.$refs.form?.resetValidation();
+        },
+        closeModal() {
+            this.$emit("update:modelValue", false);
+        }
     },
     computed: {
         getCurrentUser() {
             return this.authStore.getFullName();
         }
     },
+    watch: {
+        modelValue(value) {
+            if (!value) return;
+
+            if (this.mode === "U" && this.order) {
+                console.log("Editing order:", this.order);
+                this.form.cust_name = this.order.cust_name;
+                this.form.pickupLocation = this.order.pickupLocation;
+                this.form.products = this.order.products.map(product => ({
+                    ...product,
+                    qty: Number(product.qty)
+                }));
+                this.form.current_stage = this.order.current_stage;
+                this.form.payment_status = this.order.payment_status;
+                this.form.final_amount = this.order.final_amount;
+                this.form.balance = this.order.balance;
+                this.form.priority = this.order.priority;
+                this.form.dueDate = this.order.dueDate;
+                // Need to parse some fields to be presented in GR
+            }
+
+            if (this.mode === "C") {
+                this.resetForm();
+            }
+        }
+    }
 }
 </script>
 
